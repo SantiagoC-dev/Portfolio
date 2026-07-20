@@ -9,7 +9,7 @@ export default function Footer() {
         
         {/* ─── TÍTULO Y DESCRIPCIÓN ─── */}
         <h2 className="text-4xl md:text-5xl font-serif text-gray-900 tracking-tight mb-6">
-          Let's connect.
+          Conectemos.
         </h2>
         <p className="text-gray-500 font-light text-sm md:text-base max-w-md mb-12 leading-relaxed">
           Espacio digital de desarrollo de software diseñado para exhibir mi portafolio, arquitectura técnica y entorno personal.
@@ -50,7 +50,6 @@ export default function Footer() {
             className="text-gray-400 hover:text-gray-900 transform hover:scale-110 transition-all duration-300"
             aria-label="iCloud Mail"
           >
-            {/* Ícono de Nube sólido minimalista */}
             <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.5 19c2.485 0 4.5-2.015 4.5-4.5 0-2.368-1.823-4.296-4.145-4.495C17.41 6.592 14.498 4 11 4c-3.368 0-6.171 2.347-6.851 5.48C1.816 9.817 0 11.839 0 14.25 0 16.873 2.127 19 4.75 19h12.75z"/>
             </svg>
@@ -61,16 +60,16 @@ export default function Footer() {
         {/* ─── ENLACES DE NAVEGACIÓN ─── */}
         <nav className="flex flex-wrap justify-center gap-x-10 gap-y-4 mb-16">
           <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Home
+            Inicio
           </Link>
           <Link to="/about" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            About Me
+            Sobre Mí
           </Link>
           <Link to="/portfolio" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Portfolio
+            Portafolio
           </Link>
           <Link to="/inspirations" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Inspirations
+            Inspiraciones
           </Link>
           <Link to="/playlist" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
             Playlist
@@ -80,7 +79,7 @@ export default function Footer() {
         {/* ─── COPYRIGHT ─── */}
         <div className="text-center">
           <p className="text-xs text-gray-400 font-light tracking-widest">
-            © {currentYear} SANTIAGO CALDERON
+            © {currentYear} SANTIAGO CALDERÓN. Todos los derechos reservados.
           </p>
         </div>
 

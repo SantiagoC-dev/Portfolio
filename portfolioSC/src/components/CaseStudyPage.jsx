@@ -7,9 +7,9 @@ const caseStudiesData = {
   "1": {
     title: "LabStock",
     subtitle: "Sistema móvil de gestión y optimización de inventarios para el área de calidad.",
-    role: "Lead Software Engineer",
+    role: "Ingeniero de Software Principal",
     client: "Aguakan (Área de Calidad)",
-    timeline: "Q3 2024",
+    timeline: "T3 2024",
     stack: "React Native, Node.js, MySQL",
     heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=2000&q=90",
     problemText: "Antes de LabStock, el control de reactivos, materiales y equipos se realizaba enteramente mediante hojas de cálculo y registros en papel. Esto ocasionaba una pérdida de tiempo operativa masiva y una preocupante falta de trazabilidad.",
@@ -26,36 +26,36 @@ const caseStudiesData = {
       { title: "Seguridad Dinámica", desc: "Implementación de Reglas de Firewall específicas y gestión de roles (Administradores vs Laboratoristas)." }
     ],
     metrics: [
-      { value: "90%", label: "Más rápidos", desc: "El tiempo de registro manual bajó de 10 minutos a 45 segundos en el móvil." },
+      { value: "90%", label: "Más Rápidos", desc: "El tiempo de registro manual bajó de 10 minutos a 45 segundos en el móvil." },
       { value: "<1%", label: "Merma Anual", desc: "Gracias al sistema de alertas preventivas de caducidad automatizadas." },
       { value: "$0", label: "En Licencias", desc: "Desarrollado 100% con tecnologías Open Source a nivel empresarial." }
     ]
   },
   "2": {
-    title: "Limencia",
-    subtitle: "Ecosistema de Progressive Web App enfocado en telemedicina y triaje.",
-    role: "Frontend Architect",
-    client: "Proyecto de Plataforma PWA",
-    timeline: "Q2 2026",
-    stack: "React, Vite, Framer Motion",
-    heroImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=2000&q=90",
-    problemText: "La fragmentación en el acceso a servicios de salud genera tiempos de espera críticos y una desconexión total entre el historial del paciente y la atención inmediata requerida.",
+    title: "TourCraft",
+    subtitle: "Marketplace turístico digital enfocado en la Riviera Maya para democratizar el turismo local.",
+    role: "Desarrollador Full Stack",
+    client: "Proyecto Independiente B2C",
+    timeline: "T3 2026",
+    stack: "React, Vite, Node.js, MongoDB",
+    heroImage: "https://images.unsplash.com/photo-1518638150340-f706e86654de?w=2000&q=90",
+    problemText: "Los guías independientes y pequeños negocios locales de la Riviera Maya enfrentan una severa falta de visibilidad frente a los grandes operadores turísticos. Esto monopoliza el mercado y dificulta la conexión con turistas que buscan experiencias auténticas.",
     problemPoints: [
-      { title: "Fricción de Acceso", desc: "Instalar apps nativas pesadas disuade a los usuarios en momentos de urgencia médica." },
-      { title: "Desorientación", desc: "Falta de un sistema de triaje intuitivo que guíe al paciente a la especialidad correcta." },
-      { title: "Latencia", desc: "Interfaces lentas que empeoran la experiencia en situaciones de estrés." }
+      { title: "Invisibilidad Digital", desc: "Los guías locales no cuentan con plataformas accesibles y modernas para ofrecer sus servicios de manera directa." },
+      { title: "Monopolio Turístico", desc: "Las grandes agencias acaparan la atención, dejando sin oportunidades de crecimiento económico a los residentes." },
+      { title: "Falta de Confianza", desc: "Inexistencia de un sistema de reseñas centralizado que valide la calidad del servicio de guías independientes." }
     ],
-    architectureSubtitle: "Arquitectura web progresiva orientada a la gamificación y fluidez.",
-    architectureText1: "El núcleo del sistema fue estructurado sobre Vite y React para garantizar un empaquetado mínimo y tiempos de carga instantáneos, permitiendo que la web se instale como una aplicación nativa (PWA).",
-    architectureText2: "Se implementó un módulo de geolocalización integrado y animaciones intencionadas para reducir la carga cognitiva del paciente al solicitar asistencia.",
+    architectureSubtitle: "Arquitectura Cliente-Servidor bajo el patrón MVC.",
+    architectureText1: "Desarrollé la plataforma utilizando el stack MERN, implementando una separación clara de responsabilidades mediante el patrón Modelo-Vista-Controlador. Todo el proceso fue gestionado bajo la metodología ágil SCRUM.",
+    architectureText2: "El ecosistema integra exploración de destinos con un enfoque hiperlocal, perfiles de usuario verificados, espacios publicitarios para negocios locales y un flujo completo de simulación de reservas.",
     features: [
-      { title: "Cero Latencia", desc: "Optimización de assets y carga diferida (lazy loading) para respuestas inmediatas." },
-      { title: "Data Encriptada", desc: "Arquitectura segura respetando los estándares de privacidad de información sensible." }
+      { title: "Ecosistema B2C", desc: "Conexión directa y sin intermediarios entre el consumidor final (turista) y el proveedor de servicios (guía o negocio)." },
+      { title: "Turismo Sostenible", desc: "Fomento de la economía local distribuyendo los ingresos turísticos directamente a la comunidad." }
     ],
     metrics: [
-      { value: "0ms", label: "Latencia Percibida", desc: "Transiciones entre vistas casi instantáneas gracias a un estado global optimizado." },
-      { value: "PWA", label: "Multiplataforma", desc: "Instalable en iOS y Android sin pasar por App Stores." },
-      { value: "GPS", label: "Rastreo Activo", desc: "Asignación de servicios médicos basados en ubicación en tiempo real." }
+      { value: "MERN", label: "Stack Tecnológico", desc: "Base de datos en MongoDB con backend en Node.js/Express y frontend en React." },
+      { value: "MVC", label: "Arquitectura", desc: "Código modular, escalable y mantenible con estricta separación de capas lógicas." },
+      { value: "Agile", label: "Metodología", desc: "Desarrollo basado en entregas iterativas e incrementales utilizando SCRUM." }
     ]
   }
 };
@@ -64,6 +64,7 @@ export default function CaseStudy() {
   const { id } = useParams();
   const navigate = useNavigate();
   
+  // Si no se encuentra el ID, por defecto muestra LabStock ("1")
   const data = caseStudiesData[id] || caseStudiesData["1"];
 
   useEffect(() => {
@@ -117,11 +118,11 @@ export default function CaseStudy() {
               <p className="text-sm font-medium text-gray-900">{data.client}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Timeline</p>
+              <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Período</p>
               <p className="text-sm font-medium text-gray-900">{data.timeline}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Stack Core</p>
+              <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-2">Tecnologías Principales</p>
               <p className="text-sm font-medium text-gray-900">{data.stack}</p>
             </div>
           </motion.div>

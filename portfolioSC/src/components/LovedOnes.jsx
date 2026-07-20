@@ -33,7 +33,7 @@ const InteractiveTestimonialCard = ({ item }) => {
         rotateY: smoothRotateY,
         transformPerspective: 1000
       }}
-      className="w-[350px] md:w-[400px] flex-shrink-0 border border-gray-100 rounded-2xl p-8 bg-white flex flex-col justify-between min-h-[260px] select-none mx-3 shadow-sm hover:shadow-xl transition-shadow duration-500 relative overflow-hidden group"
+      className="w-[350px] md:w-[400px] flex-shrink-0 border border-gray-100 rounded-2xl p-8 bg-white flex flex-col justify-between min-h-[280px] select-none mx-3 shadow-sm hover:shadow-xl transition-shadow duration-500 relative overflow-hidden group"
     >
       <motion.div 
         className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -43,31 +43,30 @@ const InteractiveTestimonialCard = ({ item }) => {
         }}
       />
 
-      <div className="relative z-10 flex flex-col h-full justify-between">
-        {/* 🔥 TIPOGRAFÍA ELEGANTE APLICADA AQUÍ */}
+      <div className="relative z-10 flex flex-col h-full justify-between pointer-events-none">
         <p className="text-gray-600 italic font-light text-lg md:text-xl leading-relaxed mb-8">
          {item.quote}
         </p>
 
-        
         <div className="flex items-center gap-4 mt-auto">
-          <motion.img 
+          <motion.div 
             style={{
               x: useTransform(x, [0, 1], [-3, 3]),
               y: useTransform(y, [0, 1], [-3, 3]),
             }}
-            src={item.avatar} 
-            alt={item.name} 
-            className="w-12 h-12 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-            draggable="false"
-          />
+            className="w-12 h-12 flex-shrink-0 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-900 font-serif text-lg transition-colors duration-500 group-hover:bg-gray-100 group-hover:border-gray-300"
+          >
+            {item.initials}
+          </motion.div>
+
           <motion.div
             style={{
               x: useTransform(x, [0, 1], [-2, 2]),
             }}
+            className="min-w-0 flex-1 text-left"
           >
-            <h4 className="text-sm font-semibold text-gray-900 tracking-tight">{item.name}</h4>
-            <p className="text-xs text-gray-500 font-light">{item.description}</p>
+            <h4 className="text-sm font-semibold text-gray-900 tracking-tight truncate">{item.name}</h4>
+            <p className="text-xs text-gray-500 font-light leading-snug truncate">{item.description}</p>
           </motion.div>
         </div>
       </div>
@@ -83,50 +82,66 @@ export default function LovedOnes() {
   const testimonials = [
     {
       id: 1,
-      quote: "“Santiago siempre ha sido muy respetuoso y enfocado en sus objetivos.”",
-      name: "Dulce Nancy",
+      quote: "“Santiago es alguien sumamente estructurado y enfocado en sus metas. Su capacidad para organizar sus prioridades se refleja en los resultados de todo lo que emprende.”",
+      name: "Dulce Calderón",
       description: "Madre",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80"
+      initials: "DC"
     },
     {
       id: 2,
-      quote: "“Una persona sumamente responsable. Manejó nuestras configuraciones de red y servidores con precisión técnica impecable.”",
-      name: "Inge",
-      description: "Ex Jefe / Supervisor Técnico",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80"
+      quote: "“Una persona respetuosa, amable e inteligente, con sus objetivos claros y capaz de lograr todo lo que se propone por su dedicación y esfuerzo en lo que hace.”" ,
+      name: "Joanna Alvarez",
+      description: "Pareja",
+      initials: "JA"
     },
     {
       id: 3,
-      quote: "“Tiene un corazón genuinamente brillante. Su nivel de detalle y lógica, incluso para organizar nuestros ahorros compartidos, es increíble.”",
-      name: "Joanna",
-      description: "Pareja",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+      quote: "“Un profesional sumamente responsable. Durante su paso por la empresa, demostró gran precisión técnica y una actitud proactiva ante las resoluciones de problemas en la red.”",
+      name: "Pedro Hernández",
+      description: "Ex Jefe / Supervisor - Aguakan",
+      initials: "PH"
     },
     {
       id: 4,
-      quote: "“Gran capacidad de resolución de problemas y adaptabilidad en el desarrollo de software multiplataforma.”",
-      name: "Profesor UTNeza",
-      description: "Mentor Académico",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80"
+      quote: "“Acompañé a Santiago durante su proceso de servicio. Destaca por su constancia académica y su notable facilidad para estructurar soluciones multiplataforma.”",
+      name: "Juan Domínguez",
+      description: "Mentor Académico - UTRM",
+      initials: "JD"
+    },
+    {
+      id: 5,
+      quote: "“Tiene una visión muy clara de la arquitectura de software. Es el tipo de desarrollador que prioriza el código limpio y diseña sistemas pensando en la escalabilidad.”",
+      name: "Eduardo Solorzano",
+      description: "Desarrollador de Software Senior",
+      initials: "ES"
+    },
+    {
+      id: 6,
+      quote: "“Trabajar con él en Tourcraft fue clave para el proyecto. Aporta excelentes soluciones lógicas, depura errores rápidamente y mantiene al equipo enfocado.”",
+      name: "David Fraga",
+      description: "Co-desarrollador App Tourcraft",
+      initials: "DF"
     }
   ];
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-28 border-t border-gray-100 overflow-hidden relative">
+    <section className="max-w-[1400px] mx-auto px-6 py-32 border-t border-gray-200 text-center overflow-hidden">
       
-      {/* 🔥 VELOCIDAD DEL SCROLL REDUCIDA AQUÍ (de 40s a 70s) */}
       <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-100%); }
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-50%)); }
         }
-        .animate-marquee {
-          animation: marquee 70s linear infinite;
+        .animate-scroll {
+          /* Ajusta los segundos (70s) para hacerlo más rápido o más lento */
+          animation: scroll 60s linear infinite;
+          /* El ancho debe ser suficiente para albergar los duplicados */
+          width: max-content;
         }
       `}</style>
 
       {/* HEADER */}
-      <div className="flex justify-between items-end mb-14">
+      <div className="flex justify-between items-end mb-14 max-w-6xl mx-auto">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -134,7 +149,7 @@ export default function LovedOnes() {
           transition={{ duration: 0.6 }}
           className="text-3xl font-serif tracking-wide text-gray-900"
         >
-          Loved ones
+          Lo que dicen de mí
         </motion.h2>
 
         <motion.div 
@@ -144,7 +159,7 @@ export default function LovedOnes() {
           className="flex items-center gap-2 text-gray-400 select-none"
         >
           <span className="text-xs tracking-widest font-medium uppercase hidden md:block">
-            {isPaused ? 'PAUSED' : 'AUTO SCROLL'}
+            {isPaused ? 'PAUSADO' : 'AUTO SCROLL'}
           </span>
           <div className="w-10 h-[2px] bg-gray-200 relative overflow-hidden rounded-full">
             <motion.div
@@ -156,9 +171,9 @@ export default function LovedOnes() {
         </motion.div>
       </div>
 
-      {/* CONTENEDOR DEL CARRUSEL */}
+      {/* CONTENEDOR DEL CARRUSEL INFINITO */}
       <div 
-        className="flex overflow-hidden group cursor-grab active:cursor-grabbing pb-10"
+        className="overflow-hidden group cursor-grab active:cursor-grabbing pb-10"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={() => setIsPaused(true)}
@@ -166,15 +181,17 @@ export default function LovedOnes() {
         style={{ perspective: 1200 }}
       >
         <div 
-          className="flex animate-marquee"
+          className="flex animate-scroll"
           style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
         >
-          <div className="flex">
-            {testimonials.map(item => <InteractiveTestimonialCard key={`copy1-${item.id}`} item={item} />)}
-          </div>
-          <div className="flex">
-            {testimonials.map(item => <InteractiveTestimonialCard key={`copy2-${item.id}`} item={item} />)}
-          </div>
+          {/* Renderizamos el array original */}
+          {testimonials.map((item, index) => (
+            <InteractiveTestimonialCard key={`original-${item.id}-${index}`} item={item} />
+          ))}
+          {/* Renderizamos una copia exacta para crear la ilusión de infinito */}
+          {testimonials.map((item, index) => (
+            <InteractiveTestimonialCard key={`copy-${item.id}-${index}`} item={item} />
+          ))}
         </div>
       </div>
 

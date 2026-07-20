@@ -29,8 +29,8 @@ export default function Hero() {
   };
 
   return (
-    // AQUÍ ESTÁ EL CAMBIO PRINCIPAL: pt-40 md:pt-48 pb-24
-    <section className="max-w-7xl mx-auto px-6 pt-40 md:pt-48 pb-24 flex flex-col md:flex-row items-center justify-between min-h-[90vh]">
+    
+    <section className="max-w-7xl mx-auto pt-28 md:pt-50 pb-12 pr-10 pl-10 md:pl-20 flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24 min-h-[90vh]">
 
       {/* TEXT */}
       <motion.div
@@ -43,14 +43,14 @@ export default function Hero() {
           variants={itemVariants}
           className="text-5xl md:text-7xl font-serif tracking-tight leading-tight"
         >
-          Hello, I'm Santi
+          Hola, soy Santiago.
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
-          className="text-xl text-gray-500 mt-6 mb-10 max-w-md font-light"
+          className="text-xl text-gray-500 mt-6 mb-10 max-w-md font-light leading-relaxed"
         >
-          I craft elegant multi-platform experiences with precision and minimalism.
+          Desarrollador enfocado en software multiplataforma y análisis de sistemas. Disfruto construir herramientas digitales que combinen una arquitectura sólida con un diseño limpio y funcional.
         </motion.p>
 
         <motion.button
@@ -61,9 +61,9 @@ export default function Hero() {
             navigate('/portfolio');
             window.scrollTo(0, 0);
           }}
-          className="bg-black text-white px-8 py-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+          className="bg-black text-white px-8 py-3.5 rounded-full shadow-md hover:shadow-xl transition-all duration-300 font-medium text-sm tracking-wide"
         >
-          View my work
+          Ver portafolio
         </motion.button>
       </motion.div>
 
@@ -72,7 +72,7 @@ export default function Hero() {
         initial={{ opacity: 0, scale: 0.9, y: 50 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="md:w-1/2 mt-20 md:mt-0 flex justify-center relative"
+        className="md:w-1/2 mt-12 md:mt-0 flex justify-center relative"
       >
         <motion.div
           whileHover={{ scale: 1.03 }}
@@ -87,7 +87,7 @@ export default function Hero() {
 
           <img
             src={miFoto}
-            alt="Santiago"
+            alt="Santiago Calderón"
             className="relative w-full h-full object-cover rounded-3xl shadow-2xl z-10"
           />
 
@@ -95,6 +95,7 @@ export default function Hero() {
           <div className="absolute -inset-6 border border-gray-200 rounded-3xl rotate-2 opacity-60"></div>
         </motion.div>
       </motion.div>
+      
     </section>
   );
 }

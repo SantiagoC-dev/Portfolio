@@ -1,104 +1,187 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import miFoto from '../assets/yo.png';
+import certItep from '../assets/iTEPC.png';
+import CV from '../assets/CV.pdf';
 
 export default function AboutMePage() {
+  const [selectedCert, setSelectedCert] = useState(null);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] } }
+  const blurReveal = {
+    hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)", 
+      transition: { duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] } 
+    }
   };
 
-  // Base de datos de Skills con Iconos SVG Minimalistas
+  const maskReveal = {
+    hidden: { y: "100%" },
+    visible: { y: "0%", transition: { duration: 0.6, ease: [0.215, 0.610, 0.355, 1.000] } }
+  };
+
+  // Íconos reemplazados por los paths oficiales de cada marca (simple-icons),
+  // los anteriores estaban corruptos y se veían deformados.
   const skillsData = [
-    { name: 'React', icon: <path d="M11.955 2.564c-.035 0-.07.002-.104.004-.336.02-.638.163-.872.4-.234.237-.375.54-.393.877-.03 2.08-1.077 4.1-2.923 5.672-1.846 1.571-4.225 2.502-6.526 2.574-.337.01-.645.15-.884.383-.238.233-.38.544-.39.882-.01.338.113.655.337.896.223.24.522.392.858.412 2.3.136 4.654 1.134 6.47 2.766 1.816 1.632 2.825 3.702 2.784 5.782-.016.337.114.653.338.892.224.24.524.39.86.41.338.01.646-.12.884-.354.24-.233.39-.533.414-.868.083-2.08 1.182-4.116 3.06-5.717 1.878-1.601 4.296-2.553 6.634-2.628.337-.01.646-.14.886-.374.24-.233.385-.544.396-.882.01-.338-.112-.656-.336-.897-.223-.24-.522-.39-.858-.41-2.34-.138-4.74-1.15-6.59-2.812-1.85-1.662-2.88-3.755-2.846-5.836.015-.337-.11-.655-.333-.896-.22-.24-.517-.39-.852-.41-.035-.002-.07-.003-.105-.003z"/> },
-    { name: 'TypeScript', icon: <path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0H1.125zm16.594 18.86c-1.397 1.196-3.09 1.666-5.187 1.488-1.748-.148-3.32-.937-4.42-2.213-.377-.436-.263-1.042.203-1.34l1.458-.934c.488-.314 1.12-.19 1.464.27 1.055 1.413 2.502 1.576 3.493 1.055.672-.353 1.053-.946 1.053-1.652 0-2.36-6.195-1.002-6.195-5.592 0-1.89 1.168-3.324 3.195-3.834 1.523-.38 3.193-.016 4.385 1.026.425.372.482 1.01.126 1.458l-1.312 1.644c-.332.417-.95.502-1.4.195-1.01-.683-2.193-.837-3.047-.396-.583.303-.84.81-.84 1.343 0 2.222 6.194 1.12 6.194 5.568 0 2.102-1.603 4.095-4.453 4.298zM9.475 10.33h-3.69v11.16H1.97V10.33H-1.72V7.172h11.195v3.158z" /> },
-    { name: 'Python', icon: <path d="M12.012 2.25c-4.275 0-4.045 1.838-4.045 1.838l-.013 1.89h4.135v.568H6.55s-3.522.083-3.522 3.652c0 3.568 1.954 3.738 1.954 3.738h1.282v-1.804s-.044-2.52 2.457-2.52h3.633s2.34-.055 2.34-2.28V4.386s.187-2.136-2.682-2.136zm-2.03 1.365a.774.774 0 110 1.547.774.774 0 010-1.547zm6.473 3.96s-1.954-.083-1.954-3.738h-1.282v1.805s.045 2.52-2.458 2.52H7.127s-2.34.055-2.34 2.28v2.946s-.187 2.136 2.683 2.136c4.274 0 4.044-1.837 4.044-1.837l.014-1.89h-4.136v-.568h5.538s3.522-.083 3.522-3.652z" /> },
-    { name: 'Git', icon: <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.738 2.738c.64-.22 1.383-.076 1.895.436.845.845.845 2.215 0 3.06-.845.845-2.215.845-3.06 0-.528-.528-.667-1.29-.427-1.942l-2.656-2.656c-.253.076-.525.076-.778 0l-1.32 1.32v4.86c.214.223.364.51.41.835.087.625-.138 1.257-.614 1.733-.845.845-2.215.845-3.06 0-.845-.845-.845-2.215 0-3.06.476-.476 1.108-.7 1.733-.614.326.046.612.196.835.41V9.704c-.223-.214-.373-.501-.42-.826-.086-.615.132-1.238.598-1.704L5.342 4.015.454 8.903c-.605.605-.605 1.585 0 2.189l10.48 10.478c.605.605 1.585.605 2.188 0l10.424-10.42c.605-.605.605-1.584 0-2.188V10.93z" /> },
-    { name: 'Figma', icon: <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm8-16a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-8 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /> },
-    { name: 'Tailwind', icon: <path d="M12 5.5c-2.667 0-4.333 1.333-5 4 1.333-2 2.667-2.333 4-1.5.852.533 1.462 1.144 2.148 1.83C14.238 10.92 15.545 12.5 20 12.5c2.667 0 4.333-1.333 5-4-1.333 2-2.667 2.333-4 1.5-.852-.533-1.462-1.144-2.148-1.83C17.762 7.08 16.455 5.5 12 5.5zM7 11.5c-2.667 0-4.333 1.333-5 4 1.333-2 2.667-2.333 4-1.5.852.533 1.462 1.144 2.148 1.83C9.238 16.92 10.545 18.5 15 18.5c2.667 0 4.333-1.333 5-4-1.333 2-2.667 2.333-4 1.5-.852-.533-1.462-1.144-2.148-1.83C12.762 13.08 11.455 11.5 7 11.5z" /> },
-    { name: 'Vue.js', icon: <path d="M14.614 3.46l-2.614 4.529-2.614-4.529H2.8l9.2 15.935 9.2-15.935h-6.586zM12 11.39l-4.58-7.93H.842L12 22.532 23.158 3.46h-6.578L12 11.39z" /> },
-    { name: 'JavaScript', icon: <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.463.69-.748 1.305-.748.81 0 1.38.304 1.635.88l2.673-1.71c-.72-1.44-2.34-2.19-4.35-2.19-1.92 0-3.51.81-4.245 2.13-.54 1.005-.555 2.22-.09 3.195.54 1.08 1.605 1.65 3.18 2.28 1.23.495 1.77.72 2.01 1.26.15.345.165.72.03 1.05-.21.495-.81.825-1.5.825-.84 0-1.635-.375-2.07-1.065-.24-.39-.42-.87-.495-1.38L12.57 20.25c.345 1.29 1.305 2.37 2.745 2.94 1.155.45 2.475.48 3.615.12 1.305-.435 2.34-1.38 2.82-2.64.48-1.275.465-2.835-.06-4.005h.344zm-11.4 1.95c-.375.33-.87.495-1.485.495-.69 0-1.185-.195-1.575-.54-.39-.33-.615-.81-.72-1.335H3.774c.165 1.575 1.02 2.835 2.34 3.495 1.035.54 2.25.645 3.39.315 1.155-.315 2.07-1.035 2.52-2.07.45-1.02.48-2.22.105-3.255C11.59 15.6 11 12.87 11 9.93H7.725v8.085c0 1.035-.12 1.74-.465 2.211z" /> }
+    { name: 'React', color: '#61DAFB', icon: <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" /> },
+    { name: 'TypeScript', color: '#3178C6', icon: <path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z" /> },
+    { name: 'Python', color: '#3776AB', icon: <path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z" /> },
+    { name: 'Git', color: '#F05032', icon: <path d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z" /> },
+    { name: 'Figma', color: '#F24E1E', icon: <path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z" /> },
+    { name: 'Tailwind', color: '#06B6D4', icon: <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z" /> },
+    { name: 'Vue.js', color: '#4FC08D', icon: <path d="M24,1.61H14.06L12,5.16,9.94,1.61H0L12,22.39ZM12,14.08,5.16,2.23H9.59L12,6.41l2.41-4.18h4.43Z" /> },
+    { name: 'JavaScript', color: '#F7DF1E', icon: <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z" /> }
   ];
 
+  const certificatesData = [
+    {
+      id: 1,
+      title: "Inglés B1 Intermedio",
+      issuer: "iTEP International",
+      year: "2025",
+      image: certItep, 
+      icon: "I" 
+    }
+  ];
+
+  // Estilo compartido para evitar el artefacto de línea fina/oscura que Chrome
+  // dibuja en el borde de contenedores con overflow-hidden + border-radius
+  // cuando se les aplica rotate/translate animados (bug de composición GPU).
+  const photoFrameStyle = {
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+    willChange: "transform",
+    transformStyle: "preserve-3d"
+  };
+
   return (
-    <div className="min-h-screen bg-[#fafafa] text-gray-900 pt-32 pb-32 overflow-hidden">
-      {/* ─── HEADER ALINEADO A MAX-W-6XL ─── */}
+    <div className="min-h-screen bg-[#fafafa] text-gray-900 pt-34 pb-32 overflow-hidden">
+      
+      <AnimatePresence>
+        {selectedCert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-10 bg-black/70 backdrop-blur-md cursor-pointer"
+            onClick={() => setSelectedCert(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 30, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 30, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden cursor-default flex flex-col"
+              onClick={(e) => e.stopPropagation()} 
+            >
+              <div className="absolute top-4 right-4 z-10 bg-white/50 backdrop-blur-sm p-2 rounded-full cursor-pointer hover:bg-white transition-colors" onClick={() => setSelectedCert(null)}>
+                <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </div>
+              
+              <div className="w-full h-full overflow-y-auto bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
+                <img 
+                  src={selectedCert.image} 
+                  alt={selectedCert.title} 
+                  className="w-full h-auto max-h-[80vh] object-contain rounded-xl shadow-sm"
+                />
+              </div>
+              
+              <div className="bg-white p-4 px-6 md:px-8 border-t border-gray-100 flex justify-between items-center shrink-0">
+                <div>
+                  <h3 className="font-serif text-xl md:text-2xl text-gray-900">{selectedCert.title}</h3>
+                  <p className="text-sm text-gray-500 font-light">{selectedCert.issuer} · {selectedCert.year}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-6xl mx-auto px-4 sm:px-6">
         
-        {/* ─── HEADER / FOTOS ─── */}
-        <motion.section variants={itemVariants} className="flex flex-col md:flex-row items-center justify-between gap-16 mb-40">
+        <motion.section className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 mb-24 md:mb-40">
           
-          {/* Texto de la Izquierda */}
           <div className="w-full md:w-1/2 flex flex-col items-start z-10">
-            <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4 block">
-              About me
+            <span className="overflow-hidden block mb-4">
+              <motion.span variants={maskReveal} className="text-xs font-semibold tracking-widest text-gray-400 uppercase block">
+                Sobre mí
+              </motion.span>
             </span>
-            <h1 className="text-6xl md:text-8xl font-serif text-gray-900 mb-6 tracking-tight leading-none">
+            
+            <motion.h1 variants={blurReveal} className="text-5xl sm:text-6xl md:text-8xl font-serif text-gray-900 mb-6 tracking-tight leading-none">
               Santiago Calderón
-            </h1>
-            <p className="text-gray-500 font-light text-xl leading-relaxed max-w-lg mb-10">
-              Desarrollador de software multiplataforma. Construyo experiencias digitales donde la técnica y el diseño trabajan juntos.
-            </p>
-            <button className="bg-[#111827] text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl">
+            </motion.h1>
+            
+            <motion.p variants={blurReveal} className="text-gray-500 font-light text-lg md:text-xl leading-relaxed max-w-lg mb-10">
+              Desarrollador de software multiplataforma con la meta de crecer hacia la arquitectura de software, diseñando soluciones innovadoras que integren eficiencia técnica y experiencias intuitivas.
+            </motion.p>
+            
+            <motion.a 
+              variants={blurReveal} 
+              href={CV} 
+              download="CV_Santiago_Calderon.pdf"
+              className="bg-[#111827] text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl w-max"
+            >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-              Download CV
-            </button>
+              Descargar CV
+            </motion.a>
           </div>
 
-          {/* Galería "Apple Stack" de la Derecha (AHORA MÁS GRANDE) */}
-          <div className="w-full md:w-1/2 h-[550px] relative flex justify-center items-center group cursor-default">
-            
+          <div className="w-full md:w-1/2 h-[350px] md:h-[550px] mt-8 md:mt-0 relative flex justify-center items-center group cursor-default">
             <motion.div 
               initial={{ opacity: 0, x: 0, y: 50, rotate: 0 }}
-              animate={{ opacity: 1, x: -50, y: -20, rotate: -8 }}
+              animate={{ opacity: 1, x: -30, y: -20, rotate: -8 }}
               transition={{ duration: 1, delay: 0.2, ease: [0.215, 0.610, 0.355, 1.000] }}
-              className="absolute w-64 h-80 rounded-2xl overflow-hidden shadow-xl bg-white border-[6px] border-white z-0 group-hover:-translate-x-20 group-hover:-rotate-12 transition-transform duration-500 ease-out"
+              style={photoFrameStyle}
+              className="absolute w-48 md:w-64 h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl bg-white border-[4px] md:border-[6px] border-white z-0 group-hover:-translate-x-12 md:group-hover:-translate-x-20 group-hover:-rotate-12 transition-transform duration-500 ease-out"
             >
-              <img src={miFoto} alt="Santiago 1" className="w-full h-full object-cover grayscale-[30%]" />
+              <img src={miFoto} alt="Santiago 1" className="w-full h-full object-cover grayscale-[30%] scale-[1.03]" />
             </motion.div>
 
             <motion.div 
               initial={{ opacity: 0, x: 0, y: 50, rotate: 0 }}
-              animate={{ opacity: 1, x: 70, y: -60, rotate: 12 }}
+              animate={{ opacity: 1, x: 40, y: -40, rotate: 12 }}
               transition={{ duration: 1, delay: 0.4, ease: [0.215, 0.610, 0.355, 1.000] }}
-              className="absolute w-64 h-80 rounded-2xl overflow-hidden shadow-xl bg-white border-[6px] border-white z-10 group-hover:translate-x-24 group-hover:rotate-16 transition-transform duration-500 ease-out"
+              style={photoFrameStyle}
+              className="absolute w-48 md:w-64 h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl bg-white border-[4px] md:border-[6px] border-white z-10 group-hover:translate-x-16 md:group-hover:translate-x-24 group-hover:rotate-16 transition-transform duration-500 ease-out"
             >
-              <img src={miFoto} alt="Santiago 2" className="w-full h-full object-cover grayscale-[30%]" />
+              <img src={miFoto} alt="Santiago 2" className="w-full h-full object-cover grayscale-[30%] scale-[1.03]" />
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 100, rotate: -20 }}
-              animate={{ opacity: 1, y: 40, x: 10, rotate: -2 }}
+              initial={{ opacity: 0, y: 100, filter: "blur(10px)", rotate: -20 }}
+              animate={{ opacity: 1, y: 20, filter: "blur(0px)", x: 10, rotate: -2 }}
               transition={{ duration: 1, delay: 0.6, ease: [0.215, 0.610, 0.355, 1.000] }}
-              className="absolute w-72 h-96 rounded-2xl overflow-hidden shadow-2xl bg-white border-[6px] border-white z-20 group-hover:scale-105 group-hover:-translate-y-4 transition-transform duration-500 ease-out"
+              style={photoFrameStyle}
+              className="absolute w-56 md:w-72 h-[19rem] md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-white border-[4px] md:border-[6px] border-white z-20 group-hover:scale-105 group-hover:-translate-y-2 md:group-hover:-translate-y-4 transition-transform duration-500 ease-out"
             >
-              <img src={miFoto} alt="Santiago Principal" className="w-full h-full object-cover" />
+              <img src={miFoto} alt="Santiago Principal" className="w-full h-full object-cover scale-[1.03]" />
             </motion.div>
           </div>
         </motion.section>
 
-        {/* ─── GRID JUSTIFICADO (IZQUIERDA: SKILLS/LANGUAGES | DERECHA: ED/CERTS) ─── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-20">
           
-          {/* COLUMNA IZQUIERDA */}
           <div>
-            {/* ─── SKILLS CON ICONOS ─── */}
-            <motion.section variants={itemVariants} className="mb-20">
+            <motion.section variants={blurReveal} className="mb-20">
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
-                Skills
+                Habilidades
               </span>
               <div className="flex flex-wrap gap-3">
                 {skillsData.map((skill) => (
                   <motion.span 
-                    whileHover={{ scale: 1.05, backgroundColor: "#f3f4f6" }}
+                    whileHover={{ scale: 1.05, backgroundColor: "#f9fafb" }}
                     key={skill.name} 
                     className="px-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm text-gray-700 font-medium shadow-sm flex items-center gap-2.5 cursor-default hover:border-gray-300 transition-colors"
                   >
-                    <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+                    <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill={skill.color} xmlns="http://www.w3.org/2000/svg">
                       {skill.icon}
                     </svg>
                     {skill.name}
@@ -107,10 +190,9 @@ export default function AboutMePage() {
               </div>
             </motion.section>
 
-            {/* ─── LANGUAGES ANIMADOS ─── */}
-            <motion.section variants={itemVariants}>
+            <motion.section variants={blurReveal}>
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
-                Languages
+                Idiomas
               </span>
               <div className="space-y-8 max-w-sm">
                 
@@ -124,7 +206,7 @@ export default function AboutMePage() {
                       initial={{ width: 0 }} 
                       whileInView={{ width: '100%' }} 
                       viewport={{ once: true }} 
-                      transition={{ type: "spring", stiffness: 40, damping: 15, delay: 0.1 }} 
+                      transition={{ duration: 2.5, ease: "easeInOut", delay: 0.3 }} 
                       className="absolute left-0 top-0 h-full bg-gray-900 rounded-full" 
                     />
                   </div>
@@ -132,16 +214,16 @@ export default function AboutMePage() {
 
                 <div className="group">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-base font-medium text-gray-900">English</span>
-                    <span className="text-xs text-gray-400 font-light">B1 Intermedio</span>
+                    <span className="text-base font-medium text-gray-900">Inglés</span>
+                    <span className="text-xs text-gray-400 font-light">B1 Intermedio (iTEP)</span>
                   </div>
                   <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden relative">
                     <motion.div 
                       initial={{ width: 0 }} 
                       whileInView={{ width: '60%' }} 
                       viewport={{ once: true }} 
-                      transition={{ type: "spring", stiffness: 40, damping: 15, delay: 0.3 }} 
-                      className="absolute left-0 top-0 h-full bg-gray-900 rounded-full" 
+                      transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }} 
+                      className="absolute left-0 top-0 h-full bg-[#3178C6] rounded-full"
                     />
                   </div>
                 </div>
@@ -150,16 +232,13 @@ export default function AboutMePage() {
             </motion.section>
           </div>
 
-          {/* COLUMNA DERECHA */}
           <div>
-            {/* ─── EDUCATION (TIMELINE ANIMADO) ─── */}
-            <motion.section variants={itemVariants} className="mb-20">
+            <motion.section variants={blurReveal} className="mb-20">
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-10 block">
-                Education
+                Educación
               </span>
               
               <div className="relative pl-8 space-y-12">
-                {/* Línea animada de fondo */}
                 <motion.div 
                   initial={{ height: 0 }}
                   whileInView={{ height: '100%' }}
@@ -168,70 +247,69 @@ export default function AboutMePage() {
                   className="absolute left-[3px] top-2 w-[2px] bg-gray-200 -z-10"
                 />
 
-                {/* Item 1 */}
                 <motion.div whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
                   <motion.div 
                     initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
                     className="absolute -left-[35px] top-1.5 w-3 h-3 bg-white border-[3px] border-gray-300 rounded-full group-hover:border-gray-500 transition-colors"
                   />
-                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">2019 — 2022</p>
-                  <p className="text-sm text-gray-500 font-light mb-1">CETIS / CBTis</p>
-                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">Técnico en Informática</h4>
+                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">ENE 2022</p>
+                  <p className="text-sm text-gray-500 font-light mb-1">Tecnológico de Chalco</p>
+                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">Ingeniería en Sistemas Computacionales</h4>
                 </motion.div>
 
-                {/* Item 2 */}
                 <motion.div whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
-                  {/* Punto animado interior */}
                   <motion.div 
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }}
-                    className="absolute -left-[35px] top-1.5 w-3 h-3 bg-gray-900 border-[3px] border-gray-900 rounded-full z-10"
+                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
+                    className="absolute -left-[35px] top-1.5 w-3 h-3 bg-white border-[3px] border-gray-300 rounded-full group-hover:border-gray-500 transition-colors"
                   />
-                  {/* Pulso exterior decorativo */}
+                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">NOV 2023</p>
+                  <p className="text-sm text-gray-500 font-light mb-1">Universidad Tecnológica de la Riviera Maya</p>
+                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">TSU en Desarrollo de Software Multiplataforma</h4>
+                </motion.div>
+                
+                <motion.div whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
+                  <motion.div 
+                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
+                    className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 border-[3px] border-gray-900 rounded-full z-10"
+                  />
                   <motion.div 
                     animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                    className="absolute -left-[35px] top-1.5 w-3 h-3 bg-gray-900 rounded-full z-0"
+                    className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 rounded-full z-0"
                   />
-                  
-                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">2024 — PRESENTE</p>
-                  <p className="text-sm text-gray-500 font-light mb-1">Universidad Tecnológica</p>
-                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">Desarrollo de Software Multiplataforma</h4>
+                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">MAY 2026</p>
+                  <p className="text-sm text-gray-500 font-light mb-1">Universidad Tecnológica de Nezahualcóyotl</p>
+                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">Ing. en TI e Innovación Digital</h4>
                 </motion.div>
               </div>
             </motion.section>
 
-            {/* ─── CERTIFICATES ─── */}
-            <motion.section variants={itemVariants}>
+            <motion.section variants={blurReveal}>
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
-                Certificates
+                Certificados
               </span>
               <div className="flex flex-col gap-4">
                 
-                <motion.div 
-                  whileHover={{ y: -3, scale: 1.01 }}
-                  className="border border-gray-200 rounded-2xl p-5 flex items-center gap-5 bg-white shadow-sm hover:shadow-lg transition-all cursor-pointer"
-                >
-                  <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center shrink-0 border border-gray-100">
-                    <span className="text-gray-900 font-serif font-bold text-xl">G</span>
-                  </div>
-                  <div>
-                    <h4 className="text-base font-medium text-gray-900 mb-0.5">Google UX Design</h4>
-                    <p className="text-xs text-gray-500 font-light">Google · 2024</p>
-                  </div>
-                </motion.div>
-
-                <motion.div 
-                  whileHover={{ y: -3, scale: 1.01 }}
-                  className="border border-gray-200 rounded-2xl p-5 flex items-center gap-5 bg-white shadow-sm hover:shadow-lg transition-all cursor-pointer"
-                >
-                  <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center shrink-0 border border-gray-100">
-                    <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                  </div>
-                  <div>
-                    <h4 className="text-base font-medium text-gray-900 mb-0.5">Tu certificado aquí</h4>
-                    <p className="text-xs text-gray-500 font-light">Institución · Año</p>
-                  </div>
-                </motion.div>
+                {certificatesData.map((cert) => (
+                  <motion.div 
+                    key={cert.id}
+                    onClick={() => setSelectedCert(cert)}
+                    whileHover={{ y: -3, scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="border border-gray-200 rounded-2xl p-5 flex items-center justify-between gap-5 bg-white shadow-sm hover:shadow-lg transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-5">
+                      <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-gray-100 transition-colors">
+                        <span className="text-gray-900 font-serif font-bold text-xl">{cert.icon}</span>
+                      </div>
+                      <div>
+                        <h4 className="text-base font-medium text-gray-900 mb-0.5">{cert.title}</h4>
+                        <p className="text-xs text-gray-500 font-light">{cert.issuer} · {cert.year}</p>
+                      </div>
+                    </div>
+                    <svg className="w-4 h-4 text-gray-300 group-hover:text-gray-600 transition-colors transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                  </motion.div>
+                ))}
 
               </div>
             </motion.section>
