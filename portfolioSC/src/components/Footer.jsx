@@ -1,18 +1,21 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; 
 
 export default function Footer() {
+  const { t } = useTranslation(); 
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#fafafa] pt-32 pb-16 border-t border-gray-200 mt-20">
+    // ¡AQUÍ ESTABA EL PARCHE BLANCO! Agregué dark:bg-gray-950, dark:border-gray-800 y cambié bg-[#fafafa] a bg-transparent
+    <footer className="bg-transparent dark:bg-gray-950 pt-32 pb-16 border-t border-gray-200 dark:border-gray-800 mt-20 transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
         
         {/* ─── TÍTULO Y DESCRIPCIÓN ─── */}
-        <h2 className="text-4xl md:text-5xl font-serif text-gray-900 tracking-tight mb-6">
-          Conectemos.
+        <h2 className="text-4xl md:text-5xl font-serif text-gray-900 dark:text-white tracking-tight mb-6 transition-colors duration-300">
+          {t('footer.title')}
         </h2>
-        <p className="text-gray-500 font-light text-sm md:text-base max-w-md mb-12 leading-relaxed">
-          Espacio digital de desarrollo de software diseñado para exhibir mi portafolio, arquitectura técnica y entorno personal.
+        <p className="text-gray-500 dark:text-gray-400 font-light text-sm md:text-base max-w-md mb-12 leading-relaxed transition-colors duration-300">
+          {t('footer.description')}
         </p>
 
         {/* ─── ICONOS SOCIALES Y CONTACTO ─── */}
@@ -23,7 +26,8 @@ export default function Footer() {
             href="https://github.com/calderonsantiago742-cell" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-gray-900 transform hover:scale-110 transition-all duration-300"
+            // Añadí dark:hover:text-white
+            className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
             aria-label="GitHub"
           >
             <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
@@ -36,7 +40,8 @@ export default function Footer() {
             href="https://www.instagram.com/nachonation03/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-400 hover:text-gray-900 transform hover:scale-110 transition-all duration-300"
+             // Añadí dark:hover:text-white
+            className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
             aria-label="Instagram"
           >
             <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +52,8 @@ export default function Footer() {
           {/* iCloud Mail */}
           <a 
             href="mailto:santiagocalderon1703@icloud.com" 
-            className="text-gray-400 hover:text-gray-900 transform hover:scale-110 transition-all duration-300"
+             // Añadí dark:hover:text-white
+            className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
             aria-label="iCloud Mail"
           >
             <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
@@ -59,27 +65,27 @@ export default function Footer() {
 
         {/* ─── ENLACES DE NAVEGACIÓN ─── */}
         <nav className="flex flex-wrap justify-center gap-x-10 gap-y-4 mb-16">
-          <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Inicio
+          <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+            {t('footer.nav.home')}
           </Link>
-          <Link to="/about" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Sobre Mí
+          <Link to="/about" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+            {t('footer.nav.about')}
           </Link>
-          <Link to="/portfolio" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Portafolio
+          <Link to="/portfolio" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+            {t('footer.nav.portfolio')}
           </Link>
-          <Link to="/inspirations" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Inspiraciones
+          <Link to="/inspirations" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+            {t('footer.nav.inspirations')}
           </Link>
-          <Link to="/playlist" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-            Playlist
+          <Link to="/playlist" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+            {t('footer.nav.playlist')}
           </Link>
         </nav>
 
         {/* ─── COPYRIGHT ─── */}
         <div className="text-center">
-          <p className="text-xs text-gray-400 font-light tracking-widest">
-            © {currentYear} SANTIAGO CALDERÓN. Todos los derechos reservados.
+          <p className="text-xs text-gray-400 dark:text-gray-500 font-light tracking-widest transition-colors duration-300">
+            © {currentYear} SANTIAGO CALDERÓN. {t('footer.rights')}
           </p>
         </div>
 

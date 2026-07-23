@@ -1,15 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import LogoB from '../assets/LogoB.png';
+import LogoN from '../assets/LogoN.png';
 
 export default function Navbar() {
+  // 1. MODO MANUAL: Siempre inicia en falso (modo claro)
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [language, setLanguage] = useState('ES');
+  
   const location = useLocation();
-
-  // ─── LÓGICA DEL SMART HEADER ───
+  const { t, i18n } = useTranslation();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
+
+  // 2. EFECTO DIRECTO: Solo agrega o quita la clase cuando le das clic, sin guardar nada.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious();
@@ -21,12 +35,16 @@ export default function Navbar() {
   });
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
-  const toggleLanguage = () => setLanguage(language === 'EN' ? 'ES' : 'EN');
+  
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'es' ? 'en' : 'es';
+    i18n.changeLanguage(newLang);
+  };
 
   const links = [
-    { name: 'Inicio', path: '/' },
-    { name: 'Sobre mí', path: '/about' },
-    { name: 'Portafolio', path: '/portfolio' }
+    { name: t('navbar.home'), path: '/' },
+    { name: t('navbar.about'), path: '/about' },
+    { name: t('navbar.portfolio'), path: '/portfolio' }
   ];
 
   return (
@@ -40,12 +58,18 @@ export default function Navbar() {
       transition={{ duration: 0.5, ease: [0.215, 0.610, 0.355, 1.000] }}
       className="fixed top-0 inset-x-0 z-50 flex justify-center pt-6 md:pt-8 px-4 pointer-events-none"
     >
-      {/* ─── DOCK FLOTANTE ─── */}
-      <nav className="bg-white/80 backdrop-blur-xl border border-gray-200/80 rounded-full p-2 flex items-center justify-between md:grid md:grid-cols-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] pointer-events-auto w-full max-w-4xl">
+      <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/80 dark:border-gray-700/80 rounded-full p-2 flex items-center justify-between md:grid md:grid-cols-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] pointer-events-auto w-full max-w-4xl transition-colors duration-300">
 
-        <div className="hidden md:block"></div>
+        <div className="flex items-center pl-2 md:pl-4">
+          <Link to="/" className="flex items-center hover:opacity-70 transition-opacity">
+            <img 
+              src={isDarkMode ? LogoB : LogoN} 
+              alt="Mi Logo" 
+              className="h-10 md:h-11 w-auto object-contain scale-125 md:scale-150 transform origin-left translate-y-[2px]"
+            />
+          </Link>
+        </div>
 
-        {/* ─── ENLACES CENTRALES (Fondo eliminado, diseño libre) ─── */}
         <div className="flex items-center justify-center gap-1 md:gap-2 mx-auto md:mx-0">
           {links.map((link) => {
             const isActive = location.pathname === link.path;
@@ -54,16 +78,16 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 to={link.path}
-                // Ajustamos paddings y cambiamos colores para el contraste extremo
                 className={`relative px-4 md:px-6 py-2 md:py-2.5 text-[10px] md:text-xs font-bold tracking-widest uppercase transition-colors rounded-full whitespace-nowrap ${
-                  isActive ? 'text-white' : 'text-gray-400 hover:text-gray-900'
+                  isActive 
+                    ? 'text-white dark:text-gray-900' 
+                    : 'text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
                 }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="active-nav-pill"
-                    // Pastilla oscura de alto contraste con sombra
-                    className="absolute inset-0 bg-gray-900 rounded-full shadow-md"
+                    className="absolute inset-0 bg-gray-900 dark:bg-white rounded-full shadow-md"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -73,22 +97,21 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* ─── UTILIDADES (IDIOMA & TEMA) ─── */}
         <div className="flex items-center justify-end gap-1 md:gap-2 pr-1 md:pr-2">
           
           <button 
             onClick={toggleLanguage}
-            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-[10px] md:text-xs font-bold text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300"
+            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-[10px] md:text-xs font-bold text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300"
             title="Cambiar idioma"
           >
-            {language}
+            {i18n.language.toUpperCase()}
           </button>
           
-          <div className="w-px h-3 md:h-4 bg-gray-200"></div>
+          <div className="w-px h-3 md:h-4 bg-gray-200 dark:bg-gray-700"></div>
 
           <button 
             onClick={toggleTheme}
-            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300"
+            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300"
             title="Alternar modo oscuro"
           >
             <motion.div

@@ -12,7 +12,7 @@ import PortfolioPage from './components/PortfolioPage';
 import AboutMePage from './components/AboutMePage';
 import CaseStudyPage from './components/CaseStudyPage';
 
-// Creamos un sub-componente que agrupa todas las secciones de tu página de inicio ("Home")
+
 function Home() {
   return (
     <>
@@ -26,24 +26,25 @@ function Home() {
 
 function App() {
   return (
-    <Router>
-      <main className="min-h-screen bg-[#fafafa] text-gray-900 font-sans selection:bg-black selection:text-white">
-        <Navbar />
-        
-        {/* Aquí es donde ocurre la magia del cambio de páginas */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/hobbies" element={<HobbiesPage />} />
-          <Route path="/playlist" element={<PlaylistPage />} />
-          <Route path="/inspirations" element={<InspirationsPage />} />
-          <Route path="/portfolio" element={<PortfolioPage />} />
-          <Route path="/about" element={<AboutMePage />} />
-          <Route path="/case-study/:id" element={<CaseStudyPage />} />
-        </Routes>
-        
-        <Footer />
-      </main>
-    </Router>
+    <div className="min-h-screen font-sans transition-colors duration-300 bg-[#fafafa] text-gray-900 dark:bg-gray-950 dark:text-gray-100 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+      <Router>
+        <main className="flex flex-col min-h-screen">
+          <Navbar />
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/hobbies" element={<HobbiesPage />} />
+            <Route path="/playlist" element={<PlaylistPage />} />
+            <Route path="/inspirations" element={<InspirationsPage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
+            <Route path="/about" element={<AboutMePage />} />
+            <Route path="/case-study/:id" element={<CaseStudyPage />} />
+          </Routes>
+          
+          <Footer />
+        </main>
+      </Router>
+    </div>
   );
 }
 

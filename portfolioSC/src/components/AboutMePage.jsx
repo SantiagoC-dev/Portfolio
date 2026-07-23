@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import miFoto from '../assets/yo.png';
+import { useTranslation } from 'react-i18next';
+
 import certItep from '../assets/iTEPC.png';
 import CV from '../assets/CV.pdf';
+import Yo2 from '../assets/Yo2.png';
+import Yo3 from '../assets/Yo3.png';
+import Yo4 from '../assets/Yo4.png';
 
 export default function AboutMePage() {
   const [selectedCert, setSelectedCert] = useState(null);
+  const [activePhoto, setActivePhoto] = useState(2); 
+
+  const { t } = useTranslation();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -27,8 +34,6 @@ export default function AboutMePage() {
     visible: { y: "0%", transition: { duration: 0.6, ease: [0.215, 0.610, 0.355, 1.000] } }
   };
 
-  // Íconos reemplazados por los paths oficiales de cada marca (simple-icons),
-  // los anteriores estaban corruptos y se veían deformados.
   const skillsData = [
     { name: 'React', color: '#61DAFB', icon: <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" /> },
     { name: 'TypeScript', color: '#3178C6', icon: <path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z" /> },
@@ -40,20 +45,17 @@ export default function AboutMePage() {
     { name: 'JavaScript', color: '#F7DF1E', icon: <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z" /> }
   ];
 
-  const certificatesData = [
-    {
-      id: 1,
-      title: "Inglés B1 Intermedio",
-      issuer: "iTEP International",
-      year: "2025",
-      image: certItep, 
-      icon: "I" 
-    }
-  ];
+  const educationList = t('aboutMe.education', { returnObjects: true });
 
-  // Estilo compartido para evitar el artefacto de línea fina/oscura que Chrome
-  // dibuja en el borde de contenedores con overflow-hidden + border-radius
-  // cuando se les aplica rotate/translate animados (bug de composición GPU).
+  const certImages = {
+    1: { image: certItep, icon: "I" }
+  };
+  const certificatesData = t('aboutMe.certificates', { returnObjects: true }).map(cert => ({
+    ...cert,
+    image: certImages[cert.id].image,
+    icon: certImages[cert.id].icon
+  }));
+
   const photoFrameStyle = {
     backfaceVisibility: "hidden",
     WebkitBackfaceVisibility: "hidden",
@@ -62,7 +64,7 @@ export default function AboutMePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-gray-900 pt-34 pb-32 overflow-hidden">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 pt-34 pb-32 overflow-hidden transition-colors duration-300">
       
       <AnimatePresence>
         {selectedCert && (
@@ -78,14 +80,14 @@ export default function AboutMePage() {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 30, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden cursor-default flex flex-col"
+              className="relative max-w-4xl w-full max-h-[90vh] bg-white dark:bg-gray-900 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden cursor-default flex flex-col border border-gray-200 dark:border-gray-800"
               onClick={(e) => e.stopPropagation()} 
             >
-              <div className="absolute top-4 right-4 z-10 bg-white/50 backdrop-blur-sm p-2 rounded-full cursor-pointer hover:bg-white transition-colors" onClick={() => setSelectedCert(null)}>
-                <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <div className="absolute top-4 right-4 z-10 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-2 rounded-full cursor-pointer hover:bg-white dark:hover:bg-gray-800 transition-colors" onClick={() => setSelectedCert(null)}>
+                <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
               </div>
               
-              <div className="w-full h-full overflow-y-auto bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
+              <div className="w-full h-full overflow-y-auto bg-gray-100 dark:bg-gray-950 p-4 sm:p-8 flex items-center justify-center">
                 <img 
                   src={selectedCert.image} 
                   alt={selectedCert.title} 
@@ -93,10 +95,10 @@ export default function AboutMePage() {
                 />
               </div>
               
-              <div className="bg-white p-4 px-6 md:px-8 border-t border-gray-100 flex justify-between items-center shrink-0">
+              <div className="bg-white dark:bg-gray-900 p-4 px-6 md:px-8 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center shrink-0">
                 <div>
-                  <h3 className="font-serif text-xl md:text-2xl text-gray-900">{selectedCert.title}</h3>
-                  <p className="text-sm text-gray-500 font-light">{selectedCert.issuer} · {selectedCert.year}</p>
+                  <h3 className="font-serif text-xl md:text-2xl text-gray-900 dark:text-white">{selectedCert.title}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-light">{selectedCert.issuer} · {selectedCert.year}</p>
                 </div>
               </div>
             </motion.div>
@@ -111,59 +113,101 @@ export default function AboutMePage() {
           <div className="w-full md:w-1/2 flex flex-col items-start z-10">
             <span className="overflow-hidden block mb-4">
               <motion.span variants={maskReveal} className="text-xs font-semibold tracking-widest text-gray-400 uppercase block">
-                Sobre mí
+                {t('aboutMe.subtitle')}
               </motion.span>
             </span>
             
-            <motion.h1 variants={blurReveal} className="text-5xl sm:text-6xl md:text-8xl font-serif text-gray-900 mb-6 tracking-tight leading-none">
-              Santiago Calderón
+            <motion.h1 variants={blurReveal} className="text-5xl sm:text-6xl md:text-8xl font-serif text-gray-900 dark:text-white mb-6 tracking-tight leading-none">
+              {t('aboutMe.name')}
             </motion.h1>
             
-            <motion.p variants={blurReveal} className="text-gray-500 font-light text-lg md:text-xl leading-relaxed max-w-lg mb-10">
-              Desarrollador de software multiplataforma con la meta de crecer hacia la arquitectura de software, diseñando soluciones innovadoras que integren eficiencia técnica y experiencias intuitivas.
+            <motion.p variants={blurReveal} className="text-gray-500 dark:text-gray-400 font-light text-lg md:text-xl leading-relaxed max-w-lg mb-10">
+              {t('aboutMe.description')}
             </motion.p>
             
             <motion.a 
               variants={blurReveal} 
               href={CV} 
               download="CV_Santiago_Calderon.pdf"
-              className="bg-[#111827] text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl w-max"
+              className="bg-[#111827] text-white dark:bg-white dark:text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black dark:hover:bg-gray-100 hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl w-max"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-              Descargar CV
+              {t('aboutMe.downloadCV')}
             </motion.a>
           </div>
 
-          <div className="w-full md:w-1/2 h-[350px] md:h-[550px] mt-8 md:mt-0 relative flex justify-center items-center group cursor-default">
+          <div className="w-full md:w-1/2 h-[350px] md:h-[550px] mt-8 md:mt-0 relative flex justify-center items-center">
+            
+            {/* FOTO 1 (Izquierda / Yo4) */}
             <motion.div 
-              initial={{ opacity: 0, x: 0, y: 50, rotate: 0 }}
-              animate={{ opacity: 1, x: -30, y: -20, rotate: -8 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.215, 0.610, 0.355, 1.000] }}
+              onClick={() => setActivePhoto(0)}
               style={photoFrameStyle}
-              className="absolute w-48 md:w-64 h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl bg-white border-[4px] md:border-[6px] border-white z-0 group-hover:-translate-x-12 md:group-hover:-translate-x-20 group-hover:-rotate-12 transition-transform duration-500 ease-out"
+              animate={{ 
+                opacity: 1, 
+                x: activePhoto === 0 ? 0 : (activePhoto === 1 ? -60 : -40), 
+                y: activePhoto === 0 ? 20 : -20, 
+                rotate: activePhoto === 0 ? -2 : -12,
+                scale: activePhoto === 0 ? 1 : 0.85,
+                zIndex: activePhoto === 0 ? 30 : 10
+              }}
+              transition={{ type: "spring", damping: 20, stiffness: 120 }}
+              className="absolute w-48 md:w-72 h-64 md:h-96 rounded-2xl overflow-hidden shadow-xl bg-white dark:bg-gray-800 border-[4px] md:border-[6px] border-white dark:border-gray-800 cursor-pointer hover:shadow-2xl transition-shadow"
             >
-              <img src={miFoto} alt="Santiago 1" className="w-full h-full object-cover grayscale-[30%] scale-[1.03]" />
+              <img 
+                src={Yo4} 
+                alt="Santiago 1" 
+                className={`w-full h-full object-cover scale-[1.03] transition-all duration-700 ${activePhoto === 0 ? 'grayscale-0' : 'grayscale-[40%]'}`} 
+              />
+              <div className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${activePhoto === 0 ? 'opacity-0' : 'opacity-20'}`} />
             </motion.div>
 
+            {/* FOTO 2 (Derecha / Yo3) */}
             <motion.div 
-              initial={{ opacity: 0, x: 0, y: 50, rotate: 0 }}
-              animate={{ opacity: 1, x: 40, y: -40, rotate: 12 }}
-              transition={{ duration: 1, delay: 0.4, ease: [0.215, 0.610, 0.355, 1.000] }}
+              onClick={() => setActivePhoto(1)}
               style={photoFrameStyle}
-              className="absolute w-48 md:w-64 h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl bg-white border-[4px] md:border-[6px] border-white z-10 group-hover:translate-x-16 md:group-hover:translate-x-24 group-hover:rotate-16 transition-transform duration-500 ease-out"
+              animate={{ 
+                opacity: 1, 
+                x: activePhoto === 1 ? 0 : (activePhoto === 2 ? 60 : 40), 
+                y: activePhoto === 1 ? 20 : -30, 
+                rotate: activePhoto === 1 ? -2 : 12,
+                scale: activePhoto === 1 ? 1 : 0.85,
+                zIndex: activePhoto === 1 ? 30 : 10
+              }}
+              transition={{ type: "spring", damping: 20, stiffness: 120 }}
+              className="absolute w-48 md:w-72 h-64 md:h-96 rounded-2xl overflow-hidden shadow-xl bg-white dark:bg-gray-800 border-[4px] md:border-[6px] border-white dark:border-gray-800 cursor-pointer hover:shadow-2xl transition-shadow"
             >
-              <img src={miFoto} alt="Santiago 2" className="w-full h-full object-cover grayscale-[30%] scale-[1.03]" />
+              <img 
+                src={Yo3} 
+                alt="Santiago 2" 
+                className={`w-full h-full object-cover scale-[1.03] transition-all duration-700 ${activePhoto === 1 ? 'grayscale-0' : 'grayscale-[40%]'}`} 
+              />
+              <div className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${activePhoto === 1 ? 'opacity-0' : 'opacity-20'}`} />
             </motion.div>
 
+            {/* FOTO 3 (Principal Inicial / Yo2) */}
             <motion.div 
-              initial={{ opacity: 0, y: 100, filter: "blur(10px)", rotate: -20 }}
-              animate={{ opacity: 1, y: 20, filter: "blur(0px)", x: 10, rotate: -2 }}
-              transition={{ duration: 1, delay: 0.6, ease: [0.215, 0.610, 0.355, 1.000] }}
+              onClick={() => setActivePhoto(2)}
               style={photoFrameStyle}
-              className="absolute w-56 md:w-72 h-[19rem] md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-white border-[4px] md:border-[6px] border-white z-20 group-hover:scale-105 group-hover:-translate-y-2 md:group-hover:-translate-y-4 transition-transform duration-500 ease-out"
+              initial={{ opacity: 0, y: 100, rotate: -20 }}
+              animate={{ 
+                opacity: 1, 
+                x: activePhoto === 2 ? 0 : (activePhoto === 0 ? 50 : -50), 
+                y: activePhoto === 2 ? 20 : -10, 
+                rotate: activePhoto === 2 ? -2 : (activePhoto === 0 ? 8 : -8),
+                scale: activePhoto === 2 ? 1 : 0.85,
+                zIndex: activePhoto === 2 ? 30 : 20
+              }}
+              transition={{ type: "spring", damping: 20, stiffness: 120, delay: 0.2 }}
+              className="absolute w-52 md:w-72 h-[18rem] md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-800 border-[4px] md:border-[6px] border-white dark:border-gray-800 cursor-pointer hover:shadow-[0_20px_40px_rgb(0,0,0,0.15)] transition-shadow"
             >
-              <img src={miFoto} alt="Santiago Principal" className="w-full h-full object-cover scale-[1.03]" />
+              <img 
+                src={Yo2} 
+                alt="Santiago Principal" 
+                className={`w-full h-full object-cover scale-[1.03] transition-all duration-700 ${activePhoto === 2 ? 'grayscale-0' : 'grayscale-[40%]'}`} 
+              />
+              <div className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${activePhoto === 2 ? 'opacity-0' : 'opacity-20'}`} />
             </motion.div>
+            
           </div>
         </motion.section>
 
@@ -172,14 +216,14 @@ export default function AboutMePage() {
           <div>
             <motion.section variants={blurReveal} className="mb-20">
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
-                Habilidades
+                {t('aboutMe.skillsTitle')}
               </span>
               <div className="flex flex-wrap gap-3">
                 {skillsData.map((skill) => (
                   <motion.span 
-                    whileHover={{ scale: 1.05, backgroundColor: "#f9fafb" }}
+                    whileHover={{ scale: 1.05 }}
                     key={skill.name} 
-                    className="px-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm text-gray-700 font-medium shadow-sm flex items-center gap-2.5 cursor-default hover:border-gray-300 transition-colors"
+                    className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-sm text-gray-700 dark:text-gray-300 font-medium shadow-sm flex items-center gap-2.5 cursor-default hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
                   >
                     <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill={skill.color} xmlns="http://www.w3.org/2000/svg">
                       {skill.icon}
@@ -192,32 +236,32 @@ export default function AboutMePage() {
 
             <motion.section variants={blurReveal}>
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
-                Idiomas
+                {t('aboutMe.languagesTitle')}
               </span>
               <div className="space-y-8 max-w-sm">
                 
                 <div className="group">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-base font-medium text-gray-900">Español</span>
-                    <span className="text-xs text-gray-400 font-light">Nativo</span>
+                    <span className="text-base font-medium text-gray-900 dark:text-white">{t('aboutMe.languages.spanish.name')}</span>
+                    <span className="text-xs text-gray-400 font-light">{t('aboutMe.languages.spanish.level')}</span>
                   </div>
-                  <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden relative">
+                  <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden relative">
                     <motion.div 
                       initial={{ width: 0 }} 
                       whileInView={{ width: '100%' }} 
                       viewport={{ once: true }} 
                       transition={{ duration: 2.5, ease: "easeInOut", delay: 0.3 }} 
-                      className="absolute left-0 top-0 h-full bg-gray-900 rounded-full" 
+                      className="absolute left-0 top-0 h-full bg-gray-900 dark:bg-white rounded-full" 
                     />
                   </div>
                 </div>
 
                 <div className="group">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-base font-medium text-gray-900">Inglés</span>
-                    <span className="text-xs text-gray-400 font-light">B1 Intermedio (iTEP)</span>
+                    <span className="text-base font-medium text-gray-900 dark:text-white">{t('aboutMe.languages.english.name')}</span>
+                    <span className="text-xs text-gray-400 font-light">{t('aboutMe.languages.english.level')}</span>
                   </div>
-                  <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden relative">
+                  <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden relative">
                     <motion.div 
                       initial={{ width: 0 }} 
                       whileInView={{ width: '60%' }} 
@@ -235,7 +279,7 @@ export default function AboutMePage() {
           <div>
             <motion.section variants={blurReveal} className="mb-20">
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-10 block">
-                Educación
+                {t('aboutMe.educationTitle')}
               </span>
               
               <div className="relative pl-8 space-y-12">
@@ -244,49 +288,48 @@ export default function AboutMePage() {
                   whileInView={{ height: '100%' }}
                   viewport={{ once: true }}
                   transition={{ duration: 1.5, ease: "easeInOut" }}
-                  className="absolute left-[3px] top-2 w-[2px] bg-gray-200 -z-10"
+                  className="absolute left-[3px] top-2 w-[2px] bg-gray-200 dark:bg-gray-800 -z-10"
                 />
 
-                <motion.div whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
-                  <motion.div 
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                    className="absolute -left-[35px] top-1.5 w-3 h-3 bg-white border-[3px] border-gray-300 rounded-full group-hover:border-gray-500 transition-colors"
-                  />
-                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">ENE 2022</p>
-                  <p className="text-sm text-gray-500 font-light mb-1">Tecnológico de Chalco</p>
-                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">Ingeniería en Sistemas Computacionales</h4>
-                </motion.div>
+                {educationList.map((item, index) => {
+                  const isLast = index === educationList.length - 1;
+                  const animationDelay = 0.2 + (index * 0.2);
 
-                <motion.div whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
-                  <motion.div 
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-                    className="absolute -left-[35px] top-1.5 w-3 h-3 bg-white border-[3px] border-gray-300 rounded-full group-hover:border-gray-500 transition-colors"
-                  />
-                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">NOV 2023</p>
-                  <p className="text-sm text-gray-500 font-light mb-1">Universidad Tecnológica de la Riviera Maya</p>
-                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">TSU en Desarrollo de Software Multiplataforma</h4>
-                </motion.div>
-                
-                <motion.div whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
-                  <motion.div 
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.6 }}
-                    className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 border-[3px] border-gray-900 rounded-full z-10"
-                  />
-                  <motion.div 
-                    animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                    className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 rounded-full z-0"
-                  />
-                  <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">MAY 2026</p>
-                  <p className="text-sm text-gray-500 font-light mb-1">Universidad Tecnológica de Nezahualcóyotl</p>
-                  <h4 className="text-lg font-medium text-gray-900 group-hover:text-black transition-colors">Ing. en TI e Innovación Digital</h4>
-                </motion.div>
+                  return (
+                    <motion.div key={index} whileHover={{ x: 5 }} className="relative transition-transform cursor-default group">
+                      
+                      {!isLast ? (
+                        <motion.div 
+                          initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: animationDelay }}
+                          className="absolute -left-[35px] top-1.5 w-3 h-3 bg-white dark:bg-gray-900 border-[3px] border-gray-300 dark:border-gray-700 rounded-full group-hover:border-gray-500 transition-colors"
+                        />
+                      ) : (
+                        <>
+                          <motion.div 
+                            initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: animationDelay }}
+                            className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white border-[3px] border-gray-900 dark:border-white rounded-full z-10"
+                          />
+                          <motion.div 
+                            animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                            className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white rounded-full z-0"
+                          />
+                        </>
+                      )}
+
+                      <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">{item.date}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 font-light mb-1">{item.school}</p>
+                      <h4 className="text-lg font-medium text-gray-900 dark:text-white group-hover:text-black dark:group-hover:text-gray-300 transition-colors">{item.degree}</h4>
+                    </motion.div>
+                  );
+                })}
+
               </div>
             </motion.section>
 
             <motion.section variants={blurReveal}>
               <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
-                Certificados
+                {t('aboutMe.certificatesTitle')}
               </span>
               <div className="flex flex-col gap-4">
                 
@@ -296,18 +339,18 @@ export default function AboutMePage() {
                     onClick={() => setSelectedCert(cert)}
                     whileHover={{ y: -3, scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
-                    className="border border-gray-200 rounded-2xl p-5 flex items-center justify-between gap-5 bg-white shadow-sm hover:shadow-lg transition-all cursor-pointer group"
+                    className="border border-gray-200 dark:border-gray-800 rounded-2xl p-5 flex items-center justify-between gap-5 bg-white dark:bg-gray-900 shadow-sm hover:shadow-lg transition-all cursor-pointer group"
                   >
                     <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-gray-100 transition-colors">
-                        <span className="text-gray-900 font-serif font-bold text-xl">{cert.icon}</span>
+                      <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0 border border-gray-100 dark:border-gray-700 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors">
+                        <span className="text-gray-900 dark:text-white font-serif font-bold text-xl">{cert.icon}</span>
                       </div>
                       <div>
-                        <h4 className="text-base font-medium text-gray-900 mb-0.5">{cert.title}</h4>
-                        <p className="text-xs text-gray-500 font-light">{cert.issuer} · {cert.year}</p>
+                        <h4 className="text-base font-medium text-gray-900 dark:text-white mb-0.5">{cert.title}</h4>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 font-light">{cert.issuer} · {cert.year}</p>
                       </div>
                     </div>
-                    <svg className="w-4 h-4 text-gray-300 group-hover:text-gray-600 transition-colors transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
                   </motion.div>
                 ))}
 

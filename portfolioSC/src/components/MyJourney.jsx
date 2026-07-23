@@ -1,49 +1,42 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// 1. Importar hook
+import { useTranslation } from 'react-i18next';
 
-const journeyData = [
-  {
-    id: 0,
-    year: "Ene 2022",
-    title: "Inicios en la Ingeniería",
-    description: "Comencé la carrera de Ingeniería en Sistemas Computacionales en el Tecnológico de Chalco. Sin embargo, decidí reorientar mi camino para enfocarme de lleno en el desarrollo directo de software y sistemas.",
-    // Recuerda cambiar estas URLs por tus imágenes locales en la carpeta assets
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000&auto=format&fit=crop&q=90",
-  },
-  {
-    id: 1,
-    year: "Nov 2023",
-    title: "Enfoque Multiplataforma",
-    description: "Inicié la carrera de Desarrollo de Software Multiplataforma en la Riviera Maya, cursando el programa bajo un sistema bilingüe que amplió mi visión técnica y profesional.",
-    image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1000&auto=format&fit=crop&q=90",
-  },
-  {
-    id: 2,
-    year: "Dic 2025",
-    title: "Técnico Superior Universitario",
-    description: "Concluí con éxito mi primera etapa profesional, obteniendo el título como Técnico Superior Universitario (TSU) en Desarrollo de Software Multiplataforma.",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1000&auto=format&fit=crop&q=90",
-  },
-  {
-    id: 3,
-    year: "May 2026",
-    title: "Innovación Digital",
-    description: "Actualmente curso la Ingeniería en Tecnologías de la Información e Innovación Digital en la Universidad Tecnológica de Nezahualcóyotl, consolidando mi perfil como ingeniero.",
-    image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=1000&auto=format&fit=crop&q=90",
-  }
+import JourneyImage1 from '../assets/Journey1.png';
+import JourneyImage2 from '../assets/Journey2.png';
+import JourneyImage3 from '../assets/Journey3.png';
+import JourneyImage4 from '../assets/Journey4.png';
+
+// 2. Solo guardamos las imágenes afuera, en el orden correcto
+const journeyImages = [
+  JourneyImage1, 
+  JourneyImage2, 
+  JourneyImage3, 
+  JourneyImage4
 ];
 
-// Eje X recalculado para 4 nodos (dividiendo los 800px de recorrido en 3 segmentos iguales)
 const dotPositionsX = [100, 367, 633, 900];
 const PROGRESS_BY_INDEX = [0, 0.333, 0.666, 1.0];
 
 export default function MyJourney() {
   const [activeIndex, setActiveIndex] = useState(0);
+  
+  // 3. Inicializamos traducción
+  const { t } = useTranslation();
 
-  // Navegación por teclado (Flechas Izquierda / Derecha) adaptada dinámicamente
+  // 4. Construimos los datos dinámicamente uniendo traducciones e imágenes
+  const journeyData = journeyImages.map((image, index) => ({
+    id: index,
+    year: t(`journey.stages.${index}.year`),
+    title: t(`journey.stages.${index}.title`),
+    description: t(`journey.stages.${index}.description`),
+    image: image,
+  }));
+
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'ArrowRight') {
-      setActiveIndex((prev) => Math.min(prev + 1, journeyData.length - 1));
+      setActiveIndex((prev) => Math.min(prev + 1, journeyImages.length - 1));
     } else if (e.key === 'ArrowLeft') {
       setActiveIndex((prev) => Math.max(prev - 1, 0));
     }
@@ -55,13 +48,15 @@ export default function MyJourney() {
   }, [handleKeyDown]);
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-32 border-t border-gray-200 text-center">
+    <section className="max-w-6xl mx-auto px-6 py-32 border-t border-gray-200 dark:border-gray-800 text-center transition-colors duration-300">
       
       <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase mb-4 block">
-        Línea de tiempo
+        {/* 5. Traducir subtítulo */}
+        {t('journey.subtitle')}
       </span>
-      <h2 className="text-4xl md:text-5xl font-serif mb-20 tracking-tight text-gray-900">
-        Mi trayectoria
+      <h2 className="text-4xl md:text-5xl font-serif mb-20 tracking-tight text-gray-900 dark:text-white transition-colors duration-300">
+        {/* 5. Traducir título */}
+        {t('journey.title')}
       </h2>
 
       {/* ── LÍNEA DEL TIEMPO (Estilo Arquitectónico) ── */}
@@ -74,22 +69,21 @@ export default function MyJourney() {
             className="w-full max-w-[1000px] overflow-visible"
             style={{ height: 100 }}
           >
-            {/* Eje base (Línea gris clara) */}
+            {/* Línea base inactiva (cambia de color en modo oscuro) */}
             <line
               x1="100" y1="40" x2="900" y2="40"
-              stroke="#F3F4F6" strokeWidth="2" strokeLinecap="round"
+              className="stroke-gray-100 dark:stroke-gray-800" strokeWidth="2" strokeLinecap="round"
             />
 
-            {/* Eje de progreso animado (Línea oscura) */}
+            {/* Línea de progreso activa (cambia a blanco en modo oscuro) */}
             <motion.line
               x1="100" y1="40" x2="900" y2="40"
-              stroke="#111827" strokeWidth="2" strokeLinecap="round"
+              className="stroke-gray-900 dark:stroke-white" strokeWidth="2" strokeLinecap="round"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: PROGRESS_BY_INDEX[activeIndex] }}
               transition={{ duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] }}
             />
 
-            {/* Nodos Interactivos */}
             {dotPositionsX.map((cx, index) => {
               const isActive = activeIndex === index;
               const isPast = index <= activeIndex;
@@ -106,7 +100,7 @@ export default function MyJourney() {
 
                   {isActive && (
                     <motion.circle
-                      cx={cx} cy={40} fill="none" stroke="#111827" strokeWidth={1}
+                      cx={cx} cy={40} fill="none" className="stroke-gray-900 dark:stroke-white" strokeWidth={1}
                       initial={{ r: 8, opacity: 0.8 }}
                       animate={{ r: 24, opacity: 0 }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
@@ -114,7 +108,7 @@ export default function MyJourney() {
                   )}
 
                   <motion.circle
-                    cx={cx} cy={40} r={8} fill="none" stroke="#111827" strokeWidth={1.5}
+                    cx={cx} cy={40} r={8} fill="none" className="stroke-gray-900 dark:stroke-white" strokeWidth={1.5}
                     initial={false}
                     animate={{ 
                       scale: isActive ? 1 : 0, 
@@ -126,15 +120,21 @@ export default function MyJourney() {
                   <motion.circle
                     cx={cx} cy={40} r={4}
                     initial={false}
-                    animate={{ fill: isPast ? "#111827" : "#E5E7EB" }}
-                    className="group-hover:fill-gray-400 transition-colors duration-300"
+                    animate={{ 
+                      fill: isPast 
+                        ? (document.documentElement.classList.contains('dark') ? "#FFFFFF" : "#111827") 
+                        : (document.documentElement.classList.contains('dark') ? "#374151" : "#E5E7EB") 
+                    }}
+                    className="transition-colors duration-300"
                   />
 
                   <motion.text
-                    x={cx} y={75} textAnchor="middle" className="select-none"
+                    x={cx} y={75} textAnchor="middle" className="select-none transition-colors duration-300"
                     initial={false}
                     animate={{
-                      fill: isActive ? "#111827" : "#9CA3AF",
+                      fill: isActive 
+                        ? (document.documentElement.classList.contains('dark') ? "#FFFFFF" : "#111827") 
+                        : "#9CA3AF",
                       fontWeight: isActive ? 600 : 400
                     }}
                     style={{
@@ -162,15 +162,15 @@ export default function MyJourney() {
           transition={{ duration: 0.5, ease: [0.215, 0.610, 0.355, 1.000] }}
           className="flex flex-col items-center"
         >
-          <h3 className="text-3xl font-serif text-gray-900 mb-4 tracking-tight">
+          <h3 className="text-3xl font-serif text-gray-900 dark:text-white mb-4 tracking-tight transition-colors duration-300">
             {journeyData[activeIndex].title}
           </h3>
 
-          <p className="text-gray-500 font-light leading-relaxed mb-12 max-w-2xl text-base md:text-lg">
+          <p className="text-gray-500 dark:text-gray-400 font-light leading-relaxed mb-12 max-w-2xl text-base md:text-lg transition-colors duration-300">
             {journeyData[activeIndex].description}
           </p>
 
-          <div className="overflow-hidden rounded-2xl bg-gray-100 w-full max-w-4xl aspect-[16/7] md:aspect-[21/9] shadow-md group">
+          <div className="overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-900 w-full max-w-4xl aspect-[16/7] md:aspect-[21/9] shadow-md group transition-colors duration-300">
             <img
               src={journeyData[activeIndex].image}
               alt={journeyData[activeIndex].title}

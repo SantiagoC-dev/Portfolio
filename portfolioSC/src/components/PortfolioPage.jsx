@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+// 1. Importar el hook de traducción
+import { useTranslation } from 'react-i18next';
+
 import LabStock from '../assets/labstock.png';
 import TourCraft from '../assets/tourcraft.png';
 
 // ─── DICCIONARIO DE ICONOS OFICIALES A COLOR ───
+// (Este objeto se queda exactamente igual, no necesita traducción)
 const techData = {
   "React Native": { 
     color: "#61DAFB", 
@@ -43,28 +47,19 @@ const techData = {
 };
 
 export default function PortfolioPage() {
-  const projects = [
-    {
-      id: 1,
-      title: "LabStock",
-      category: "IoT Industrial e Inteligencia de Inventario",
-      description: "Sistema móvil diseñado para el área de calidad. Transformé procesos manuales en una plataforma centralizada que eliminó discrepancias de inventario y digitalizó certificados en tiempo real.",
-      problem: "Pérdida de 1.5 horas diarias por usuario en transcripciones manuales y 20% de discrepancia en stock físico.",
-      techStack: ["React Native", "Node.js", "MySQL", "AP Config"],
-      image: LabStock,
-      align: "left"
-    },
-    {
-      id: 2,
-      title: "TourCraft",
-      category: "Marketplace Turístico Digital",
-      description: "Ecosistema digital enfocado en la Riviera Maya que democratiza el turismo local, conectando a viajeros directamente con guías independientes y pequeños negocios para experiencias auténticas.",
-      problem: "Falta de visibilidad digital para guías independientes y monopolización del mercado por parte de grandes operadores turísticos.",
-      techStack: ["React", "Vite", "Node.js", "MongoDB"],
-      image: TourCraft,
-      align: "right"
-    }
-  ];
+  // 2. Inicializar el hook
+  const { t } = useTranslation();
+
+  // 3. Importar y combinar los datos traducidos con las imágenes estáticas
+  const projectImages = {
+    1: LabStock,
+    2: TourCraft
+  };
+
+  const projects = t('portfolio.projects', { returnObjects: true }).map(project => ({
+    ...project,
+    image: projectImages[project.id]
+  }));
 
   // ─── DEFINICIÓN DE VARIANTES DE ANIMACIÓN ───
   const containerVariants = {
@@ -89,26 +84,27 @@ export default function PortfolioPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-gray-900 pt-40 md:pt-48 pb-32 selection:bg-black selection:text-white">
+    // Se añadió bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 y selección adaptada
+    <div className="min-h-screen bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 pt-40 md:pt-48 pb-32 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-300">
       <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-7xl mx-auto px-6">
         
         {/* ─── HERO SECTION ─── */}
         <motion.section className="mb-40 max-w-4xl">
           <motion.span variants={fadeInUp} className="text-xs font-semibold tracking-widest text-gray-400 uppercase block">
-            Portafolio 2026
+            {t('portfolio.hero.subtitle')}
           </motion.span>
           
           <h1 className="text-7xl md:text-9xl font-serif mb-8 tracking-tighter leading-none">
             <span className="block overflow-hidden pb-2">
-              <motion.span variants={titleReveal} className="block">Arquitectura</motion.span>
+              <motion.span variants={titleReveal} className="block text-gray-900 dark:text-white">{t('portfolio.hero.title1')}</motion.span>
             </span>
             <span className="block overflow-hidden pb-2">
-              <motion.span variants={titleReveal} className="block text-gray-400">Digital.</motion.span>
+              <motion.span variants={titleReveal} className="block text-gray-400">{t('portfolio.hero.title2')}</motion.span>
             </span>
           </h1>
           
-          <motion.p variants={fadeInUp} className="text-gray-500 font-light text-xl md:text-2xl leading-relaxed max-w-2xl">
-            Soluciones robustas disfrazadas de interfaces minimalistas. Traduciendo problemas de negocio complejos en código escalable.
+          <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-xl md:text-2xl leading-relaxed max-w-2xl">
+            {t('portfolio.hero.description')}
           </motion.p>
         </motion.section>
 
@@ -125,7 +121,7 @@ export default function PortfolioPage() {
             >
               {/* Bloque de Imagen con Problemática en Hover */}
               <motion.div variants={fadeInUp} className="w-full md:w-1/2 group relative">
-                <div className="relative overflow-hidden rounded-3xl bg-gray-100 aspect-[4/3] shadow-2xl transition-all duration-700 group-hover:shadow-black/10">
+                <div className="relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 aspect-[4/3] shadow-2xl transition-all duration-700 group-hover:shadow-black/10">
                   <img 
                     src={project.image} 
                     alt={project.title} 
@@ -134,7 +130,7 @@ export default function PortfolioPage() {
                   {/* Overlay Informativo Restaurado */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm p-8 md:p-12">
                     <div className="text-white text-center">
-                      <p className="text-xs tracking-widest uppercase mb-4 text-gray-300 italic font-medium">Problemática</p>
+                      <p className="text-xs tracking-widest uppercase mb-4 text-gray-300 italic font-medium">{t('portfolio.ui.problemLabel')}</p>
                       <p className="text-lg font-light leading-relaxed">"{project.problem}"</p>
                     </div>
                   </div>
@@ -146,11 +142,11 @@ export default function PortfolioPage() {
                 <motion.span variants={fadeInUp} className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-4 block">
                   {project.category}
                 </motion.span>
-                <motion.h2 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-gray-900 mb-6 tracking-tighter">
+                <motion.h2 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-gray-900 dark:text-white mb-6 tracking-tighter">
                   {project.title}
                 </motion.h2>
                 
-                <motion.p variants={fadeInUp} className="text-gray-500 font-light text-lg md:text-xl leading-relaxed mb-10">
+                <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-lg md:text-xl leading-relaxed mb-10">
                   {project.description}
                 </motion.p>
 
@@ -161,7 +157,7 @@ export default function PortfolioPage() {
                       key={tech} 
                       whileHover={{ scale: 1.05, y: -2 }}
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      className="px-4 py-2 bg-white border border-gray-200 rounded-full text-[11px] font-medium text-gray-700 tracking-wide flex items-center gap-2 shadow-sm hover:shadow-md cursor-default"
+                      className="px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-[11px] font-medium text-gray-700 dark:text-gray-300 tracking-wide flex items-center gap-2 shadow-sm hover:shadow-md cursor-default"
                     >
                       {techData[tech] && (
                         <svg 
@@ -182,14 +178,14 @@ export default function PortfolioPage() {
                 <motion.div variants={fadeInUp}>
                   <Link 
                     to={`/case-study/${project.id}`} 
-                    className="group relative inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.15em] text-gray-900"
+                    className="group relative inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.15em] text-gray-900 dark:text-white"
                   >
-                    <span className="relative z-10 transition-colors duration-300 group-hover:text-gray-500">
-                      Explorar Caso de Estudio
+                    <span className="relative z-10 transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-400">
+                      {t('portfolio.ui.exploreButton')}
                     </span>
-                    <span className="w-8 h-[1px] bg-gray-900 transition-all duration-500 group-hover:w-16 group-hover:bg-gray-500"></span>
+                    <span className="w-8 h-[1px] bg-gray-900 dark:bg-white transition-all duration-500 group-hover:w-16 group-hover:bg-gray-500 dark:group-hover:bg-gray-400"></span>
                     <svg 
-                      className="w-4 h-4 transform transition-all duration-500 group-hover:translate-x-2 text-gray-900 group-hover:text-gray-500" 
+                      className="w-4 h-4 transform transition-all duration-500 group-hover:translate-x-2 text-gray-900 dark:text-white group-hover:text-gray-500 dark:group-hover:text-gray-400" 
                       fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>

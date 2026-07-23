@@ -1,0 +1,430 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About me",
+    "portfolio": "Portfolio"
+  },
+  "hero": {
+    "title": "Hi, I'm Santiago.",
+    "description": "I believe the best software is the one that feels like an intuitive solution. Explore my work, get to know my process, and discover what inspires me to build.",
+    "button": "View portfolio",
+    "imageAlt": "Photo of Santiago Calderón"
+  },
+  "footer": {
+    "title": "Let's connect.",
+    "description": "Digital software development space designed to showcase my portfolio, technical architecture, and personal environment.",
+    "nav": {
+      "home": "Home",
+      "about": "About Me",
+      "portfolio": "Portfolio",
+      "inspirations": "Inspirations",
+      "playlist": "Playlist"
+    },
+    "rights": "All rights reserved."
+  },
+  "interests": {
+    "title": "More than just code, my passions and inspirations.",
+    "cards": {
+      "hobbies": {
+        "title": "Hobbies",
+        "text": "Cycles, equilibrium, and repetition that shape the balance between my discipline, movement, and competitive focus."
+      },
+      "inspirations": {
+        "title": "Inspirations",
+        "text": "The abstraction of ideas, people, and moments reflects the influences that drive my growth as a developer."
+      },
+      "playlist": {
+        "title": "Playlist",
+        "text": "A selection of sound waves that boost my concentration, creativity, and energy while I develop and live my daily life."
+      }
+    }
+  },
+  "journey": {
+    "subtitle": "Timeline",
+    "title": "My Journey",
+    "stages": [
+      {
+        "year": "Jan 2022",
+        "title": "Beginnings in Engineering",
+        "description": "I started my degree in Computer Systems Engineering at Tecnológico de Chalco. However, I decided to redirect my path to focus entirely on direct software and systems development."
+      },
+      {
+        "year": "Nov 2023",
+        "title": "Cross-Platform Focus",
+        "description": "I began my degree in Cross-Platform Software Development in the Riviera Maya, studying under a bilingual program that broadened my technical and professional vision."
+      },
+      {
+        "year": "Dec 2025",
+        "title": "University Higher Technician",
+        "description": "I successfully completed my first professional stage, earning the title of University Higher Technician (TSU) in Cross-Platform Software Development."
+      },
+      {
+        "year": "May 2026",
+        "title": "Digital Innovation",
+        "description": "I am currently studying Information Technology and Digital Innovation Engineering at the Universidad Tecnológica de Nezahualcóyotl, consolidating my profile as an engineer."
+      }
+    ]
+  },
+  "lovedOnes": {
+    "title": "What they say about me",
+    "status": {
+      "paused": "PAUSED",
+      "playing": "AUTO SCROLL"
+    },
+    "testimonials": [
+      {
+        "id": 1,
+        "quote": "“Santiago is someone highly structured and focused on his goals. His ability to organize his priorities is reflected in the results of everything he undertakes.”",
+        "name": "Dulce Calderón",
+        "description": "Mother",
+        "initials": "DC"
+      },
+      {
+        "id": 2,
+        "quote": "“A respectful, kind, and intelligent person, with clear goals and capable of achieving everything he sets his mind to due to his dedication and effort.”",
+        "name": "Joanna Alvarez",
+        "description": "Partner",
+        "initials": "JA"
+      },
+      {
+        "id": 3,
+        "quote": "“A highly responsible professional. During his time at the company, he demonstrated great technical precision and a proactive attitude towards network problem-solving.”",
+        "name": "Pedro Hernández",
+        "description": "Former Boss / Supervisor - Aguakan",
+        "initials": "PH"
+      },
+      {
+        "id": 4,
+        "quote": "“I mentored Santiago during his service process. He stands out for his academic consistency and his notable ease in structuring cross-platform solutions.”",
+        "name": "Juan Domínguez",
+        "description": "Academic Mentor - UTRM",
+        "initials": "JD"
+      },
+      {
+        "id": 5,
+        "quote": "“He has a very clear vision of software architecture. He is the type of developer who prioritizes clean code and designs systems with scalability in mind.”",
+        "name": "Eduardo Solorzano",
+        "description": "Senior Software Developer",
+        "initials": "ES"
+      },
+      {
+        "id": 6,
+        "quote": "“Working with him on Tourcraft was key to the project. He provides excellent logical solutions, debugs quickly, and keeps the team focused.”",
+        "name": "David Fraga",
+        "description": "Tourcraft App Co-developer",
+        "initials": "DF"
+      }
+    ]
+  },
+  "aboutMe": {
+    "subtitle": "About me",
+    "name": "Santiago Calderón",
+    "description": "Cross-platform software developer with the goal of growing towards software architecture, designing innovative solutions that integrate technical efficiency and intuitive experiences.",
+    "downloadCV": "Download CV",
+    "skillsTitle": "Skills",
+    "languagesTitle": "Languages",
+    "languages": {
+      "spanish": { "name": "Spanish", "level": "Native" },
+      "english": { "name": "English", "level": "B1 Intermediate (iTEP)" }
+    },
+    "educationTitle": "Education",
+    "education": [
+      {
+        "date": "JAN 2022",
+        "school": "Tecnológico de Chalco",
+        "degree": "Computer Systems Engineering"
+      },
+      {
+        "date": "NOV 2023",
+        "school": "Universidad Tecnológica de la Riviera Maya",
+        "degree": "TSU in Cross-Platform Software Development"
+      },
+      {
+        "date": "MAY 2026",
+        "school": "Universidad Tecnológica de Nezahualcóyotl",
+        "degree": "IT & Digital Innovation Engineering"
+      }
+    ],
+    "certificatesTitle": "Certificates",
+    "certificates": [
+      {
+        "id": 1,
+        "title": "B1 Intermediate English",
+        "issuer": "iTEP International",
+        "year": "2025"
+      }
+    ]
+  },
+  "portfolio": {
+    "hero": {
+      "subtitle": "Portfolio 2026",
+      "title1": "Digital",
+      "title2": "Architecture.",
+      "description": "Robust solutions disguised as minimalist interfaces. Translating complex business problems into scalable code."
+    },
+    "ui": {
+      "problemLabel": "Problem",
+      "exploreButton": "Explore Case Study"
+    },
+    "projects": [
+      {
+        "id": 1,
+        "title": "LabStock",
+        "category": "Industrial IoT & Inventory Intelligence",
+        "description": "Mobile system designed for the quality department. I transformed manual processes into a centralized platform that eliminated inventory discrepancies and digitized certificates in real-time.",
+        "problem": "Loss of 1.5 hours daily per user in manual transcriptions and a 20% discrepancy in physical stock.",
+        "techStack": ["React Native", "Node.js", "MySQL", "AP Config"],
+        "align": "left"
+      },
+      {
+        "id": 2,
+        "title": "TourCraft",
+        "category": "Digital Tourism Marketplace",
+        "description": "Digital ecosystem focused on the Riviera Maya that democratizes local tourism, connecting travelers directly with independent guides and small businesses for authentic experiences.",
+        "problem": "Lack of digital visibility for independent guides and market monopolization by large tour operators.",
+        "techStack": ["React", "Vite", "Node.js", "MongoDB"],
+        "align": "right"
+      }
+    ]
+  },
+  "portfolio": {
+    "hero": {
+      "subtitle": "Portfolio 2026",
+      "title1": "Digital",
+      "title2": "Architecture.",
+      "description": "Robust solutions disguised as minimalist interfaces. Translating complex business problems into scalable code."
+    },
+    "ui": {
+      "problemLabel": "Problem",
+      "exploreButton": "Explore Case Study"
+    },
+    "projects": [
+      {
+        "id": 1,
+        "title": "LabStock",
+        "category": "Industrial IoT & Inventory Intelligence",
+        "description": "Mobile system designed for the quality department. I transformed manual processes into a centralized platform that eliminated inventory discrepancies and digitized certificates in real-time.",
+        "problem": "Loss of 1.5 hours daily per user in manual transcriptions and a 20% discrepancy in physical stock.",
+        "techStack": ["React Native", "Node.js", "MySQL", "AP Config"],
+        "align": "left"
+      },
+      {
+        "id": 2,
+        "title": "TourCraft",
+        "category": "Digital Tourism Marketplace",
+        "description": "Digital ecosystem focused on the Riviera Maya that democratizes local tourism, connecting travelers directly with independent guides and small businesses for authentic experiences.",
+        "problem": "Lack of digital visibility for independent guides and market monopolization by large tour operators.",
+        "techStack": ["React", "Vite", "Node.js", "MongoDB"],
+        "align": "right"
+      }
+    ]
+  },
+  "caseStudy": {
+    "ui": {
+      "backButton": "Back to Portfolio",
+      "headerLabel": "Case Study",
+      "labels": {
+        "role": "Role",
+        "client": "Client",
+        "timeline": "Timeline",
+        "stack": "Tech Stack"
+      },
+      "section1Title": "01. The Challenge",
+      "section2Title": "02. Architecture",
+      "section3Title": "03. Visual Solution",
+      "section4Title": "04. Operational Impact"
+    },
+    "data": {
+      "1": {
+        "title": "LabStock",
+        "subtitle": "Mobile inventory management and optimization system for the quality department.",
+        "role": "Lead Software Engineer",
+        "client": "Aguakan (Quality Dept)",
+        "timeline": "Sep - Dec 2025",
+        "stack": "React Native, Node.js, MySQL",
+        "deviceType": "mobile",
+        "problemText": "Before LabStock, the control of reagents, materials, and equipment was done entirely through spreadsheets and paper records. This caused a massive loss of operational time and a concerning lack of traceability.",
+        "problemPoints": [
+          { "title": "Downtime", "desc": "Loss of 1.5 hours daily per user transcribing paper notes to a desktop PC." },
+          { "title": "Discrepancy", "desc": "1 in 5 Excel entries did not match actual physical stock due to data entry errors." },
+          { "title": "Shrinkage", "desc": "15% of the budget wasted annually on reagents expiring on the shelves." }
+        ],
+        "architectureSubtitle": "Local infrastructure with high availability and mobile access.",
+        "architectureText1": "To solve the reliance on unstable internet connections and reduce operational costs, I structured a Client-Server architecture deployed on an independent local network (Intranet).",
+        "architectureText2": "I used a router configured as an exclusive Access Point for operational devices, connecting to a local server hosting the MySQL database and the Node.js Backend.",
+        "features": [
+          { "title": "Auto-Recovery", "desc": "Configuration of auto-start services. If the server reboots, the system restores without human intervention." },
+          { "title": "Dynamic Security", "desc": "Implementation of specific Firewall Rules and role management (Administrators vs. Lab Technicians)." }
+        ],
+        "metrics": [
+          { "value": "90%", "label": "Faster", "desc": "Manual logging time dropped from 10 minutes to 45 seconds on mobile." },
+          { "value": "<1%", "label": "Annual Shrinkage", "desc": "Achieved through the automated preventive expiration alert system." },
+          { "value": "$0", "label": "In Licenses", "desc": "Developed 100% with enterprise-grade Open Source technologies." }
+        ]
+      },
+      "2": {
+        "title": "TourCraft",
+        "subtitle": "Digital tourism marketplace focused on the Riviera Maya to democratize local tourism.",
+        "role": "Full Stack Developer",
+        "client": "Independent B2C Project",
+        "timeline": "May - Sep 2024",
+        "stack": "React, Vite, Node.js, MongoDB",
+        "deviceType": "desktop",
+        "problemText": "Independent guides and small local businesses in the Riviera Maya face a severe lack of visibility compared to large tour operators. This monopolizes the market and hinders connections with tourists seeking authentic experiences.",
+        "problemPoints": [
+          { "title": "Digital Invisibility", "desc": "Local guides lack accessible and modern platforms to offer their services directly." },
+          { "title": "Tourism Monopoly", "desc": "Large agencies capture all attention, leaving residents with no economic growth opportunities." },
+          { "title": "Lack of Trust", "desc": "Absence of a centralized review system to validate the service quality of independent guides." }
+        ],
+        "architectureSubtitle": "Client-Server architecture under the MVC pattern.",
+        "architectureText1": "I developed the platform using the MERN stack, implementing a clear separation of concerns through the Model-View-Controller pattern. The entire process was managed under the SCRUM agile methodology.",
+        "architectureText2": "The ecosystem integrates destination exploration with a hyper-local focus, verified user profiles, advertising spaces for local businesses, and a complete booking simulation flow.",
+        "features": [
+          { "title": "B2C Ecosystem", "desc": "Direct, middleman-free connection between the end consumer (tourist) and the service provider (guide or business)." },
+          { "title": "Sustainable Tourism", "desc": "Promotes the local economy by distributing tourism revenue directly to the community." }
+        ],
+        "metrics": [
+          { "value": "MERN", "label": "Tech Stack", "desc": "MongoDB database with Node.js/Express backend and React frontend." },
+          { "value": "MVC", "label": "Architecture", "desc": "Modular, scalable, and maintainable code with strict separation of logical layers." },
+          { "value": "Agile", "label": "Methodology", "desc": "Development based on iterative and incremental deliveries using SCRUM." }
+        ]
+      }
+    }
+  },
+  "hobbies": {
+    "header": {
+      "title": "My Hobbies",
+      "description": "The disciplines outside of software development that shape my focus, nurture my creativity, and keep my mind sharp."
+    },
+    "ui": {
+      "hobbyLabel": "Hobby"
+    },
+    "items": [
+      {
+        "id": 1,
+        "title": "Tennis",
+        "description": "Whether practicing it on the court or following it as a spectator, tennis is a discipline that demands consistency, strategy, and mental agility. It helps me maintain physical balance and inspires me to push my own limits in every set."
+      },
+      {
+        "id": 2,
+        "title": "E-sports",
+        "description": "The competitive scene in titles like Valorant fascinates me due to the level of coordination, communication, and tactics it demands. It is a high-pressure environment where split-second decision-making and team synergy define victory."
+      },
+      {
+        "id": 3,
+        "title": "Haute Horlogerie",
+        "description": "I am truly passionate about micromechanics and the history behind watches. I dedicate my time to researching and learning about calibers, complications, and the craftsmanship of this industry, with the ultimate goal of building my own collection in the future."
+      },
+      {
+        "id": 4,
+        "title": "Music & Percussion",
+        "description": "I understand music as an exceptional expression of human brilliance, especially in genres of great technical complexity like jazz, blues, and boleros. I deeply enjoy studying music theory and learning the drums to appreciate this art from its core."
+      },
+      {
+        "id": 5,
+        "title": "Reading",
+        "description": "Reading is one of my favorite activities, as it allows me to immerse myself in different worlds and perspectives. I enjoy everything from narrative to lyric poetry, and I am always looking for new books to explore."
+      }
+    ]
+  },
+  "inspirations": {
+    "header": {
+      "title": "My Inspirations",
+      "description": "The people, stories, and presences that shape who I am. Click on the cards to discover why."
+    },
+    "ui": {
+      "whyInspires": "Why they inspire me",
+      "back": "Back"
+    },
+    "bento": [
+      {
+        "id": 1,
+        "overline": "My Mother",
+        "title": "Dulce Nancy",
+        "description": "The person I admire most. From her, I learned that love is shown through presence, and she has the biggest heart I have ever known."
+      },
+      {
+        "id": 2,
+        "overline": "My Partner",
+        "title": "Joanna",
+        "description": "My favorite reason to strive every day. In her, I found unconditional support, love, and complicity."
+      },
+      {
+        "id": 3,
+        "overline": "My Faith",
+        "title": "God",
+        "description": "The central pillar of my life. The source of my purpose, my peace, and the grace that guides every one of my steps."
+      },
+      {
+        "id": 4,
+        "overline": "My Pet",
+        "title": "Nacho",
+        "description": "Taught me that unconditional love really exists and doesn't require words."
+      },
+      {
+        "id": 5,
+        "overline": "Literature",
+        "title": "He Came to Set the Captives Free (Rebecca Brown)",
+        "description": "A profound read that transformed my perspective and redefined my spiritual and personal life."
+      },
+      {
+        "id": 6,
+        "overline": "Tennis",
+        "title": "Roger Federer",
+        "description": "His elegance, precision, and strategic mindset on the court inspire me to seek excellence in everything I do."
+      },
+      {
+        "id": 7,
+        "overline": "E-sports",
+        "title": "Jay Won",
+        "description": "His focus, discipline, and philosophy in the game and in life motivate me to apply the same dedication to my personal projects and goals."
+      }
+    ],
+    "memorial": {
+      "overline": "In memory",
+      "name": "David Gutiérrez",
+      "quote": "To my father, whose presence and teachings remain with me, always reminding me of the importance of effort, perseverance, and the value of moving forward even in difficult times."
+    }
+  },
+  "playlist": {
+    "header": {
+      "title": "What I listen to.",
+      "description": "The technique, feeling, and sonic complexity that inspire my daily development and the most valuable moments of my life."
+    },
+    "ui": {
+      "whyListen": "Why I listen to it"
+    },
+    "songs": [
+      {
+        "id": 1,
+        "artist": "U2",
+        "title": "Where The Streets Have No Name (Remastered)",
+        "description": "A piece of extraordinary musicality. I am captivated by The Edge's technical brilliance and the profound meaning Bono gives to something religious; a sonic reminder of the search for spiritual purity."
+      },
+      {
+        "id": 2,
+        "artist": "Frank Sinatra",
+        "title": "Strangers in the Night",
+        "description": "This song instantly transports me to a very special moment with my partner. It is an incredible piece with invaluable meaning that sets the rhythm of our history together."
+      },
+      {
+        "id": 3,
+        "artist": "John Mayer",
+        "title": "Edge of Desire",
+        "description": "Chosen for the musical style it uses to talk about such a complicated topic in a relationship. The way the guitar expresses that desperation and longing is simply fascinating."
+      },
+      {
+        "id": 4,
+        "artist": "Luis Miguel",
+        "title": "Que Tú Te Vas",
+        "description": "Stands out for its great musical complexity and perfect interpretation. Luis Miguel masterfully conveys the maturity and melancholy needed to face a difficult moment."
+      },
+      {
+        "id": 5,
+        "artist": "John Mayer",
+        "title": "Covered in Rain (Live at Tweeter Center, Philadelphia, 2004)",
+        "description": "Selected purely and exclusively for how complete, complex, and exquisite it is. An unparalleled quality that tells a deep story through its impeccable live improvisation."
+      }
+    ]
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "navbar": {
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "portfolio": "Portafolio"
+  },
+  "hero": {
+    "title": "Hola, soy Santiago.",
+    "description": "Creo que el mejor software es aquel que se siente como una solución intuitiva. Explora mi trabajo, conoce mi proceso y descubre lo que me inspira a construir.",
+    "button": "Ver portafolio",
+    "imageAlt": "Foto de Santiago Calderón"
+  },
+  "footer": {
+    "title": "Conectemos.",
+    "description": "Espacio digital de desarrollo de software diseñado para exhibir mi portafolio, arquitectura técnica y entorno personal.",
+    "nav": {
+      "home": "Inicio",
+      "about": "Sobre Mí",
+      "portfolio": "Portafolio",
+      "inspirations": "Inspiraciones",
+      "playlist": "Playlist"
+    },
+    "rights": "Todos los derechos reservados."
+  },
+  "interests": {
+    "title": "Más que solo código, mis pasiones e inspiraciones.",
+    "cards": {
+      "hobbies": {
+        "title": "Pasatiempos",
+        "text": "Ciclos, equilibrio y repetición que dan forma al balance entre mi disciplina, movimiento y enfoque competitivo."
+      },
+      "inspirations": {
+        "title": "Inspiraciones",
+        "text": "La abstracción de ideas, personas y momentos refleja las influencias que impulsan mi crecimiento como desarrollador."
+      },
+      "playlist": {
+        "title": "Playlist",
+        "text": "Una selección de ondas sonoras que potencian mi concentración, creatividad y energía mientras desarrollo y vivo mi día a día."
+      }
+    }
+  },
+  "journey": {
+    "subtitle": "Línea de tiempo",
+    "title": "Mi trayectoria",
+    "stages": [
+      {
+        "year": "Ene 2022",
+        "title": "Inicios en la Ingeniería",
+        "description": "Comencé la carrera de Ingeniería en Sistemas Computacionales en el Tecnológico de Chalco. Sin embargo, decidí reorientar mi camino para enfocarme de lleno en el desarrollo directo de software y sistemas."
+      },
+      {
+        "year": "Nov 2023",
+        "title": "Enfoque Multiplataforma",
+        "description": "Inicié la carrera de Desarrollo de Software Multiplataforma en la Riviera Maya, cursando el programa bajo un sistema bilingüe que amplió mi visión técnica y profesional."
+      },
+      {
+        "year": "Dic 2025",
+        "title": "Técnico Superior Universitario",
+        "description": "Concluí con éxito mi primera etapa profesional, obteniendo el título como Técnico Superior Universitario (TSU) en Desarrollo de Software Multiplataforma."
+      },
+      {
+        "year": "May 2026",
+        "title": "Innovación Digital",
+        "description": "Actualmente curso la Ingeniería en Tecnologías de la Información e Innovación Digital en la Universidad Tecnológica de Nezahualcóyotl, consolidando mi perfil como ingeniero."
+      }
+    ]
+  },
+  "lovedOnes": {
+    "title": "Lo que dicen de mí",
+    "status": {
+      "paused": "PAUSADO",
+      "playing": "AUTO SCROLL"
+    },
+    "testimonials": [
+      {
+        "id": 1,
+        "quote": "“Santiago es alguien sumamente estructurado y enfocado en sus metas. Su capacidad para organizar sus prioridades se refleja en los resultados de todo lo que emprende.”",
+        "name": "Dulce Calderón",
+        "description": "Madre",
+        "initials": "DC"
+      },
+      {
+        "id": 2,
+        "quote": "“Una persona respetuosa, amable e inteligente, con sus objetivos claros y capaz de lograr todo lo que se propone por su dedicación y esfuerzo en lo que hace.”",
+        "name": "Joanna Alvarez",
+        "description": "Pareja",
+        "initials": "JA"
+      },
+      {
+        "id": 3,
+        "quote": "“Un profesional sumamente responsable. Durante su paso por la empresa, demostró gran precisión técnica y una actitud proactiva ante las resoluciones de problemas en la red.”",
+        "name": "Pedro Hernández",
+        "description": "Ex Jefe / Supervisor - Aguakan",
+        "initials": "PH"
+      },
+      {
+        "id": 4,
+        "quote": "“Acompañé a Santiago durante su proceso de servicio. Destaca por su constancia académica y su notable facilidad para estructurar soluciones multiplataforma.”",
+        "name": "Juan Domínguez",
+        "description": "Mentor Académico - UTRM",
+        "initials": "JD"
+      },
+      {
+        "id": 5,
+        "quote": "“Tiene una visión muy clara de la arquitectura de software. Es el tipo de desarrollador que prioriza el código limpio y diseña sistemas pensando en la escalabilidad.”",
+        "name": "Eduardo Solorzano",
+        "description": "Desarrollador de Software Senior",
+        "initials": "ES"
+      },
+      {
+        "id": 6,
+        "quote": "“Trabajar con él en Tourcraft fue clave para el proyecto. Aporta excelentes soluciones lógicas, depura errores rápidamente y mantiene al equipo enfocado.”",
+        "name": "David Fraga",
+        "description": "Co-desarrollador App Tourcraft",
+        "initials": "DF"
+      }
+    ]
+  },
+  "aboutMe": {
+    "subtitle": "Sobre mí",
+    "name": "Santiago Calderón",
+    "description": "Desarrollador de software multiplataforma con la meta de crecer hacia la arquitectura de software, diseñando soluciones innovadoras que integren eficiencia técnica y experiencias intuitivas.",
+    "downloadCV": "Descargar CV",
+    "skillsTitle": "Habilidades",
+    "languagesTitle": "Idiomas",
+    "languages": {
+      "spanish": { "name": "Español", "level": "Nativo" },
+      "english": { "name": "Inglés", "level": "B1 Intermedio (iTEP)" }
+    },
+    "educationTitle": "Educación",
+    "education": [
+      {
+        "date": "ENE 2022",
+        "school": "Tecnológico de Chalco",
+        "degree": "Ingeniería en Sistemas Computacionales"
+      },
+      {
+        "date": "NOV 2023",
+        "school": "Universidad Tecnológica de la Riviera Maya",
+        "degree": "TSU en Desarrollo de Software Multiplataforma"
+      },
+      {
+        "date": "MAY 2026",
+        "school": "Universidad Tecnológica de Nezahualcóyotl",
+        "degree": "Ing. en TI e Innovación Digital"
+      }
+    ],
+    "certificatesTitle": "Certificados",
+    "certificates": [
+      {
+        "id": 1,
+        "title": "Inglés B1 Intermedio",
+        "issuer": "iTEP International",
+        "year": "2025"
+      }
+    ]
+  },
+  "portfolio": {
+    "hero": {
+      "subtitle": "Portafolio 2026",
+      "title1": "Arquitectura",
+      "title2": "Digital.",
+      "description": "Soluciones robustas disfrazadas de interfaces minimalistas. Traduciendo problemas de negocio complejos en código escalable."
+    },
+    "ui": {
+      "problemLabel": "Problemática",
+      "exploreButton": "Explorar Caso de Estudio"
+    },
+    "projects": [
+      {
+        "id": 1,
+        "title": "LabStock",
+        "category": "IoT Industrial e Inteligencia de Inventario",
+        "description": "Sistema móvil diseñado para el área de calidad. Transformé procesos manuales en una plataforma centralizada que eliminó discrepancias de inventario y digitalizó certificados en tiempo real.",
+        "problem": "Pérdida de 1.5 horas diarias por usuario en transcripciones manuales y 20% de discrepancia en stock físico.",
+        "techStack": ["React Native", "Node.js", "MySQL", "AP Config"],
+        "align": "left"
+      },
+      {
+        "id": 2,
+        "title": "TourCraft",
+        "category": "Marketplace Turístico Digital",
+        "description": "Ecosistema digital enfocado en la Riviera Maya que democratiza el turismo local, conectando a viajeros directamente con guías independientes y pequeños negocios para experiencias auténticas.",
+        "problem": "Falta de visibilidad digital para guías independientes y monopolización del mercado por parte de grandes operadores turísticos.",
+        "techStack": ["React", "Vite", "Node.js", "MongoDB"],
+        "align": "right"
+      }
+    ]
+  },
+  "portfolio": {
+    "hero": {
+      "subtitle": "Portafolio 2026",
+      "title1": "Arquitectura",
+      "title2": "Digital.",
+      "description": "Soluciones robustas disfrazadas de interfaces minimalistas. Traduciendo problemas de negocio complejos en código escalable."
+    },
+    "ui": {
+      "problemLabel": "Problemática",
+      "exploreButton": "Explorar Caso de Estudio"
+    },
+    "projects": [
+      {
+        "id": 1,
+        "title": "LabStock",
+        "category": "IoT Industrial e Inteligencia de Inventario",
+        "description": "Sistema móvil diseñado para el área de calidad. Transformé procesos manuales en una plataforma centralizada que eliminó discrepancias de inventario y digitalizó certificados en tiempo real.",
+        "problem": "Pérdida de 1.5 horas diarias por usuario en transcripciones manuales y 20% de discrepancia en stock físico.",
+        "techStack": ["React Native", "Node.js", "MySQL", "AP Config"],
+        "align": "left"
+      },
+      {
+        "id": 2,
+        "title": "TourCraft",
+        "category": "Marketplace Turístico Digital",
+        "description": "Ecosistema digital enfocado en la Riviera Maya que democratiza el turismo local, conectando a viajeros directamente con guías independientes y pequeños negocios para experiencias auténticas.",
+        "problem": "Falta de visibilidad digital para guías independientes y monopolización del mercado por parte de grandes operadores turísticos.",
+        "techStack": ["React", "Vite", "Node.js", "MongoDB"],
+        "align": "right"
+      }
+    ]
+  },
+  "caseStudy": {
+    "ui": {
+      "backButton": "Volver al Portafolio",
+      "headerLabel": "Caso de Estudio",
+      "labels": {
+        "role": "Rol",
+        "client": "Cliente",
+        "timeline": "Período",
+        "stack": "Tecnologías Principales"
+      },
+      "section1Title": "01. El Reto",
+      "section2Title": "02. Arquitectura",
+      "section3Title": "03. La Solución Visual",
+      "section4Title": "04. El Impacto Operativo"
+    },
+    "data": {
+      "1": {
+        "title": "LabStock",
+        "subtitle": "Sistema móvil de gestión y optimización de inventarios para el área de calidad.",
+        "role": "Ingeniero de Software Principal",
+        "client": "Aguakan (Área de Calidad)",
+        "timeline": "Sep - Dic 2025",
+        "stack": "React Native, Node.js, MySQL",
+        "deviceType": "mobile",
+        "problemText": "Antes de LabStock, el control de reactivos, materiales y equipos se realizaba enteramente mediante hojas de cálculo y registros en papel. Esto ocasionaba una pérdida de tiempo operativa masiva y una preocupante falta de trazabilidad.",
+        "problemPoints": [
+          { "title": "Tiempo Muerto", "desc": "Pérdida de 1.5 horas diarias por usuario transcribiendo anotaciones de papel a una PC fija." },
+          { "title": "Discrepancia", "desc": "1 de cada 5 datos en Excel no coincidía con el stock físico real debido a errores de captura." },
+          { "title": "Merma", "desc": "15% del presupuesto desperdiciado anualmente en reactivos caducados en estantería." }
+        ],
+        "architectureSubtitle": "Infraestructura local con alta disponibilidad y acceso móvil.",
+        "architectureText1": "Para solucionar la dependencia de conexiones inestables a internet y reducir costos operativos, estructuré una arquitectura Cliente-Servidor desplegada en una red local independiente (Intranet).",
+        "architectureText2": "Utilicé un enrutador configurado como Access Point exclusivo para los dispositivos de operación, conectándose a un servidor local que aloja la base de datos MySQL y el Backend en Node.js.",
+        "features": [
+          { "title": "Auto-Recuperación", "desc": "Configuración de servicios de auto-arranque. Si el servidor se reinicia, el sistema se restablece sin intervención humana." },
+          { "title": "Seguridad Dinámica", "desc": "Implementación de Reglas de Firewall específicas y gestión de roles (Administradores vs Laboratoristas)." }
+        ],
+        "metrics": [
+          { "value": "90%", "label": "Más Rápidos", "desc": "El tiempo de registro manual bajó de 10 minutos a 45 segundos en el móvil." },
+          { "value": "<1%", "label": "Merma Anual", "desc": "Gracias al sistema de alertas preventivas de caducidad automatizadas." },
+          { "value": "$0", "label": "En Licencias", "desc": "Desarrollado 100% con tecnologías Open Source a nivel empresarial." }
+        ]
+      },
+      "2": {
+        "title": "TourCraft",
+        "subtitle": "Marketplace turístico digital enfocado en la Riviera Maya para democratizar el turismo local.",
+        "role": "Desarrollador Full Stack",
+        "client": "Proyecto Independiente B2C",
+        "timeline": "May - Sep 2024",
+        "stack": "React, Vite, Node.js, MongoDB",
+        "deviceType": "desktop",
+        "problemText": "Los guías independientes y pequeños negocios locales de la Riviera Maya enfrentan una severa falta de visibilidad frente a los grandes operadores turísticos. Esto monopoliza el mercado y dificulta la conexión con turistas que buscan experiencias auténticas.",
+        "problemPoints": [
+          { "title": "Invisibilidad Digital", "desc": "Los guías locales no cuentan con plataformas accesibles y modernas para ofrecer sus servicios de manera directa." },
+          { "title": "Monopolio Turístico", "desc": "Las grandes agencias acaparan la atención, dejando sin oportunidades de crecimiento económico a los residentes." },
+          { "title": "Falta de Confianza", "desc": "Inexistencia de un sistema de reseñas centralizado que valide la calidad del servicio de guías independientes." }
+        ],
+        "architectureSubtitle": "Arquitectura Cliente-Servidor bajo el patrón MVC.",
+        "architectureText1": "Desarrollé la plataforma utilizando el stack MERN, implementando una separación clara de responsabilidades mediante el patrón Modelo-Vista-Controlador. Todo el proceso fue gestionado bajo la metodología ágil SCRUM.",
+        "architectureText2": "El ecosistema integra exploración de destinos con un enfoque hiperlocal, perfiles de usuario verificados, espacios publicitarios para negocios locales y un flujo completo de simulación de reservas.",
+        "features": [
+          { "title": "Ecosistema B2C", "desc": "Conexión directa y sin intermediarios entre el consumidor final (turista) y el proveedor de servicios (guía o negocio)." },
+          { "title": "Turismo Sostenible", "desc": "Fomento de la economía local distribuyendo los ingresos turísticos directamente a la comunidad." }
+        ],
+        "metrics": [
+          { "value": "MERN", "label": "Stack Tecnológico", "desc": "Base de datos en MongoDB con backend en Node.js/Express y frontend en React." },
+          { "value": "MVC", "label": "Arquitectura", "desc": "Código modular, escalable y mantenible con estricta separación de capas lógicas." },
+          { "value": "Agile", "label": "Metodología", "desc": "Desarrollo basado en entregas iterativas e incrementales utilizando SCRUM." }
+        ]
+      }
+    }
+  },
+  "hobbies": {
+    "header": {
+      "title": "Mis pasatiempos",
+      "description": "Las disciplinas fuera del desarrollo de software que forman mi enfoque, nutren mi creatividad y mantienen mi mente afilada."
+    },
+    "ui": {
+      "hobbyLabel": "Pasatiempo"
+    },
+    "items": [
+      {
+        "id": 1,
+        "title": "Tenis",
+        "description": "Ya sea practicándolo en la cancha o siguiéndolo como espectador, el tenis es una disciplina que exige constancia, estrategia y agilidad mental. Me ayuda a mantener el equilibrio físico y me inspira a superar mis propios límites en cada set."
+      },
+      {
+        "id": 2,
+        "title": "E-sports",
+        "description": "La escena competitiva en títulos como Valorant me fascina por el nivel de coordinación, comunicación y táctica que exige. Es un entorno de alta presión donde la toma de decisiones en fracciones de segundo y la sinergia del equipo definen la victoria."
+      },
+      {
+        "id": 3,
+        "title": "Alta Relojería",
+        "description": "Soy un verdadero apasionado de la micromecánica y la historia detrás de los relojes. Dedico mi tiempo a investigar y aprender sobre calibres, complicaciones y el trabajo artesanal de esta industria, con la gran meta de construir mi propia colección en el futuro."
+      },
+      {
+        "id": 4,
+        "title": "Música y Percusión",
+        "description": "Entiendo la música como una expresión excepcional de brillantez humana, especialmente en géneros de gran complejidad técnica como el jazz, el blues y los boleros. Disfruto profundamente estudiar teoría musical y aprender batería para apreciar este arte desde su núcleo."
+      },
+      {
+        "id": 5,
+        "title": "Lectura",
+        "description": "La lectura es una de mis actividades favoritas, ya que me permite sumergirme en diferentes mundos y perspectivas. Disfruto tanto de lo narrativo hasta lo lirico, y siempre estoy buscando nuevos libros para explorar."
+      }
+    ]
+  },
+  "inspirations": {
+    "header": {
+      "title": "Mis inspiraciones",
+      "description": "Las personas, historias y presencias que dan forma a quien soy. Haz clic en las tarjetas para descubrir el porqué."
+    },
+    "ui": {
+      "whyInspires": "Por qué me inspira",
+      "back": "Volver"
+    },
+    "bento": [
+      {
+        "id": 1,
+        "overline": "Mi Madre",
+        "title": "Dulce Nancy",
+        "description": "La persona que más admiro. De ella aprendí que el amor se demuestra con presencia y tiene el corazón mas grande que he conocido jamás."
+      },
+      {
+        "id": 2,
+        "overline": "Mi Pareja",
+        "title": "Joanna",
+        "description": "Mi razón favorita para esforzarme cada día. En ella encontré apoyo, amor y complicidad incondicional."
+      },
+      {
+        "id": 3,
+        "overline": "Mi Fe",
+        "title": "Dios",
+        "description": "El pilar central de mi vida. La fuente de mi propósito, mi paz y la gracia que guía cada uno de mis pasos."
+      },
+      {
+        "id": 4,
+        "overline": "Mi Mascota",
+        "title": "Nacho",
+        "description": "Me enseñó que el amor incondicional existe de verdad y no requiere palabras."
+      },
+      {
+        "id": 5,
+        "overline": "Literatura",
+        "title": "Él vino a dar libertad a los cautivos (Rebecca Brown)",
+        "description": "Una lectura profunda que transformó mi perspectiva y redefinió mi vida espiritual y personal."
+      },
+      {
+        "id": 6,
+        "overline": "Tenis",
+        "title": "Roger Federer",
+        "description": "Su elegancia, precisión y mentalidad estratégica en la cancha me inspiran a buscar la excelencia en todo lo que hago."
+      },
+      {
+        "id": 7,
+        "overline": "E-sports",
+        "title": "Jay Won",
+        "description": "Su enfoque, disciplina y filosofía en el juego y en la vida, me motivan a aplicar la misma dedicación en mis proyectos y metas personales."
+      }
+    ],
+    "memorial": {
+      "overline": "En memoria",
+      "name": "David Gutiérrez",
+      "quote": "A mi padre, cuya presencia y enseñanza permanecen conmigo, recordándome siempre la importancia del esfuerzo, la perseverancia y el valor de seguir adelante incluso en los momentos difíciles."
+    }
+  },
+  "playlist": {
+    "header": {
+      "title": "Lo que escucho.",
+      "description": "La técnica, el sentimiento y la complejidad sonora que inspiran mi desarrollo diario y los momentos más valiosos de mi vida."
+    },
+    "ui": {
+      "whyListen": "Por qué la escucho"
+    },
+    "songs": [
+      {
+        "id": 1,
+        "artist": "U2",
+        "title": "Where The Streets Have No Name (Remastered)",
+        "description": "Una pieza de extraordinaria musicalidad. Me cautiva la brillantez técnica de The Edge y el profundo significado que Bono le imprime sobre algo religioso; un recordatorio sonoro de la búsqueda de la pureza espiritual."
+      },
+      {
+        "id": 2,
+        "artist": "Frank Sinatra",
+        "title": "Strangers in the Night",
+        "description": "Esta canción me transporta instantáneamente a un momento muy especial con mi pareja. Es una pieza increíble con un significado invaluable que marca el ritmo de nuestra historia juntos."
+      },
+      {
+        "id": 3,
+        "artist": "John Mayer",
+        "title": "Edge of Desire",
+        "description": "Elegida por el estilo que maneja musicalmente para hablar de un tema tan complicado en una relación. La forma en que la guitarra expresa esa desesperación y anhelo es sencillamente fascinante."
+      },
+      {
+        "id": 4,
+        "artist": "Luis Miguel",
+        "title": "Que Tú Te Vas",
+        "description": "Destaca por su gran complejidad musical y una interpretación perfecta. Luis Miguel transmite con maestría la madurez y la melancolía necesarias para afrontar un momento difícil."
+      },
+      {
+        "id": 5,
+        "artist": "John Mayer",
+        "title": "Covered in Rain (Live at Tweeter Center, Philadelphia, 2004)",
+        "description": "Seleccionada pura y exclusivamente por lo completa, compleja y exquisita que es. Una calidad sin igual que relata una historia profunda a través de su impecable improvisación en vivo."
+      }
+    ]
+  }
+}
