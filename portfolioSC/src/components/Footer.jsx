@@ -6,7 +6,6 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    // ¡AQUÍ ESTABA EL PARCHE BLANCO! Agregué dark:bg-gray-950, dark:border-gray-800 y cambié bg-[#fafafa] a bg-transparent
     <footer className="bg-transparent pt-32 pb-16 border-t border-gray-200 dark:border-gray-800 mt-20 transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
         
@@ -26,7 +25,6 @@ export default function Footer() {
             href="https://github.com/calderonsantiago742-cell" 
             target="_blank" 
             rel="noopener noreferrer"
-            // Añadí dark:hover:text-white
             className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
             aria-label="GitHub"
           >
@@ -40,7 +38,6 @@ export default function Footer() {
             href="https://www.instagram.com/nachonation03/" 
             target="_blank" 
             rel="noopener noreferrer"
-             // Añadí dark:hover:text-white
             className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
             aria-label="Instagram"
           >
@@ -52,7 +49,6 @@ export default function Footer() {
           {/* iCloud Mail */}
           <a 
             href="mailto:santiagocalderon1703@icloud.com" 
-             // Añadí dark:hover:text-white
             className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
             aria-label="iCloud Mail"
           >
@@ -73,6 +69,9 @@ export default function Footer() {
           </Link>
           <Link to="/portfolio" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
             {t('footer.nav.portfolio')}
+          </Link>
+          <Link to="/hobbies" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+            {t('Hobbies')}
           </Link>
           <Link to="/inspirations" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
             {t('footer.nav.inspirations')}

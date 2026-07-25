@@ -12,7 +12,7 @@ const TypographicFlipCard = ({ item, variants }) => {
       variants={variants}
       whileHover={{ y: -8, transition: { duration: 0.4, ease: "easeOut" } }}
       className={`relative group cursor-pointer h-full min-h-[400px] md:min-h-[460px] ${item.colSpan}`}
-      style={{ perspective: 1500 }}
+      style={{ perspective: 2000 }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
@@ -32,7 +32,12 @@ const TypographicFlipCard = ({ item, variants }) => {
           flex flex-col justify-end 
           transition-colors duration-500 
           group-hover:bg-gray-50/50 dark:group-hover:bg-gray-800/50"
-          style={{ backfaceVisibility: "hidden" }}
+          style={{ 
+            backfaceVisibility: "hidden", 
+            WebkitBackfaceVisibility: "hidden",
+            // TRUCO PARA IOS: Forzar separación en el eje Z
+            transform: "translateZ(1px)" 
+          }}
         >
           {/* Letra gigante */}
           <div className="absolute -bottom-10 -right-4 text-[250px] md:text-[300px] font-serif font-bold 
@@ -48,7 +53,7 @@ const TypographicFlipCard = ({ item, variants }) => {
                 {item.overline}
               </span>
 
-              {/* Botón + */}
+              {/* Botón de Rotación */}
               <div className="w-8 h-8 rounded-full 
               bg-gray-100 dark:bg-gray-800 
               flex items-center justify-center 
@@ -58,7 +63,7 @@ const TypographicFlipCard = ({ item, variants }) => {
               dark:group-hover:bg-white dark:group-hover:text-gray-900 
               transition-colors duration-500">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
               </div>
             </div>
@@ -79,7 +84,9 @@ const TypographicFlipCard = ({ item, variants }) => {
           border border-gray-800"
           style={{ 
             backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)"
+            WebkitBackfaceVisibility: "hidden",
+            // TRUCO PARA IOS: Rotar 180 grados y empujar 1px hacia atrás
+            transform: "rotateY(180deg) translateZ(1px)" 
           }}
         >
             <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase mb-6 block">
@@ -143,7 +150,6 @@ export default function InspirationsPage() {
   };
 
   return (
-    // Se quitaron las clases de bg para dejar pasar el fondo global de App.jsx
     <div className="min-h-screen text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 transition-colors duration-300">
       
       {/* HEADER */}

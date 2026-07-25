@@ -96,14 +96,14 @@ export default function AboutMePage() {
   }));
 
   return (
-    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-34 pb-32 overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden transition-colors duration-300">
       
-      {/* ─── MODAL PREMIUM CON PORTAL: Asegurarse que AnimatePresence envuelva la condición y le damos key al hijo directo de AnimatePresence ─── */}
+      {/* ─── MODAL PREMIUM CON PORTAL ─── */}
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {selectedCert && (
             <motion.div
-              key="cert-modal-backdrop" // ¡LA CLAVE MÁGICA QUE FALTABA!
+              key="cert-modal-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -119,7 +119,7 @@ export default function AboutMePage() {
                 className="relative max-w-4xl w-full bg-white dark:bg-gray-900 rounded-2xl md:rounded-3xl shadow-2xl cursor-default flex flex-col border border-gray-200 dark:border-gray-800"
                 onClick={(e) => e.stopPropagation()} 
               >
-                <div className="absolute top-4 right-4 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-full cursor-pointer hover:bg-white dark:hover:bg-gray-700 transition-colors shadow-sm" onClick={() => setSelectedCert(null)}>
+                <div className="absolute top-4 right-4 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-full cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-sm" onClick={() => setSelectedCert(null)}>
                   <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </div>
                 
@@ -127,7 +127,7 @@ export default function AboutMePage() {
                   <img 
                     src={selectedCert.image} 
                     alt={selectedCert.title} 
-                    className="w-auto h-auto max-h-[65vh] object-contain rounded-md shadow-md"
+                    className="w-auto h-auto max-h-[60vh] object-contain rounded-md shadow-md"
                   />
                 </div>
                 
@@ -144,37 +144,40 @@ export default function AboutMePage() {
         document.body
       )}
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-6xl mx-auto px-4 sm:px-6">
+      <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-6xl mx-auto px-6 sm:px-8">
         
-        <motion.section className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 mb-24 md:mb-40">
+        {/* HERO SECTION */}
+        <motion.section className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 mb-20 md:mb-32">
           
-          <div className="w-full md:w-1/2 flex flex-col items-start z-10">
+          {/* Texto Principal */}
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left z-10 mt-6 md:mt-0">
             <span className="overflow-hidden block mb-4">
               <motion.span variants={maskReveal} className="text-xs font-semibold tracking-widest text-gray-400 uppercase block">
                 {t('aboutMe.subtitle')}
               </motion.span>
             </span>
             
-            <motion.h1 variants={blurReveal} className="text-5xl sm:text-6xl md:text-8xl font-serif text-gray-900 dark:text-white mb-6 tracking-tight leading-none">
+            <motion.h1 variants={blurReveal} className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif text-gray-900 dark:text-white mb-6 tracking-tight leading-tight md:leading-none">
               {t('aboutMe.name')}
             </motion.h1>
             
-            <motion.p variants={blurReveal} className="text-gray-500 dark:text-gray-400 font-light text-lg md:text-xl leading-relaxed max-w-lg mb-10">
+            <motion.p variants={blurReveal} className="text-gray-500 dark:text-gray-400 font-light text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-8 md:mb-10">
               {t('aboutMe.description')}
             </motion.p>
             
             <motion.a 
               variants={blurReveal} 
               href={CV} 
-              download="CV_Santiago_Calderon.pdf"
-              className="bg-[#111827] text-white dark:bg-white dark:text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black dark:hover:bg-gray-100 hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl w-max"
+              download="SantiagoCalderonCV.pdf" // ← Nombre del archivo a descargar actualizado
+              className="bg-[#111827] text-white dark:bg-white dark:text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black dark:hover:bg-gray-100 hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl w-max mx-auto md:mx-0"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               {t('aboutMe.downloadCV')}
             </motion.a>
           </div>
 
-          <div className="w-full md:w-1/2 h-[400px] md:h-[550px] mt-12 md:mt-0 relative flex justify-center items-center">
+          {/* Swipe Deck de Fotos */}
+          <div className="w-full md:w-1/2 h-[350px] sm:h-[400px] md:h-[550px] relative flex justify-center items-center">
             {deck.map((card, index) => {
               const isFront = index === 0;
 
@@ -191,16 +194,16 @@ export default function AboutMePage() {
                   }}
                   onClick={handleCycleDeck}
                   animate={{
-                    y: index === 0 ? 0 : index === 1 ? -30 : -15,
-                    x: index === 0 ? 0 : index === 1 ? 40 : -40,
+                    y: index === 0 ? 0 : index === 1 ? -20 : -10, // Ajustado para móviles
+                    x: index === 0 ? 0 : index === 1 ? 30 : -30, // Ajustado para móviles
                     rotate: index === 0 ? -2 : index === 1 ? 6 : -6,
                     scale: index === 0 ? 1 : index === 1 ? 0.9 : 0.85,
                     zIndex: 30 - index,
-                    opacity: index === 2 ? 0.6 : 1,
+                    opacity: index === 2 ? 0.5 : 1,
                     filter: index === 0 ? "grayscale(0%)" : "grayscale(40%)",
                   }}
-                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                  className={`absolute w-52 md:w-72 h-[18rem] md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-800 border-[6px] border-white dark:border-gray-800 ${isFront ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className={`absolute w-56 sm:w-64 md:w-72 h-[22rem] sm:h-[26rem] md:h-96 rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-gray-800 border-[6px] border-white dark:border-gray-800 ${isFront ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`}
                   style={{ touchAction: "none" }}
                 >
                   <img 
@@ -215,7 +218,7 @@ export default function AboutMePage() {
                       transition={{ delay: 1 }}
                       className="absolute bottom-4 left-0 w-full flex justify-center pointer-events-none"
                     >
-                      <div className="bg-black/50 backdrop-blur-md text-white text-[10px] uppercase tracking-widest px-4 py-2 rounded-full font-medium flex items-center gap-2">
+                      <div className="bg-black/50 backdrop-blur-md text-white text-[9px] md:text-[10px] uppercase tracking-widest px-4 py-2 rounded-full font-medium flex items-center gap-2 shadow-lg">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                       </div>
                     </motion.div>
@@ -227,22 +230,24 @@ export default function AboutMePage() {
 
         </motion.section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-20">
+        {/* ─── GRID INFERIOR (Skills, Languages, Education, Certs) ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
           
+          {/* Columna Izquierda: Skills & Languages */}
           <div>
-            <motion.section variants={blurReveal} className="mb-20">
-              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
+            <motion.section variants={blurReveal} className="mb-16">
+              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-6 block text-center lg:text-left">
                 {t('aboutMe.skillsTitle')}
               </span>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                 {skillsData.map((skill) => (
                   <motion.span 
                     whileHover={{ scale: 1.05 }}
                     key={skill.name} 
-                    className="px-4 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-sm text-gray-700 dark:text-gray-300 font-medium shadow-sm flex items-center gap-2.5 cursor-default hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
+                    className="px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-sm text-gray-700 dark:text-gray-300 font-medium shadow-sm flex items-center gap-2 cursor-default hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
                   >
                     <svg 
-                      className="w-5 h-5 shrink-0" 
+                      className="w-4 h-4 shrink-0" 
                       viewBox="0 0 24 24" 
                       fill={skill.fill === 'none' ? 'none' : skill.color}
                       stroke={skill.stroke ? skill.color : 'none'}
@@ -256,15 +261,15 @@ export default function AboutMePage() {
               </div>
             </motion.section>
 
-            <motion.section variants={blurReveal}>
-              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
+            <motion.section variants={blurReveal} className="mb-16 lg:mb-0">
+              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-6 block text-center lg:text-left">
                 {t('aboutMe.languagesTitle')}
               </span>
-              <div className="space-y-8 max-w-sm">
+              <div className="space-y-6 max-w-sm mx-auto lg:mx-0">
                 
                 <div className="group">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-base font-medium text-gray-900 dark:text-white">{t('aboutMe.languages.spanish.name')}</span>
+                    <span className="text-sm md:text-base font-medium text-gray-900 dark:text-white">{t('aboutMe.languages.spanish.name')}</span>
                     <span className="text-xs text-gray-400 font-light">{t('aboutMe.languages.spanish.level')}</span>
                   </div>
                   <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden relative">
@@ -272,7 +277,7 @@ export default function AboutMePage() {
                       initial={{ width: 0 }} 
                       whileInView={{ width: '100%' }} 
                       viewport={{ once: true }} 
-                      transition={{ duration: 2.5, ease: "easeInOut", delay: 0.3 }} 
+                      transition={{ duration: 2, ease: "easeOut", delay: 0.2 }} 
                       className="absolute left-0 top-0 h-full bg-gray-900 dark:bg-white rounded-full" 
                     />
                   </div>
@@ -280,7 +285,7 @@ export default function AboutMePage() {
 
                 <div className="group">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-base font-medium text-gray-900 dark:text-white">{t('aboutMe.languages.english.name')}</span>
+                    <span className="text-sm md:text-base font-medium text-gray-900 dark:text-white">{t('aboutMe.languages.english.name')}</span>
                     <span className="text-xs text-gray-400 font-light">{t('aboutMe.languages.english.level')}</span>
                   </div>
                   <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden relative">
@@ -288,7 +293,7 @@ export default function AboutMePage() {
                       initial={{ width: 0 }} 
                       whileInView={{ width: '60%' }} 
                       viewport={{ once: true }} 
-                      transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }} 
+                      transition={{ duration: 2, ease: "easeOut", delay: 0.4 }} 
                       className="absolute left-0 top-0 h-full bg-[#3178C6] rounded-full"
                     />
                   </div>
@@ -298,13 +303,14 @@ export default function AboutMePage() {
             </motion.section>
           </div>
 
+          {/* Columna Derecha: Education & Certificates */}
           <div>
-            <motion.section variants={blurReveal} className="mb-20">
-              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-10 block">
+            <motion.section variants={blurReveal} className="mb-16">
+              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block text-center lg:text-left">
                 {t('aboutMe.educationTitle')}
               </span>
               
-              <div className="relative pl-8 space-y-12">
+              <div className="relative pl-6 md:pl-8 space-y-10">
                 <motion.div 
                   initial={{ height: 0 }}
                   whileInView={{ height: '100%' }}
@@ -323,25 +329,25 @@ export default function AboutMePage() {
                       {!isLast ? (
                         <motion.div 
                           initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: animationDelay }}
-                          className="absolute -left-[35px] top-1.5 w-3 h-3 bg-white dark:bg-gray-900 border-[3px] border-gray-300 dark:border-gray-700 rounded-full group-hover:border-gray-500 transition-colors"
+                          className="absolute -left-[27px] md:-left-[35px] top-1.5 w-3 h-3 bg-white dark:bg-gray-900 border-[3px] border-gray-300 dark:border-gray-700 rounded-full group-hover:border-gray-500 transition-colors"
                         />
                       ) : (
                         <>
                           <motion.div 
                             initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: animationDelay }}
-                            className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white border-[3px] border-gray-900 dark:border-white rounded-full z-10"
+                            className="absolute -left-[27px] md:-left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white border-[3px] border-gray-900 dark:border-white rounded-full z-10"
                           />
                           <motion.div 
                             animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
                             transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                            className="absolute -left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white rounded-full z-0"
+                            className="absolute -left-[27px] md:-left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white rounded-full z-0"
                           />
                         </>
                       )}
 
-                      <p className="text-xs text-gray-400 mb-1 tracking-widest font-medium">{item.date}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 font-light mb-1">{item.school}</p>
-                      <h4 className="text-lg font-medium text-gray-900 dark:text-white group-hover:text-black dark:group-hover:text-gray-300 transition-colors">{item.degree}</h4>
+                      <p className="text-[10px] md:text-xs text-gray-400 mb-1 tracking-widest font-medium uppercase">{item.date}</p>
+                      <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-light mb-1">{item.school}</p>
+                      <h4 className="text-base md:text-lg font-medium text-gray-900 dark:text-white group-hover:text-black dark:group-hover:text-gray-300 transition-colors leading-snug">{item.degree}</h4>
                     </motion.div>
                   );
                 })}
@@ -350,7 +356,7 @@ export default function AboutMePage() {
             </motion.section>
 
             <motion.section variants={blurReveal}>
-              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8 block">
+              <span className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-6 block text-center lg:text-left">
                 {t('aboutMe.certificatesTitle')}
               </span>
               <div className="flex flex-col gap-4">
@@ -361,18 +367,18 @@ export default function AboutMePage() {
                     onClick={() => setSelectedCert(cert)}
                     whileHover={{ y: -3, scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
-                    className="border border-gray-200 dark:border-gray-800 rounded-2xl p-5 flex items-center justify-between gap-5 bg-white dark:bg-gray-900 shadow-sm hover:shadow-lg transition-all cursor-pointer group"
+                    className="border border-gray-200 dark:border-gray-800 rounded-2xl p-4 md:p-5 flex items-center justify-between gap-4 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all cursor-pointer group"
                   >
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0 border border-gray-100 dark:border-gray-700 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors">
-                        <span className="text-gray-900 dark:text-white font-serif font-bold text-xl">{cert.icon}</span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0 border border-gray-100 dark:border-gray-700 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors">
+                        <span className="text-gray-900 dark:text-white font-serif font-bold text-lg md:text-xl">{cert.icon}</span>
                       </div>
                       <div>
-                        <h4 className="text-base font-medium text-gray-900 dark:text-white mb-0.5">{cert.title}</h4>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 font-light">{cert.issuer} · {cert.year}</p>
+                        <h4 className="text-sm md:text-base font-medium text-gray-900 dark:text-white mb-0.5">{cert.title}</h4>
+                        <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 font-light">{cert.issuer} · {cert.year}</p>
                       </div>
                     </div>
-                    <svg className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+                    <svg className="w-4 h-4 shrink-0 text-gray-300 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
                   </motion.div>
                 ))}
 

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-// 1. Importamos el hook
 import { useTranslation } from 'react-i18next';
 
 // ─── COMPONENTE INDIVIDUAL DE TESTIMONIO CON FÍSICA 3D ───
-const InteractiveTestimonialCard = ({ item }) => {
+const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, onCardPointerLeave }) => {
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
 
@@ -30,12 +29,15 @@ const InteractiveTestimonialCard = ({ item }) => {
     <motion.div 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onPointerDown={onCardPointerDown}
+      onPointerUp={onCardPointerUp}
+      onPointerLeave={onCardPointerLeave}
       style={{
         rotateX: smoothRotateX,
         rotateY: smoothRotateY,
         transformPerspective: 1000
       }}
-      className="w-[350px] md:w-[400px] flex-shrink-0 border border-gray-100 dark:border-gray-800 rounded-2xl p-8 bg-white dark:bg-gray-900 flex flex-col justify-between min-h-[280px] select-none mx-3 shadow-sm hover:shadow-xl dark:hover:shadow-gray-950 transition-shadow duration-500 relative overflow-hidden group"
+      className="w-[260px] sm:w-[300px] md:w-[400px] flex-shrink-0 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 md:p-8 bg-white dark:bg-gray-900 flex flex-col justify-between min-h-[240px] md:min-h-[280px] select-none mx-2 md:mx-3 shadow-sm hover:shadow-xl dark:hover:shadow-gray-950 transition-shadow duration-500 relative overflow-hidden group cursor-pointer"
     >
       <motion.div 
         className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50/50 dark:to-gray-800/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -46,17 +48,17 @@ const InteractiveTestimonialCard = ({ item }) => {
       />
 
       <div className="relative z-10 flex flex-col h-full justify-between pointer-events-none">
-        <p className="text-gray-600 dark:text-gray-300 italic font-light text-lg md:text-xl leading-relaxed mb-8">
+        <p className="text-gray-600 dark:text-gray-300 italic font-light text-sm md:text-xl leading-relaxed mb-6 md:mb-8 text-left">
          {item.quote}
         </p>
 
-        <div className="flex items-center gap-4 mt-auto">
+        <div className="flex items-center gap-3 md:gap-4 mt-auto">
           <motion.div 
             style={{
               x: useTransform(x, [0, 1], [-3, 3]),
               y: useTransform(y, [0, 1], [-3, 3]),
             }}
-            className="w-12 h-12 flex-shrink-0 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-serif text-lg transition-colors duration-500 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:border-gray-300 dark:group-hover:border-gray-600"
+            className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-serif text-base md:text-lg transition-colors duration-500 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:border-gray-300 dark:group-hover:border-gray-600"
           >
             {item.initials}
           </motion.div>
@@ -76,19 +78,40 @@ const InteractiveTestimonialCard = ({ item }) => {
   );
 };
 
-
 // ─── COMPONENTE PRINCIPAL ───
 export default function LovedOnes() {
   const [isPaused, setIsPaused] = useState(false);
   
-  // 2. Extraemos la función t()
   const { t } = useTranslation();
-
-  // 3. Obtenemos el arreglo completo directamente desde i18next
   const testimonials = t('lovedOnes.testimonials', { returnObjects: true });
 
+  // ─── PAUSA POR TIPO DE PUNTERO ───
+  // Mouse: mantener presionado pausa, soltar reanuda.
+  // Touch: cada tap alterna pausa/reanuda.
+  const handleCardPointerDown = (e) => {
+    if (e.pointerType === 'mouse') {
+      setIsPaused(true);
+    }
+  };
+
+  const handleCardPointerUp = (e) => {
+    if (e.pointerType === 'mouse') {
+      setIsPaused(false);
+    } else if (e.pointerType === 'touch') {
+      setIsPaused((prev) => !prev);
+    }
+  };
+
+  const handleCardPointerLeave = (e) => {
+    // Si sueltan el mouse fuera de la tarjeta mientras lo mantenían
+    // presionado, evita que el carrusel quede pausado sin querer.
+    if (e.pointerType === 'mouse') {
+      setIsPaused(false);
+    }
+  };
+
   return (
-    <section className="max-w-[1400px] mx-auto px-6 py-32 border-t border-gray-200 dark:border-gray-800 text-center overflow-hidden transition-colors duration-300">
+    <section className="w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-32 border-t border-gray-200 dark:border-gray-800 text-center overflow-hidden transition-colors duration-300 box-border">
       
       <style>{`
         @keyframes scroll {
@@ -101,16 +124,15 @@ export default function LovedOnes() {
         }
       `}</style>
 
-      {/* HEADER */}
-      <div className="flex justify-between items-end mb-14 max-w-6xl mx-auto">
+      {/* HEADER ADAPTATIVO */}
+      <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-14 max-w-6xl mx-auto gap-4 md:gap-0 px-2">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-3xl font-serif tracking-wide text-gray-900 dark:text-white"
+          className="text-2xl md:text-3xl font-serif tracking-wide text-gray-900 dark:text-white"
         >
-          {/* 4. Traducimos el título */}
           {t('lovedOnes.title')}
         </motion.h2>
 
@@ -120,11 +142,10 @@ export default function LovedOnes() {
           transition={{ delay: 0.3 }}
           className="flex items-center gap-2 text-gray-400 select-none"
         >
-          <span className="text-xs tracking-widest font-medium uppercase hidden md:block">
-            {/* 5. Traducimos el estado dinámicamente */}
+          <span className="text-[10px] md:text-xs tracking-widest font-medium uppercase">
             {isPaused ? t('lovedOnes.status.paused') : t('lovedOnes.status.playing')}
           </span>
-          <div className="w-10 h-[2px] bg-gray-200 dark:bg-gray-800 relative overflow-hidden rounded-full">
+          <div className="w-8 md:w-10 h-[2px] bg-gray-200 dark:bg-gray-800 relative overflow-hidden rounded-full">
             <motion.div
               animate={isPaused ? { x: "0%" } : { x: ["-100%", "100%"] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
@@ -134,26 +155,32 @@ export default function LovedOnes() {
         </motion.div>
       </div>
 
-      {/* CONTENEDOR DEL CARRUSEL INFINITO */}
+      {/* CONTENEDOR DEL CARRUSEL INFINITO CON ENCAPSULAMIENTO ESTRICTO */}
       <div 
-        className="overflow-hidden group cursor-grab active:cursor-grabbing pb-10"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
+        className="w-full overflow-hidden group pb-4 md:pb-10 box-border"
         style={{ perspective: 1200 }}
       >
         <div 
           className="flex animate-scroll"
           style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
         >
-          {/* Renderizamos el array original */}
           {testimonials.map((item, index) => (
-            <InteractiveTestimonialCard key={`original-${item.id}-${index}`} item={item} />
+            <InteractiveTestimonialCard 
+              key={`original-${item.id}-${index}`} 
+              item={item}
+              onCardPointerDown={handleCardPointerDown}
+              onCardPointerUp={handleCardPointerUp}
+              onCardPointerLeave={handleCardPointerLeave}
+            />
           ))}
-          {/* Renderizamos una copia exacta para crear la ilusión de infinito */}
           {testimonials.map((item, index) => (
-            <InteractiveTestimonialCard key={`copy-${item.id}-${index}`} item={item} />
+            <InteractiveTestimonialCard 
+              key={`copy-${item.id}-${index}`} 
+              item={item}
+              onCardPointerDown={handleCardPointerDown}
+              onCardPointerUp={handleCardPointerUp}
+              onCardPointerLeave={handleCardPointerLeave}
+            />
           ))}
         </div>
       </div>

@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { motion, useAnimation } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 
@@ -27,7 +27,29 @@ function Home() {
   );
 }
 
-function App() {
+// ─── 1. NUEVO COMPONENTE: GESTOR DE ANIMACIONES Y RUTAS ───
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    // mode="wait" previene que dos páginas pesadas existan al mismo tiempo
+    // onExitComplete centraliza el scroll hacia arriba sin laggear el teléfono
+    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0 })}>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/hobbies" element={<HobbiesPage />} />
+        <Route path="/playlist" element={<PlaylistPage />} />
+        <Route path="/inspirations" element={<InspirationsPage />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/about" element={<AboutMePage />} />
+        <Route path="/case-study/:id" element={<CaseStudyPage />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+// ─── 2. COMPONENTE INTERNO DE LA APLICACIÓN ───
+function MainApp() {
   const { i18n } = useTranslation();
   const currentLang = i18n?.language || 'es';
   const controls = useAnimation();
@@ -62,32 +84,28 @@ function App() {
         />
       </div>
 
-      <Router>
-        {/* Usamos relative y z-10 para que todo el contenido quede por encima del fondo */}
-        <main className="relative z-10 flex flex-col min-h-screen">
-          
-          <Navbar />
+      <main className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
 
-          <motion.div 
-            animate={controls}
-            className="flex-grow flex flex-col"
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/hobbies" element={<HobbiesPage />} />
-              <Route path="/playlist" element={<PlaylistPage />} />
-              <Route path="/inspirations" element={<InspirationsPage />} />
-              <Route path="/portfolio" element={<PortfolioPage />} />
-              <Route path="/about" element={<AboutMePage />} />
-              <Route path="/case-study/:id" element={<CaseStudyPage />} />
-            </Routes>
-          </motion.div>
-          
-          <Footer />
-        </main>
-      </Router>
+        <motion.div 
+          animate={controls}
+          className="flex-grow flex flex-col"
+        >
+          {/* Renderizamos nuestras rutas animadas aquí */}
+          <AnimatedRoutes />
+        </motion.div>
+        
+        <Footer />
+      </main>
     </div>
   );
 }
 
-export default App;
+// ─── 3. EXPORTACIÓN PRINCIPAL (Router envolviendo todo) ───
+export default function App() {
+  return (
+    <Router>
+      <MainApp />
+    </Router>
+  );
+}

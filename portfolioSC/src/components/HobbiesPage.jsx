@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
@@ -23,61 +23,49 @@ const hobbyImages = {
 
 const ParallaxHobby = ({ hobby, index }) => {
   const ref = useRef(null);
+  
+  // Detectamos si es móvil para apagar el parallax costoso y mejorar rendimiento
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
 
-  const yText = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
-  const yNumber = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
-  const yImagePrimary = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
-  const yImageSecondary = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  // Si es móvil, anulamos el movimiento (0%) para que el celular no calcule parallax pesado.
+  // Si es PC, activamos los movimientos amplios.
+  const yText = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["5%", "-5%"]);
+  const yNumber = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-15%", "15%"]);
+  const yImagePrimary = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["10%", "-10%"]);
+  const yImageSecondary = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["-15%", "15%"]);
 
   const isEven = index % 2 === 0;
 
   return (
     <section 
       ref={ref} 
-      className="relative min-h-[90vh] flex items-center justify-center py-24 md:py-32 overflow-hidden transition-colors duration-300"
+      className="relative min-h-[70vh] lg:min-h-[90vh] flex items-center justify-center py-16 lg:py-32 overflow-hidden transition-colors duration-300"
     >
-      <div className="max-w-6xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      {/* En móvil usamos flex-col, en PC grid */}
+      <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
-        {/* TEXTO Y NÚMERO DE FONDO */}
-        <motion.div 
-          style={{ y: yText, z: 0 }}
-          className={`relative lg:col-span-5 flex flex-col z-10 will-change-transform ${isEven ? 'lg:order-1' : 'lg:order-2'}`}
-        >
-          {/* Número gigante restaurado a su tamaño original y visible en modo oscuro */}
-          <motion.div 
-            style={{ y: yNumber, z: 0 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-            text-[12rem] md:text-[16rem] font-serif font-bold 
-            text-gray-100 dark:text-gray-800/80 
-            select-none -z-10 leading-none tracking-tighter will-change-transform pointer-events-none"
-          >
-            {hobby.id}
-          </motion.div>
-
-          <h2 className="text-4xl md:text-6xl font-serif mb-8 tracking-tight text-gray-900 dark:text-white">
-            {hobby.title}
-          </h2>
-          
-          <p className="text-gray-600 dark:text-gray-400 font-light leading-relaxed text-lg md:text-xl">
-            {hobby.description}
-          </p>
-        </motion.div>
-
-        {/* IMÁGENES */}
-        <div className={`lg:col-span-7 relative w-full h-[50vh] md:h-[70vh] ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
+        {/* IMÁGENES (Aparecen primero en móvil, ordenadas por grid en PC) */}
+        <div className={`w-full h-[40vh] sm:h-[50vh] lg:h-[70vh] relative mb-12 lg:mb-0 lg:col-span-7 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
           
           {/* Principal */}
           <motion.div 
             style={{ y: yImagePrimary, z: 0 }}
-            className={`absolute top-0 bottom-10 w-4/5 overflow-hidden rounded-2xl 
+            className={`absolute top-0 w-4/5 lg:bottom-10 h-full lg:h-auto overflow-hidden rounded-2xl 
             bg-gray-100 dark:bg-gray-900 
             shadow-xl dark:shadow-black/30 will-change-transform
-            ${isEven ? 'right-0' : 'left-0'}`}
+            ${isEven ? 'right-0 lg:right-0' : 'left-0 lg:left-0'}`}
           >
             <img 
               src={hobby.imgPrimary} 
@@ -91,10 +79,10 @@ const ParallaxHobby = ({ hobby, index }) => {
           {/* Secundaria */}
           <motion.div 
             style={{ y: yImageSecondary, z: 0 }}
-            className={`absolute bottom-0 w-2/5 aspect-[4/5] overflow-hidden rounded-2xl 
+            className={`absolute bottom-[-10%] lg:bottom-0 w-2/5 aspect-[4/5] overflow-hidden rounded-2xl 
             bg-white dark:bg-gray-950 
-            p-2 shadow-2xl dark:shadow-black/40 will-change-transform
-            ${isEven ? 'left-4 md:left-10' : 'right-4 md:right-10'}`}
+            p-1.5 lg:p-2 shadow-2xl dark:shadow-black/40 will-change-transform
+            ${isEven ? 'left-2 sm:left-10 lg:left-10' : 'right-2 sm:right-10 lg:right-10'}`}
           >
             <div className="w-full h-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-900">
               <img 
@@ -108,6 +96,32 @@ const ParallaxHobby = ({ hobby, index }) => {
           </motion.div>
 
         </div>
+
+        {/* TEXTO Y NÚMERO DE FONDO */}
+        <motion.div 
+          style={{ y: yText, z: 0 }}
+          className={`relative w-full lg:col-span-5 flex flex-col z-10 will-change-transform text-center lg:text-left mt-8 lg:mt-0 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}
+        >
+          {/* Número gigante (más sutil en móvil para no estorbar la lectura) */}
+          <motion.div 
+            style={{ y: yNumber, z: 0 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+            text-[8rem] sm:text-[10rem] md:text-[12rem] lg:text-[16rem] font-serif font-bold 
+            text-gray-100 dark:text-gray-800/80 
+            select-none -z-10 leading-none tracking-tighter will-change-transform pointer-events-none"
+          >
+            {hobby.id}
+          </motion.div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-serif mb-4 lg:mb-8 tracking-tight text-gray-900 dark:text-white">
+            {hobby.title}
+          </h2>
+          
+          <p className="text-gray-600 dark:text-gray-400 font-light leading-relaxed text-base sm:text-lg lg:text-xl px-2 lg:px-0">
+            {hobby.description}
+          </p>
+        </motion.div>
+
       </div>
     </section>
   );
@@ -123,15 +137,15 @@ export default function HobbiesPage() {
   }));
 
   return (
-    <div className="min-h-screen text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 transition-colors duration-300">
+    <div className="min-h-screen text-gray-900 dark:text-white pt-32 md:pt-48 pb-20 lg:pb-32 transition-colors duration-300">
       
       {/* Header */}
-      <section className="max-w-4xl mx-auto px-6 text-center mb-10 md:mb-20">
+      <section className="max-w-4xl mx-auto px-6 text-center mb-12 lg:mb-20">
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-serif mb-6 tracking-tight text-gray-900 dark:text-white"
+          className="text-4xl sm:text-5xl lg:text-7xl font-serif mb-4 lg:mb-6 tracking-tight text-gray-900 dark:text-white"
         >
           {t('hobbies.header.title')}
         </motion.h1>
@@ -140,7 +154,7 @@ export default function HobbiesPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="text-gray-500 dark:text-gray-400 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
+          className="text-gray-500 dark:text-gray-400 font-light text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed"
         >
           {t('hobbies.header.description')}
         </motion.p>

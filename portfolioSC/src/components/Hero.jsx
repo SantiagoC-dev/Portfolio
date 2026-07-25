@@ -18,10 +18,10 @@ export default function Hero() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, x: -50, filter: "blur(8px)" }, 
+    hidden: { opacity: 0, y: 30, filter: "blur(8px)" }, 
     visible: {
       opacity: 1,
-      x: 0,
+      y: 0,
       filter: "blur(0px)",
       transition: {
         duration: 1.2,
@@ -31,30 +31,31 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative z-10 w-full max-w-7xl mx-auto pt-28 md:pt-50 pb-12 pr-10 pl-10 md:pl-20 flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24 min-h-[90vh] transition-colors duration-300">
+    // Usamos max-w-6xl y px-6 para que coincida exactamente con los límites de Intereses y Mi Trayectoria
+    <section className="relative z-10 w-full max-w-6xl mx-auto pt-24 md:pt-48 pb-12 px-6 flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 min-h-[90vh] transition-colors duration-300">
 
-      {/* TEXT */}
+      {/* TEXTO (Izquierda en PC, respetando el límite de la app) */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="md:w-1/2 z-10"
+        className="w-full md:w-1/2 z-10 flex flex-col items-center md:items-start text-center md:text-left"
       >
         <motion.h1
           variants={itemVariants}
-          className="text-5xl md:text-7xl font-serif tracking-tight leading-tight text-gray-900 dark:text-white transition-colors duration-300"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif tracking-tight leading-tight text-gray-900 dark:text-white transition-colors duration-300"
         >
           {t('hero.title')}
         </motion.h1>
 
         <motion.p
           variants={itemVariants}
-          className="text-xl text-gray-500 dark:text-gray-300 mt-6 mb-10 max-w-md font-light leading-relaxed min-h-[100px] transition-colors duration-300"
+          className="text-base sm:text-lg md:text-xl text-gray-500 dark:text-gray-300 mt-6 mb-8 max-w-md font-light leading-relaxed transition-colors duration-300"
         >
           {t('hero.description')}
         </motion.p>
 
-        {/* BOTÓN PREMIUM (Breathing Glow + Arrow) */}
+        {/* BOTÓN PREMIUM */}
         <motion.div variants={itemVariants} className="relative inline-flex group">
           <motion.div
             animate={{ 
@@ -90,20 +91,20 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* IMAGE */}
+      {/* IMAGEN (Derecha en PC, alineada con el borde derecho del contenedor) */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 50 }}
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="md:w-1/2 mt-12 md:mt-0 flex justify-center relative"
+        className="w-full md:w-1/2 flex justify-center md:justify-end relative"
       >
         <motion.div
           whileHover={{ scale: 1.03 }}
-          animate={{ y: [0, -12, 0] }}
+          animate={{ y: [0, -10, 0] }}
           transition={{
             y: { repeat: Infinity, duration: 6, ease: "easeInOut" }
           }}
-          className="relative w-[320px] h-[420px] md:w-[420px] md:h-[520px]"
+          className="relative w-[280px] h-[360px] sm:w-[320px] sm:h-[420px] md:w-[380px] md:h-[480px] lg:w-[420px] lg:h-[520px]"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-gray-200 dark:from-gray-800 to-transparent blur-3xl opacity-40 rounded-3xl transition-colors duration-300"></div>
 
@@ -113,7 +114,7 @@ export default function Hero() {
             className="relative w-full h-full object-cover rounded-3xl shadow-2xl z-10"
           />
 
-          <div className="absolute -inset-6 border border-gray-200 dark:border-gray-700 rounded-3xl rotate-2 opacity-60 transition-colors duration-300"></div>
+          <div className="absolute -inset-4 md:-inset-6 border border-gray-200 dark:border-gray-700 rounded-3xl rotate-2 opacity-60 transition-colors duration-300"></div>
         </motion.div>
       </motion.div>
       

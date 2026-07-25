@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// 1. Importar el hook
 import { useTranslation } from 'react-i18next';
 
 import PortadaJM from '../assets/PortadaJM.jpg';
@@ -9,7 +8,7 @@ import PortadaLM from '../assets/PortadaLM.jpg';
 import PortadaFS from '../assets/PortadaFS.jpg';
 import PortadaJM1 from '../assets/PortadaJM1.jpg';
 
-// 2. Extraer los datos multimedia/lógicos fuera del componente
+// ─── DATOS MULTIMEDIA FUERA DEL COMPONENTE ───
 const songMediaData = [
   {
     albumCover: PortadaU2,
@@ -49,11 +48,52 @@ const formatTime = (seconds) => {
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 };
 
+// ─── COMPONENTE OPTIMIZADO DEL PROGRESS BAR ───
+// Al extraer esto, evitamos que toda la página se re-renderice cada segundo
+const ProgressBar = ({ duration, startAt, onComplete }) => {
+  const [currentTime, setCurrentTime] = useState(startAt);
+
+  useEffect(() => {
+    setCurrentTime(startAt); // Reset cuando cambia la canción
+    
+    const interval = setInterval(() => {
+      setCurrentTime((prev) => {
+        if (prev >= duration) {
+          onComplete(); // Llama a siguiente canción
+          return startAt;
+        }
+        return prev + 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [duration, startAt, onComplete]);
+
+  const progressPercent = (currentTime / duration) * 100;
+
+  return (
+    <div className="w-full mb-8">
+      <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative">
+        <motion.div
+          className="absolute left-0 top-0 h-full bg-gray-900 dark:bg-white rounded-full shadow-sm"
+          initial={{ width: 0 }}
+          animate={{ width: `${progressPercent}%` }}
+          transition={{ ease: "linear", duration: 1 }}
+        />
+      </div>
+      <div className="flex justify-between mt-3 text-xs font-mono tracking-wider text-gray-400 dark:text-gray-500">
+        <span>{formatTime(currentTime)}</span>
+        <span>-{formatTime(duration - currentTime)}</span>
+      </div>
+    </div>
+  );
+};
+
+
+// ─── COMPONENTE PRINCIPAL ───
 export default function PlaylistPage() {
-  // 3. Inicializamos t()
   const { t } = useTranslation();
 
-  // 4. Fusionamos las traducciones con los datos multimedia
   const playlistData = t('playlist.songs', { returnObjects: true }).map((song, index) => ({
     ...song,
     albumCover: songMediaData[index].albumCover,
@@ -63,36 +103,10 @@ export default function PlaylistPage() {
   }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentTime, setCurrentTime] = useState(playlistData[0].startAt);
-
-  const currentIndexRef = useRef(currentIndex);
-  useEffect(() => { currentIndexRef.current = currentIndex; }, [currentIndex]);
-
   const currentSong = playlistData[currentIndex];
 
   const handleNext = () => setCurrentIndex((prev) => (prev + 1) % playlistData.length);
   const handlePrev = () => setCurrentIndex((prev) => (prev === 0 ? playlistData.length - 1 : prev - 1));
-
-  // Simulación del progreso de la canción
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime((prev) => {
-        const duration = playlistData[currentIndexRef.current].duration;
-        if (prev >= duration) {
-          handleNext();
-          return playlistData[currentIndexRef.current].startAt;
-        }
-        return prev + 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []); // Mantener dependencias vacías es seguro aquí por cómo usamos currentIndexRef
-
-  useEffect(() => {
-    setCurrentTime(playlistData[currentIndex].startAt);
-  }, [currentIndex]);
-
-  const progressPercent = (currentTime / currentSong.duration) * 100;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -118,18 +132,15 @@ export default function PlaylistPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      // Se eliminaron las clases bg-[#fafafa] dark:bg-gray-950 para dejar el fondo transparente
-      className="min-h-screen text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 flex flex-col items-center transition-colors duration-300"
+      className="min-h-screen text-gray-900 dark:text-white pt-32 md:pt-48 pb-20 lg:pb-32 flex flex-col items-center transition-colors duration-300"
     >
         
       {/* ─── CABECERA ─── */}
-      <motion.section variants={itemVariants} className="text-center mb-16 md:mb-20 px-4">
-        <h1 className="text-5xl md:text-7xl font-serif mb-6 tracking-tight text-gray-900 dark:text-white">
-          {/* 5. Traducir el Título */}
+      <motion.section variants={itemVariants} className="text-center mb-12 md:mb-20 px-4 w-full max-w-3xl">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif mb-4 md:mb-6 tracking-tight text-gray-900 dark:text-white">
           {t('playlist.header.title')}
         </h1>
-        <p className="text-gray-500 dark:text-gray-400 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-          {/* 5. Traducir la Descripción */}
+        <p className="text-gray-500 dark:text-gray-400 font-light text-base md:text-xl leading-relaxed">
           {t('playlist.header.description')}
         </p>
       </motion.section>
@@ -137,11 +148,12 @@ export default function PlaylistPage() {
       {/* ─── REPRODUCTOR (Tarjeta Unificada Blanca) ─── */}
       <motion.div
         variants={itemVariants}
-        className="w-full max-w-[440px] bg-white dark:bg-gray-900 rounded-[40px] p-8 flex flex-col items-center shadow-2xl dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-800 relative overflow-hidden mx-4 transition-colors duration-300"
+        // Ajuste de padding para móviles (px-6 py-8) vs PC (p-10)
+        className="w-full max-w-[90%] sm:max-w-[440px] bg-white dark:bg-gray-900 rounded-[32px] md:rounded-[40px] px-6 py-8 md:p-10 flex flex-col items-center shadow-xl md:shadow-2xl dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-800 relative overflow-hidden transition-colors duration-300 mx-auto"
       >
         
         {/* Portada Gigante */}
-        <div className="w-full aspect-square mb-8 relative rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
+        <div className="w-full aspect-square mb-6 md:mb-8 relative rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
           <AnimatePresence mode="wait">
             <motion.img
               key={currentSong.id}
@@ -158,7 +170,7 @@ export default function PlaylistPage() {
         </div>
 
         {/* Título y Artista Responsivos */}
-        <div className="w-full text-center overflow-hidden mb-8 px-2">
+        <div className="w-full text-center overflow-hidden mb-6 md:mb-8 px-2">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSong.id}
@@ -168,59 +180,50 @@ export default function PlaylistPage() {
               transition={{ duration: 0.3 }}
               className="w-full flex flex-col items-center"
             >
-              {/* truncate evita que títulos largos rompan el diseño en celulares */}
-              <h3 className="text-gray-900 dark:text-white font-bold text-2xl md:text-3xl tracking-tight mb-1 truncate w-full">
+              <h3 className="text-gray-900 dark:text-white font-bold text-xl sm:text-2xl md:text-3xl tracking-tight mb-1 truncate w-full">
                 {currentSong.title}
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 text-base md:text-lg font-light truncate w-full">
+              <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base md:text-lg font-light truncate w-full">
                 {currentSong.artist}
               </p>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Progreso del tiempo */}
-        <div className="w-full mb-8">
-          <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden relative">
-            <motion.div
-              className="absolute left-0 top-0 h-full bg-gray-900 dark:bg-white rounded-full shadow-sm"
-              animate={{ width: `${progressPercent}%` }}
-              transition={{ ease: "linear", duration: 1 }}
-            />
-          </div>
-          <div className="flex justify-between mt-3 text-xs font-mono tracking-wider text-gray-400 dark:text-gray-500">
-            <span>{formatTime(currentTime)}</span>
-            <span>-{formatTime(currentSong.duration - currentTime)}</span>
-          </div>
-        </div>
+        {/* Progreso del tiempo - Ahora optimizado */}
+        <ProgressBar 
+          duration={currentSong.duration} 
+          startAt={currentSong.startAt} 
+          onComplete={handleNext} 
+        />
 
         {/* ─── CONTROLES DE REPRODUCCIÓN Y YOUTUBE ─── */}
-        <div className="flex justify-center items-center gap-8 w-full mb-10">
+        <div className="flex justify-center items-center gap-6 md:gap-8 w-full mb-8 md:mb-10">
           
           {/* Botón Anterior */}
           <motion.button
             onClick={handlePrev}
-            className="text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors p-3"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors p-2 md:p-3"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Canción Anterior"
           >
-            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24">
               <path d="M19 5.14v13.72a1.5 1.5 0 01-2.27 1.28L10 15.3v3.2a1.5 1.5 0 01-3 0V5.5a1.5 1.5 0 013 0v3.2L16.73 3.86A1.5 1.5 0 0119 5.14z" />
             </svg>
           </motion.button>
 
-          {/* Botón Central (Link a YouTube) simulando el botón de "Play" */}
+          {/* Botón Central (Link a YouTube) */}
           <motion.a
             href={currentSong.youtubeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-20 h-20 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:bg-black dark:hover:bg-gray-200 transition-colors"
+            className="w-16 h-16 md:w-20 md:h-20 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:bg-black dark:hover:bg-gray-200 transition-colors shrink-0"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Escuchar en YouTube"
           >
-            <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="1 0 24 24">
+            <svg className="w-7 h-7 md:w-8 md:h-8 ml-1" fill="currentColor" viewBox="1 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
           </motion.a>
@@ -228,12 +231,12 @@ export default function PlaylistPage() {
           {/* Botón Siguiente */}
           <motion.button
             onClick={handleNext}
-            className="text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors p-3"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors p-2 md:p-3"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Canción Siguiente"
           >
-            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24">
               <path d="M5 5.14v13.72a1.5 1.5 0 002.27 1.28L14 15.3v3.2a1.5 1.5 0 003 0V5.5a1.5 1.5 0 00-3 0v3.2L7.27 3.86A1.5 1.5 0 005 5.14z" />
             </svg>
           </motion.button>
@@ -241,9 +244,8 @@ export default function PlaylistPage() {
         </div>
 
         {/* ─── DESCRIPCIÓN NARRATIVA ─── */}
-        <div className="w-full relative pt-8 border-t border-gray-100 dark:border-gray-800 text-center">
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 px-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">
-            {/* 6. Traducir Etiqueta */}
+        <div className="w-full relative pt-6 md:pt-8 border-t border-gray-100 dark:border-gray-800 text-center">
+          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-900 px-3 md:px-4 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 whitespace-nowrap">
             {t('playlist.ui.whyListen')}
           </span>
           <AnimatePresence mode="wait">
@@ -253,7 +255,7 @@ export default function PlaylistPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-gray-600 dark:text-gray-400 font-light italic leading-relaxed text-sm md:text-base max-w-sm mx-auto"
+              className="text-gray-600 dark:text-gray-400 font-light italic leading-relaxed text-xs sm:text-sm md:text-base max-w-sm mx-auto"
             >
               "{currentSong.description}"
             </motion.p>

@@ -6,7 +6,6 @@ import LabStock from '../assets/LabStock.png';
 import TourCraft from '../assets/TourCraft.png';
 
 // ─── DICCIONARIO DE ICONOS OFICIALES A COLOR ───
-// (Este objeto se queda exactamente igual, no necesita traducción)
 const techData = {
   "React Native": { 
     color: "#61DAFB", 
@@ -46,10 +45,8 @@ const techData = {
 };
 
 export default function PortfolioPage() {
-  // 2. Inicializar el hook
   const { t } = useTranslation();
 
-  // 3. Importar y combinar los datos traducidos con las imágenes estáticas
   const projectImages = {
     1: LabStock,
     2: TourCraft
@@ -83,84 +80,86 @@ export default function PortfolioPage() {
   };
 
   return (
-    // Se quitó el background sólido para dejar pasar el fondo de App.jsx
-    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-40 md:pt-48 pb-32 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-300">
+    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-32 md:pt-48 pb-24 md:pb-32 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-300">
       <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-7xl mx-auto px-6">
         
         {/* ─── HERO SECTION ─── */}
-        <motion.section className="mb-40 max-w-4xl">
-          <motion.span variants={fadeInUp} className="text-xs font-semibold tracking-widest text-gray-400 uppercase block">
+        <motion.section className="mb-32 md:mb-40 max-w-4xl">
+          <motion.span variants={fadeInUp} className="text-xs font-semibold tracking-widest text-gray-400 uppercase block mb-4 md:mb-6">
             {t('portfolio.hero.subtitle')}
           </motion.span>
           
-          <h1 className="text-7xl md:text-9xl font-serif mb-8 tracking-tighter leading-none">
-            <span className="block overflow-hidden pb-2">
+          {/* Ajuste responsivo de la tipografía gigante */}
+          <h1 className="text-5xl sm:text-7xl md:text-9xl font-serif mb-6 md:mb-8 tracking-tighter leading-tight md:leading-none">
+            <span className="block overflow-hidden pb-1 md:pb-2">
               <motion.span variants={titleReveal} className="block text-gray-900 dark:text-white">{t('portfolio.hero.title1')}</motion.span>
             </span>
-            <span className="block overflow-hidden pb-2">
+            <span className="block overflow-hidden pb-1 md:pb-2">
               <motion.span variants={titleReveal} className="block text-gray-400">{t('portfolio.hero.title2')}</motion.span>
             </span>
           </h1>
           
-          <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-xl md:text-2xl leading-relaxed max-w-2xl">
+          <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl">
             {t('portfolio.hero.description')}
           </motion.p>
         </motion.section>
 
         {/* ─── SHOWCASE INMERSIVO ─── */}
-        <div className="space-y-48">
+        {/* En móvil se reduce el espacio vertical (gap) entre proyectos */}
+        <div className="space-y-32 md:space-y-48">
           {projects.map((project) => (
             <motion.section 
               key={project.id}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-50px" }} // Ajustado para que se active más fácil en móviles
               variants={containerVariants}
-              className={`flex flex-col gap-16 lg:gap-24 ${project.align === "left" ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+              className={`flex flex-col gap-10 md:gap-16 lg:gap-24 ${project.align === "left" ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
             >
-              {/* Bloque de Imagen con Problemática en Hover */}
-              <motion.div variants={fadeInUp} className="w-full md:w-1/2 group relative">
-                <div className="relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 aspect-[4/3] shadow-2xl transition-all duration-700 group-hover:shadow-black/10">
+              {/* Bloque de Imagen con Problemática en Hover/Tap */}
+              <motion.div variants={fadeInUp} className="w-full lg:w-1/2 group relative">
+                <div className="relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 aspect-[4/3] shadow-xl md:shadow-2xl transition-all duration-700 group-hover:shadow-black/10">
                   <img 
                     src={project.image} 
                     alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale-[15%] group-hover:grayscale-0"
+                    // active:grayscale-0 ayuda a que en celulares el toque limpie el filtro
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale-[15%] group-hover:grayscale-0 active:grayscale-0"
                   />
-                  {/* Overlay Informativo Restaurado */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm p-8 md:p-12">
+                  {/* Overlay Informativo (Maneja Hover en PC y Toque en Móvil) */}
+                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 active:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm p-6 sm:p-8 md:p-12">
                     <div className="text-white text-center">
-                      <p className="text-xs tracking-widest uppercase mb-4 text-gray-300 italic font-medium">{t('portfolio.ui.problemLabel')}</p>
-                      <p className="text-lg font-light leading-relaxed">"{project.problem}"</p>
+                      <p className="text-[10px] md:text-xs tracking-widest uppercase mb-3 md:mb-4 text-gray-300 italic font-medium">{t('portfolio.ui.problemLabel')}</p>
+                      <p className="text-sm sm:text-base md:text-lg font-light leading-relaxed">"{project.problem}"</p>
                     </div>
                   </div>
                 </div>
               </motion.div>
 
               {/* Bloque de Texto y Detalles */}
-              <div className="w-full md:w-1/2 flex flex-col justify-center">
-                <motion.span variants={fadeInUp} className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-4 block">
+              <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                <motion.span variants={fadeInUp} className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-3 md:mb-4 block">
                   {project.category}
                 </motion.span>
-                <motion.h2 variants={fadeInUp} className="text-5xl md:text-6xl font-serif text-gray-900 dark:text-white mb-6 tracking-tighter">
+                <motion.h2 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl font-serif text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tighter leading-tight">
                   {project.title}
                 </motion.h2>
                 
-                <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-lg md:text-xl leading-relaxed mb-10">
+                <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-base md:text-lg lg:text-xl leading-relaxed mb-8 md:mb-10">
                   {project.description}
                 </motion.p>
 
-                {/* Tech Stack con Animación Spring */}
-                <motion.div variants={fadeInUp} className="flex flex-wrap gap-3 mb-14">
+                {/* Tech Stack */}
+                <motion.div variants={fadeInUp} className="flex flex-wrap gap-2 md:gap-3 mb-10 md:mb-14">
                   {project.techStack.map(tech => (
                     <motion.span 
                       key={tech} 
                       whileHover={{ scale: 1.05, y: -2 }}
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      className="px-4 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-[11px] font-medium text-gray-700 dark:text-gray-300 tracking-wide flex items-center gap-2 shadow-sm hover:shadow-md cursor-default"
+                      className="px-3 md:px-4 py-1.5 md:py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-[10px] md:text-[11px] font-medium text-gray-700 dark:text-gray-300 tracking-wide flex items-center gap-1.5 md:gap-2 shadow-sm hover:shadow-md cursor-default"
                     >
                       {techData[tech] && (
                         <svg 
-                          className="w-4 h-4" 
+                          className="w-3.5 h-3.5 md:w-4 md:h-4" 
                           viewBox="0 0 24 24" 
                           fill={techData[tech].fill === 'none' ? 'none' : techData[tech].color}
                           stroke={techData[tech].fill === 'none' ? techData[tech].color : 'none'}
@@ -173,18 +172,18 @@ export default function PortfolioPage() {
                   ))}
                 </motion.div>
 
-                {/* Botón Minimalista y Elegante */}
+                {/* Botón Explorar */}
                 <motion.div variants={fadeInUp}>
                   <Link 
-                    to={`/case-study/${project.id}`} 
-                    className="group relative inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.15em] text-gray-900 dark:text-white"
+                    to={`/case-study/${project.id}`}
+                    className="group relative inline-flex items-center gap-3 md:gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-gray-900 dark:text-white"
                   >
                     <span className="relative z-10 transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-400">
                       {t('portfolio.ui.exploreButton')}
                     </span>
-                    <span className="w-8 h-[1px] bg-gray-900 dark:bg-white transition-all duration-500 group-hover:w-16 group-hover:bg-gray-500 dark:group-hover:bg-gray-400"></span>
+                    <span className="w-6 md:w-8 h-[1px] bg-gray-900 dark:bg-white transition-all duration-500 group-hover:w-12 md:group-hover:w-16 group-hover:bg-gray-500 dark:group-hover:bg-gray-400"></span>
                     <svg 
-                      className="w-4 h-4 transform transition-all duration-500 group-hover:translate-x-2 text-gray-900 dark:text-white group-hover:text-gray-500 dark:group-hover:text-gray-400" 
+                      className="w-3.5 h-3.5 md:w-4 md:h-4 transform transition-all duration-500 group-hover:translate-x-2 text-gray-900 dark:text-white group-hover:text-gray-500 dark:group-hover:text-gray-400" 
                       fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
