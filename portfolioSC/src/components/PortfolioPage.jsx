@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-// 1. Importar el hook de traducción
 import { useTranslation } from 'react-i18next';
 
-import LabStock from '../assets/labstock.png';
-import TourCraft from '../assets/tourcraft.png';
+import LabStock from '../assets/LabStock.png';
+import TourCraft from '../assets/TourCraft.png';
 
 // ─── DICCIONARIO DE ICONOS OFICIALES A COLOR ───
 // (Este objeto se queda exactamente igual, no necesita traducción)
