@@ -12,11 +12,13 @@ import LS6 from '../assets/LS6.png';
 import TC1 from '../assets/TC1.png';
 import TC2 from '../assets/TC2.png';
 import TC3 from '../assets/TC3.png';
+import TC4 from '../assets/TC4.png';
+import TC5 from '../assets/TC5.png';
 
 // ─── DICCIONARIO DE IMÁGENES LOCALES ───
 const galleryImages = {
   "1": [LS1, LS2, LS3, LS4, LS5, LS6],
-  "2": [TC1, TC2, TC3]
+  "2": [TC1, TC2, TC3, TC4, TC5]
 };
 
 // ─── COMPONENTE: GALERÍA (GRID ELEGANTE, SIN SCROLL) ───
@@ -49,7 +51,7 @@ function ProjectGallery({ layout, images }) {
               className="w-full"
             >
               {/* Barra superior tipo navegador */}
-              <div className="flex items-center gap-1.5 rounded-t-2xl border border-b-0 border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 px-5 py-3.5">
+              <div className="flex items-center gap-1.5 rounded-t-2xl border border-b-0 border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm px-5 py-3.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-700" />
                 <span className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-700" />
                 <span className="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-700" />
@@ -121,9 +123,10 @@ export default function CaseStudy() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-white selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-gray-900 pb-20 transition-colors duration-300">
+    // Se removió el bg sólido del contenedor principal
+    <div className="min-h-screen text-gray-900 dark:text-white selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-gray-900 pb-20 transition-colors duration-300">
       
-      {/* ─── CABECERA EDITORIAL (MANTIENE TUS FUENTES SERIF Y ESPACIOS) ─── */}
+      {/* ─── CABECERA EDITORIAL ─── */}
       <section className="pt-40 md:pt-48 pb-24 px-6 max-w-5xl mx-auto">
         <motion.div variants={staggerContainer} initial="hidden" animate="visible">
           
@@ -167,8 +170,8 @@ export default function CaseStudy() {
         </motion.div>
       </section>
 
-      {/* ─── 01. EL RETO ─── */}
-      <section className="py-32 bg-gray-100 dark:bg-gray-900 px-6 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+      {/* ─── 01. EL RETO (Se usó un fondo translúcido/glassmorphism sutil para mantener el diseño sin tapar el fondo) ─── */}
+      <section className="py-32 bg-white/40 dark:bg-gray-900/40 backdrop-blur-sm px-6 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16">
           <div className="md:col-span-4 relative">
             <div className="sticky top-12">
@@ -225,7 +228,7 @@ export default function CaseStudy() {
                 <motion.div 
                   key={i}
                   whileHover={{ y: -8 }}
-                  className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-xl dark:hover:shadow-gray-950/50 transition-all duration-500"
+                  className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm p-8 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-xl dark:hover:shadow-gray-950/50 transition-all duration-500"
                 >
                   <h4 className="text-lg font-serif text-gray-900 dark:text-white mb-3">{feature.title}</h4>
                   <p className="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">
@@ -241,8 +244,8 @@ export default function CaseStudy() {
       {/* ─── 03. LA SOLUCIÓN VISUAL (GALERÍA) ─── */}
       <ProjectGallery layout={data.deviceType} images={images} />
 
-      {/* ─── 04. EL IMPACTO (LIMPIO Y CLARO) ─── */}
-      <section className="py-32 px-6 border-t border-gray-200 dark:border-gray-800 bg-[#fafafa] dark:bg-gray-950 transition-colors duration-300">
+      {/* ─── 04. EL IMPACTO ─── */}
+      <section className="py-32 px-6 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
         <div className="max-w-5xl mx-auto text-center">
           <span className="text-xs font-bold tracking-[0.2em] text-gray-400 dark:text-gray-500 uppercase mb-20 block">
             {t('caseStudy.ui.section4Title')}
@@ -256,7 +259,6 @@ export default function CaseStudy() {
                 viewport={{ once: true }} 
                 transition={{ duration: 0.6, delay: i * 0.15 }}
               >
-                {/* Volvemos a tu elegante Serif y tonos grises oscuros */}
                 <p className="text-6xl md:text-7xl font-serif text-gray-900 dark:text-white mb-4">{metric.value}</p>
                 <p className="text-sm font-bold uppercase tracking-widest text-gray-900 dark:text-white mb-3">{metric.label}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 font-light mx-auto max-w-[250px] leading-relaxed">

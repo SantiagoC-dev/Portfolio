@@ -84,8 +84,8 @@ export default function PortfolioPage() {
   };
 
   return (
-    // Se añadió bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 y selección adaptada
-    <div className="min-h-screen bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 pt-40 md:pt-48 pb-32 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-300">
+    // Se quitó el background sólido para dejar pasar el fondo de App.jsx
+    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-40 md:pt-48 pb-32 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-300">
       <motion.div variants={containerVariants} initial="hidden" animate="visible" className="max-w-7xl mx-auto px-6">
         
         {/* ─── HERO SECTION ─── */}

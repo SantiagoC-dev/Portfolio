@@ -187,38 +187,6 @@
       }
     ]
   },
-  "portfolio": {
-    "hero": {
-      "subtitle": "Portfolio 2026",
-      "title1": "Digital",
-      "title2": "Architecture.",
-      "description": "Robust solutions disguised as minimalist interfaces. Translating complex business problems into scalable code."
-    },
-    "ui": {
-      "problemLabel": "Problem",
-      "exploreButton": "Explore Case Study"
-    },
-    "projects": [
-      {
-        "id": 1,
-        "title": "LabStock",
-        "category": "Industrial IoT & Inventory Intelligence",
-        "description": "Mobile system designed for the quality department. I transformed manual processes into a centralized platform that eliminated inventory discrepancies and digitized certificates in real-time.",
-        "problem": "Loss of 1.5 hours daily per user in manual transcriptions and a 20% discrepancy in physical stock.",
-        "techStack": ["React Native", "Node.js", "MySQL", "AP Config"],
-        "align": "left"
-      },
-      {
-        "id": 2,
-        "title": "TourCraft",
-        "category": "Digital Tourism Marketplace",
-        "description": "Digital ecosystem focused on the Riviera Maya that democratizes local tourism, connecting travelers directly with independent guides and small businesses for authentic experiences.",
-        "problem": "Lack of digital visibility for independent guides and market monopolization by large tour operators.",
-        "techStack": ["React", "Vite", "Node.js", "MongoDB"],
-        "align": "right"
-      }
-    ]
-  },
   "caseStudy": {
     "ui": {
       "backButton": "Back to Portfolio",

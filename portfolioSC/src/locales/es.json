@@ -187,38 +187,6 @@
       }
     ]
   },
-  "portfolio": {
-    "hero": {
-      "subtitle": "Portafolio 2026",
-      "title1": "Arquitectura",
-      "title2": "Digital.",
-      "description": "Soluciones robustas disfrazadas de interfaces minimalistas. Traduciendo problemas de negocio complejos en código escalable."
-    },
-    "ui": {
-      "problemLabel": "Problemática",
-      "exploreButton": "Explorar Caso de Estudio"
-    },
-    "projects": [
-      {
-        "id": 1,
-        "title": "LabStock",
-        "category": "IoT Industrial e Inteligencia de Inventario",
-        "description": "Sistema móvil diseñado para el área de calidad. Transformé procesos manuales en una plataforma centralizada que eliminó discrepancias de inventario y digitalizó certificados en tiempo real.",
-        "problem": "Pérdida de 1.5 horas diarias por usuario en transcripciones manuales y 20% de discrepancia en stock físico.",
-        "techStack": ["React Native", "Node.js", "MySQL", "AP Config"],
-        "align": "left"
-      },
-      {
-        "id": 2,
-        "title": "TourCraft",
-        "category": "Marketplace Turístico Digital",
-        "description": "Ecosistema digital enfocado en la Riviera Maya que democratiza el turismo local, conectando a viajeros directamente con guías independientes y pequeños negocios para experiencias auténticas.",
-        "problem": "Falta de visibilidad digital para guías independientes y monopolización del mercado por parte de grandes operadores turísticos.",
-        "techStack": ["React", "Vite", "Node.js", "MongoDB"],
-        "align": "right"
-      }
-    ]
-  },
   "caseStudy": {
     "ui": {
       "backButton": "Volver al Portafolio",

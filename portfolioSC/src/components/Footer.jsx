@@ -7,7 +7,7 @@ export default function Footer() {
 
   return (
     // ¡AQUÍ ESTABA EL PARCHE BLANCO! Agregué dark:bg-gray-950, dark:border-gray-800 y cambié bg-[#fafafa] a bg-transparent
-    <footer className="bg-transparent dark:bg-gray-950 pt-32 pb-16 border-t border-gray-200 dark:border-gray-800 mt-20 transition-colors duration-300">
+    <footer className="bg-transparent pt-32 pb-16 border-t border-gray-200 dark:border-gray-800 mt-20 transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
         
         {/* ─── TÍTULO Y DESCRIPCIÓN ─── */}

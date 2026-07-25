@@ -143,7 +143,8 @@ export default function InspirationsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent dark:bg-gray-950 text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 transition-colors duration-300">
+    // Se quitaron las clases de bg para dejar pasar el fondo global de App.jsx
+    <div className="min-h-screen text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 transition-colors duration-300">
       
       {/* HEADER */}
       <section className="text-center mb-20 px-4">

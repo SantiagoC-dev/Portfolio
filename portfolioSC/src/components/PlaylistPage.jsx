@@ -118,7 +118,8 @@ export default function PlaylistPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-screen bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 flex flex-col items-center transition-colors duration-300"
+      // Se eliminaron las clases bg-[#fafafa] dark:bg-gray-950 para dejar el fondo transparente
+      className="min-h-screen text-gray-900 dark:text-white pt-40 md:pt-48 pb-32 flex flex-col items-center transition-colors duration-300"
     >
         
       {/* ─── CABECERA ─── */}

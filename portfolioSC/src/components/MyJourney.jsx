@@ -50,7 +50,7 @@ export default function MyJourney() {
   return (
     <section className="max-w-6xl mx-auto px-6 py-32 border-t border-gray-200 dark:border-gray-800 text-center transition-colors duration-300">
       
-      <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase mb-4 block">
+      <span className="text-[10px] font-bold tracking-[0.3em] text-gray-400 dark:text-gray-500 uppercase mb-4 block">
         {/* 5. Traducir subtítulo */}
         {t('journey.subtitle')}
       </span>
@@ -69,16 +69,18 @@ export default function MyJourney() {
             className="w-full max-w-[1000px] overflow-visible"
             style={{ height: 100 }}
           >
-            {/* Línea base inactiva (cambia de color en modo oscuro) */}
+            {/* Línea base inactiva — contraste subido para que se distinga sobre el fondo */}
             <line
               x1="100" y1="40" x2="900" y2="40"
-              className="stroke-gray-100 dark:stroke-gray-800" strokeWidth="2" strokeLinecap="round"
+              className="stroke-gray-200 dark:stroke-gray-800 transition-colors duration-300"
+              strokeWidth="2" strokeLinecap="round"
             />
 
-            {/* Línea de progreso activa (cambia a blanco en modo oscuro) */}
+            {/* Línea de progreso activa */}
             <motion.line
               x1="100" y1="40" x2="900" y2="40"
-              className="stroke-gray-900 dark:stroke-white" strokeWidth="2" strokeLinecap="round"
+              className="stroke-gray-900 dark:stroke-white transition-colors duration-300"
+              strokeWidth="2" strokeLinecap="round"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: PROGRESS_BY_INDEX[activeIndex] }}
               transition={{ duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] }}
@@ -96,19 +98,33 @@ export default function MyJourney() {
                   tabIndex={0}
                   onKeyDown={(e) => e.key === 'Enter' && setActiveIndex(index)}
                 >
+                  {/* Área de click ampliada */}
                   <circle cx={cx} cy={40} r={30} fill="transparent" />
 
+                  {/* Conector vertical hacia la etiqueta — refuerza el look arquitectónico */}
+                  <line
+                    x1={cx} y1={48} x2={cx} y2={62}
+                    className="stroke-gray-200 dark:stroke-gray-800 transition-colors duration-300"
+                    strokeWidth={1}
+                  />
+
+                  {/* Pulso del punto activo */}
                   {isActive && (
                     <motion.circle
-                      cx={cx} cy={40} fill="none" className="stroke-gray-900 dark:stroke-white" strokeWidth={1}
+                      cx={cx} cy={40} fill="none"
+                      className="stroke-gray-900 dark:stroke-white"
+                      strokeWidth={1}
                       initial={{ r: 8, opacity: 0.8 }}
                       animate={{ r: 24, opacity: 0 }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
                     />
                   )}
 
+                  {/* Anillo del punto activo */}
                   <motion.circle
-                    cx={cx} cy={40} r={8} fill="none" className="stroke-gray-900 dark:stroke-white" strokeWidth={1.5}
+                    cx={cx} cy={40} r={8} fill="none"
+                    className="stroke-gray-900 dark:stroke-white"
+                    strokeWidth={1.5}
                     initial={false}
                     animate={{ 
                       scale: isActive ? 1 : 0, 
@@ -117,26 +133,24 @@ export default function MyJourney() {
                     transition={{ duration: 0.4, ease: "backOut" }}
                   />
 
-                  <motion.circle
+                  {/* Punto sólido — color por Tailwind, reacciona solo al dark mode */}
+                  <circle
                     cx={cx} cy={40} r={4}
-                    initial={false}
-                    animate={{ 
-                      fill: isPast 
-                        ? (document.documentElement.classList.contains('dark') ? "#FFFFFF" : "#111827") 
-                        : (document.documentElement.classList.contains('dark') ? "#374151" : "#E5E7EB") 
-                    }}
-                    className="transition-colors duration-300"
+                    className={`transition-colors duration-300 ${
+                      isPast
+                        ? 'fill-gray-900 dark:fill-white'
+                        : 'fill-gray-300 dark:fill-gray-700 group-hover:fill-gray-500 dark:group-hover:fill-gray-500'
+                    }`}
                   />
 
-                  <motion.text
-                    x={cx} y={75} textAnchor="middle" className="select-none transition-colors duration-300"
-                    initial={false}
-                    animate={{
-                      fill: isActive 
-                        ? (document.documentElement.classList.contains('dark') ? "#FFFFFF" : "#111827") 
-                        : "#9CA3AF",
-                      fontWeight: isActive ? 600 : 400
-                    }}
+                  {/* Etiqueta de año */}
+                  <text
+                    x={cx} y={78} textAnchor="middle"
+                    className={`select-none transition-colors duration-300 ${
+                      isActive
+                        ? 'fill-gray-900 dark:fill-white font-semibold'
+                        : 'fill-gray-400 dark:fill-gray-500 font-normal group-hover:fill-gray-600 dark:group-hover:fill-gray-300'
+                    }`}
                     style={{
                       fontFamily: "ui-sans-serif, system-ui, sans-serif",
                       fontSize: 11,
@@ -144,7 +158,7 @@ export default function MyJourney() {
                     }}
                   >
                     {journeyData[index].year}
-                  </motion.text>
+                  </text>
                 </g>
               );
             })}

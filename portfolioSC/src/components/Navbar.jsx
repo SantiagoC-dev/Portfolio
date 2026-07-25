@@ -7,7 +7,6 @@ import LogoB from '../assets/LogoB.png';
 import LogoN from '../assets/LogoN.png';
 
 export default function Navbar() {
-  // 1. MODO MANUAL: Siempre inicia en falso (modo claro)
   const [isDarkMode, setIsDarkMode] = useState(false);
   
   const location = useLocation();
@@ -15,7 +14,9 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
 
-  // 2. EFECTO DIRECTO: Solo agrega o quita la clase cuando le das clic, sin guardar nada.
+  // Guardamos el idioma actual de forma segura (si no existe, por defecto es 'es')
+  const currentLang = i18n?.language || 'es';
+
   useEffect(() => {
     const root = document.documentElement;
     if (isDarkMode) {
@@ -37,7 +38,7 @@ export default function Navbar() {
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
   
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'es' ? 'en' : 'es';
+    const newLang = currentLang === 'es' ? 'en' : 'es';
     i18n.changeLanguage(newLang);
   };
 
@@ -78,7 +79,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`relative px-4 md:px-6 py-2 md:py-2.5 text-[10px] md:text-xs font-bold tracking-widest uppercase transition-colors rounded-full whitespace-nowrap ${
+                className={`relative px-4 md:px-6 py-2 md:py-2.5 text-[10px] md:text-xs font-bold tracking-widest uppercase transition-colors rounded-full whitespace-nowrap flex items-center justify-center overflow-hidden ${
                   isActive 
                     ? 'text-white dark:text-gray-900' 
                     : 'text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
@@ -91,7 +92,16 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
-                <span className="relative z-10">{link.name}</span>
+                {/* Ahora usamos la variable segura `currentLang` */}
+                <motion.span 
+                  key={currentLang}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="relative z-10"
+                >
+                  {link.name}
+                </motion.span>
               </Link>
             );
           })}
@@ -101,10 +111,18 @@ export default function Navbar() {
           
           <button 
             onClick={toggleLanguage}
-            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-[10px] md:text-xs font-bold text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300"
+            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-[10px] md:text-xs font-bold text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 overflow-hidden"
             title="Cambiar idioma"
           >
-            {i18n.language.toUpperCase()}
+            {/* Animación blindada contra el error de undefined */}
+            <motion.span
+              key={currentLang}
+              initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              {currentLang.toUpperCase()}
+            </motion.span>
           </button>
           
           <div className="w-px h-3 md:h-4 bg-gray-200 dark:bg-gray-700"></div>

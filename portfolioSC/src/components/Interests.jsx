@@ -55,7 +55,7 @@ function CreativeCard({ card, index, variants }) {
       <div className="relative h-64 md:h-72 mb-10 flex items-center justify-center w-full">
         
         {/* Sombra de piso elíptica y más realista (efecto de estudio 3D) */}
-        <div className="absolute -bottom-4 w-3/4 h-6 bg-black/10 dark:bg-black/50 blur-xl rounded-[50%] transition-all duration-700 group-hover:w-[85%] group-hover:bg-black/15 dark:group-hover:bg-black/70" />
+        <div className="absolute -bottom-4 w-3/4 h-6 bg-black/25 dark:bg-black/50 blur-xl rounded-[50%] transition-all duration-700 group-hover:w-[85%] group-hover:bg-black/15 dark:group-hover:bg-black/70" />
         
         {/* Imagen SVG — Añadido scale-[1.25] para hacerlas más grandes por defecto */}
         <motion.img
