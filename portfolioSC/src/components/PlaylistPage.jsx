@@ -49,13 +49,12 @@ const formatTime = (seconds) => {
 };
 
 // ─── COMPONENTE OPTIMIZADO DEL PROGRESS BAR ───
-// Al extraer esto, evitamos que toda la página se re-renderice cada segundo
 const ProgressBar = ({ duration, startAt, onComplete }) => {
   const [currentTime, setCurrentTime] = useState(startAt);
 
   useEffect(() => {
     setCurrentTime(startAt); // Reset cuando cambia la canción
-    
+
     const interval = setInterval(() => {
       setCurrentTime((prev) => {
         if (prev >= duration) {
@@ -118,9 +117,9 @@ export default function PlaylistPage() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 40, filter: "blur(10px)", scale: 0.98 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       filter: "blur(0px)",
       scale: 1,
       transition: { duration: 1, ease: [0.215, 0.610, 0.355, 1.000] }
@@ -128,13 +127,13 @@ export default function PlaylistPage() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       className="min-h-screen text-gray-900 dark:text-white pt-32 md:pt-48 pb-20 lg:pb-32 flex flex-col items-center transition-colors duration-300"
     >
-        
+
       {/* ─── CABECERA ─── */}
       <motion.section variants={itemVariants} className="text-center mb-12 md:mb-20 px-4 w-full max-w-3xl">
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif mb-4 md:mb-6 tracking-tight text-gray-900 dark:text-white">
@@ -148,10 +147,9 @@ export default function PlaylistPage() {
       {/* ─── REPRODUCTOR (Tarjeta Unificada Blanca) ─── */}
       <motion.div
         variants={itemVariants}
-        // Ajuste de padding para móviles (px-6 py-8) vs PC (p-10)
         className="w-full max-w-[90%] sm:max-w-[440px] bg-white dark:bg-gray-900 rounded-[32px] md:rounded-[40px] px-6 py-8 md:p-10 flex flex-col items-center shadow-xl md:shadow-2xl dark:shadow-gray-950/50 border border-gray-100 dark:border-gray-800 relative overflow-hidden transition-colors duration-300 mx-auto"
       >
-        
+
         {/* Portada Gigante */}
         <div className="w-full aspect-square mb-6 md:mb-8 relative rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
           <AnimatePresence mode="wait">
@@ -190,16 +188,16 @@ export default function PlaylistPage() {
           </AnimatePresence>
         </div>
 
-        {/* Progreso del tiempo - Ahora optimizado */}
-        <ProgressBar 
-          duration={currentSong.duration} 
-          startAt={currentSong.startAt} 
-          onComplete={handleNext} 
+        {/* Progreso del tiempo */}
+        <ProgressBar
+          duration={currentSong.duration}
+          startAt={currentSong.startAt}
+          onComplete={handleNext}
         />
 
         {/* ─── CONTROLES DE REPRODUCCIÓN Y YOUTUBE ─── */}
         <div className="flex justify-center items-center gap-6 md:gap-8 w-full mb-8 md:mb-10">
-          
+
           {/* Botón Anterior */}
           <motion.button
             onClick={handlePrev}
@@ -213,20 +211,50 @@ export default function PlaylistPage() {
             </svg>
           </motion.button>
 
-          {/* Botón Central (Link a YouTube) */}
-          <motion.a
-            href={currentSong.youtubeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-16 h-16 md:w-20 md:h-20 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:bg-black dark:hover:bg-gray-200 transition-colors shrink-0"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Escuchar en YouTube"
-          >
-            <svg className="w-7 h-7 md:w-8 md:h-8 ml-1" fill="currentColor" viewBox="1 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </motion.a>
+          {/* Botón Central (Link a YouTube) — animación fluida, sin conflictos */}
+          <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
+
+            {/* Halo giratorio tipo "cometa" — CSS puro, corre solo, nunca se traba */}
+            <div
+              className="absolute -inset-3 rounded-full opacity-70 dark:opacity-40 blur-md pointer-events-none animate-spin text-gray-900 dark:text-white"
+              style={{
+                animationDuration: "5s",
+                background:
+                  "conic-gradient(from 0deg, transparent, currentColor 20%, transparent 45%)",
+              }}
+            />
+
+            {/* Resplandor que respira suavemente detrás */}
+            <div className="absolute inset-0 rounded-full bg-gray-900/25 dark:bg-white/25 blur-xl pointer-events-none animate-pulse" />
+
+            {/* Anillo "invitación a click", más lento que el default de Tailwind */}
+            <span
+              className="absolute inset-0 rounded-full bg-gray-900 dark:bg-white opacity-25 pointer-events-none animate-ping"
+              style={{ animationDuration: "2.2s" }}
+            />
+
+            {/* Botón principal — SIN animación continua, solo física de resorte al interactuar */}
+            <motion.a
+              href={currentSong.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.14 }}
+              whileTap={{ scale: 0.88 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="relative z-10 w-full h-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:bg-black dark:hover:bg-gray-200 transition-colors"
+              aria-label="Escuchar en YouTube"
+            >
+              <motion.svg
+                className="w-7 h-7 md:w-8 md:h-8 ml-1"
+                fill="currentColor"
+                viewBox="1 0 24 24"
+                whileHover={{ x: 2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              >
+                <path d="M8 5v14l11-7z" />
+              </motion.svg>
+            </motion.a>
+          </div>
 
           {/* Botón Siguiente */}
           <motion.button

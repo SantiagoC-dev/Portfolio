@@ -12,8 +12,9 @@ function CreativeCard({ card, index, variants, permissionGranted }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const smoothX = useSpring(x, { stiffness: 300, damping: 30 });
-  const smoothY = useSpring(y, { stiffness: 300, damping: 30 });
+  // ─── FÍSICA MEJORADA: Menos rígida, más "flotante" y orgánica ───
+  const smoothX = useSpring(x, { stiffness: 200, damping: 25 });
+  const smoothY = useSpring(y, { stiffness: 200, damping: 25 });
 
   // ─── EVENTOS DE RATÓN (PC) ───
   const handleMouseMove = (e) => {
@@ -37,8 +38,9 @@ function CreativeCard({ card, index, variants, permissionGranted }) {
       // Si el dispositivo no tiene giroscopio o está bloqueado por HTTP
       if (e.gamma === null || e.beta === null) return;
       
-      let normalizedX = e.gamma / 30;
-      let normalizedY = (e.beta - 40) / 30;
+      // Aumentamos la sensibilidad cambiando el divisor de 30 a 25
+      let normalizedX = e.gamma / 25; 
+      let normalizedY = (e.beta - 40) / 25;
       
       normalizedX = Math.max(-1, Math.min(1, normalizedX));
       normalizedY = Math.max(-1, Math.min(1, normalizedY));
@@ -58,10 +60,11 @@ function CreativeCard({ card, index, variants, permissionGranted }) {
     };
   }, [permissionGranted, x, y]);
 
-  const magneticX = useTransform(smoothX, [-1, 1], [-15, 15]);
-  const magneticY = useTransform(smoothY, [-1, 1], [-15, 15]);
-  const imageX = useTransform(smoothX, [-1, 1], [-12, 12]);
-  const imageY = useTransform(smoothY, [-1, 1], [-12, 12]);
+  // ─── DESPLAZAMIENTO AUMENTADO: Mucho más pronunciado ───
+  const magneticX = useTransform(smoothX, [-1, 1], [-20, 20]); // Antes: 15
+  const magneticY = useTransform(smoothY, [-1, 1], [-20, 20]); // Antes: 15
+  const imageX = useTransform(smoothX, [-1, 1], [-35, 35]);    // Antes: 12 (Casi el triple)
+  const imageY = useTransform(smoothY, [-1, 1], [-35, 35]);    // Antes: 12 (Casi el triple)
 
   const isMiddle = index === 1;
 

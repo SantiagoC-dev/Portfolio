@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -8,11 +9,6 @@ import TourCraft from '../assets/TourCraft.png';
 // ─── DICCIONARIO DE ICONOS OFICIALES A COLOR ───
 const techData = {
   "React Native": { 
-    color: "#61DAFB", 
-    fill: "currentColor",
-    icon: <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" />
-  },
-  "React": { 
     color: "#61DAFB", 
     fill: "currentColor",
     icon: <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" />
@@ -43,6 +39,76 @@ const techData = {
     icon: <path d="M17.193 9.555c-1.393-3.037-3.21-6.195-5.184-8.877-.042-.058-.178-.069-.228 0-1.976 2.682-3.791 5.84-5.184 8.877-1.117 2.44-1.636 5.564-1.284 8.169.314 2.335 1.768 4.295 3.905 5.25.321.143.66.24 1.008.288 1.5.21 2.898-.553 3.652-1.782.754 1.229 2.152 1.992 3.652 1.782.348-.048.687-.145 1.008-.288 2.137-.955 3.59-2.915 3.905-5.25.352-2.605-.167-5.729-1.284-8.169zm-5.08 9.539c-.58.336-1.332.336-1.912 0-.547-.318-.87-1.246-.948-2.642.668.214 1.385.325 2.124.325s1.456-.111 2.124-.325c-.078 1.396-.401 2.324-.948 2.642zm.968-3.323c-.636.177-1.306.27-1.984.27s-1.348-.093-1.984-.27c-.234-2.883.69-7.07 1.83-10.02.05-.129.258-.129.308 0 1.14 2.95 2.064 7.137 1.83 10.02z"/>
   }
 };
+
+// ─── NUEVO COMPONENTE: TARJETA INTERACTIVA DE IMAGEN ───
+// Maneja la interacción inteligentemente: Detecta PC vs Móvil para no tener choques.
+function ProjectImageInteraction({ project, t }) {
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [isHoverDevice, setIsHoverDevice] = useState(false);
+
+  useEffect(() => {
+    // Averiguamos una sola vez si el dispositivo usa ratón (PC) o pantalla táctil
+    const checkHover = () => setIsHoverDevice(window.matchMedia('(hover: hover)').matches);
+    checkHover();
+  }, []);
+
+  return (
+    <div 
+      className="relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 aspect-[4/3] shadow-xl md:shadow-2xl transition-all duration-700 hover:shadow-black/10 cursor-pointer"
+      // En PC: Revelamos al pasar el ratón. En móvil: Ignoramos estos eventos para que no peleen con el toque.
+      onMouseEnter={() => isHoverDevice && setIsRevealed(true)}
+      onMouseLeave={() => isHoverDevice && setIsRevealed(false)}
+      // En móvil: Con un tap activamos/desactivamos. En PC: Se ignora (porque el ratón ya lo controla).
+      onClick={() => !isHoverDevice && setIsRevealed(!isRevealed)}
+      style={{ 
+        WebkitTapHighlightColor: 'transparent', 
+        userSelect: 'none', 
+        touchAction: 'manipulation',
+        // ─── MAGIA DE HARDWARE PARA EVITAR CORTES EN CELULAR ───
+        transform: 'translateZ(0)', 
+        WebkitMaskImage: '-webkit-radial-gradient(white, black)' // Detiene el desbordamiento de esquinas redondeadas en Safari/Chrome móvil
+      }}
+    >
+      <img 
+        src={project.image} 
+        alt={project.title} 
+        draggable="false"
+        // will-change-transform fuerza a la tarjeta gráfica a dibujar la imagen permanentemente
+        className={`w-full h-full object-cover transition-transform duration-1000 will-change-transform ${isRevealed ? 'scale-105 grayscale-0' : 'grayscale-[15%]'}`}
+      />
+      
+      <div className={`absolute inset-0 bg-black/70 transition-opacity duration-500 flex items-center justify-center backdrop-blur-sm p-6 sm:p-8 md:p-12 ${isRevealed ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="text-white text-center">
+          <p className="text-[10px] md:text-xs tracking-widest uppercase mb-3 md:mb-4 text-gray-300 italic font-medium">
+            {t('portfolio.ui.problemLabel')}
+          </p>
+          <p className="text-sm sm:text-base md:text-lg font-light leading-relaxed">
+            "{project.problem}"
+          </p>
+        </div>
+      </div>
+
+      {/* Mini animación para incitar el TAP (Aparece en celulares y desaparece al hacer tap) */}
+      <AnimatePresence>
+        {!isRevealed && !isHoverDevice && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute bottom-4 right-4 md:hidden flex items-center gap-2 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full shadow-lg pointer-events-none"
+          >
+            <motion.div 
+              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-2.5 h-2.5 bg-white rounded-full"
+            />
+            <span className="text-[9px] tracking-widest font-bold uppercase">Tap</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function PortfolioPage() {
   const { t } = useTranslation();
@@ -89,7 +155,6 @@ export default function PortfolioPage() {
             {t('portfolio.hero.subtitle')}
           </motion.span>
           
-          {/* Ajuste responsivo de la tipografía gigante */}
           <h1 className="text-5xl sm:text-7xl md:text-9xl font-serif mb-6 md:mb-8 tracking-tighter leading-tight md:leading-none">
             <span className="block overflow-hidden pb-1 md:pb-2">
               <motion.span variants={titleReveal} className="block text-gray-900 dark:text-white">{t('portfolio.hero.title1')}</motion.span>
@@ -105,34 +170,19 @@ export default function PortfolioPage() {
         </motion.section>
 
         {/* ─── SHOWCASE INMERSIVO ─── */}
-        {/* En móvil se reduce el espacio vertical (gap) entre proyectos */}
         <div className="space-y-32 md:space-y-48">
           {projects.map((project) => (
             <motion.section 
               key={project.id}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }} // Ajustado para que se active más fácil en móviles
+              viewport={{ once: true, margin: "-50px" }}
               variants={containerVariants}
               className={`flex flex-col gap-10 md:gap-16 lg:gap-24 ${project.align === "left" ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
             >
-              {/* Bloque de Imagen con Problemática en Hover/Tap */}
-              <motion.div variants={fadeInUp} className="w-full lg:w-1/2 group relative">
-                <div className="relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 aspect-[4/3] shadow-xl md:shadow-2xl transition-all duration-700 group-hover:shadow-black/10">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    // active:grayscale-0 ayuda a que en celulares el toque limpie el filtro
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale-[15%] group-hover:grayscale-0 active:grayscale-0"
-                  />
-                  {/* Overlay Informativo (Maneja Hover en PC y Toque en Móvil) */}
-                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 active:opacity-100 transition-all duration-500 flex items-center justify-center backdrop-blur-sm p-6 sm:p-8 md:p-12">
-                    <div className="text-white text-center">
-                      <p className="text-[10px] md:text-xs tracking-widest uppercase mb-3 md:mb-4 text-gray-300 italic font-medium">{t('portfolio.ui.problemLabel')}</p>
-                      <p className="text-sm sm:text-base md:text-lg font-light leading-relaxed">"{project.problem}"</p>
-                    </div>
-                  </div>
-                </div>
+              {/* Bloque de Imagen con Componente Interactivo Extraído */}
+              <motion.div variants={fadeInUp} className="w-full lg:w-1/2 relative">
+                <ProjectImageInteraction project={project} t={t} />
               </motion.div>
 
               {/* Bloque de Texto y Detalles */}
@@ -176,6 +226,7 @@ export default function PortfolioPage() {
                 <motion.div variants={fadeInUp}>
                   <Link 
                     to={`/case-study/${project.id}`}
+                    // Este clic navega normalmente. App.jsx se encarga del scroll fluido.
                     className="group relative inline-flex items-center gap-3 md:gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-gray-900 dark:text-white"
                   >
                     <span className="relative z-10 transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-400">

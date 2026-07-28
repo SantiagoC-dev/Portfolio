@@ -72,10 +72,7 @@ export default function Hero() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => {
-              navigate('/portfolio');
-              window.scrollTo(0, 0);
-            }}
+            onClick={() => navigate('/portfolio')}
             className="relative flex items-center justify-center gap-3 bg-black text-white dark:bg-white dark:text-gray-900 px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 font-medium text-sm md:text-base tracking-wide"
           >
             <span>{t('hero.button')}</span>
@@ -93,28 +90,34 @@ export default function Hero() {
 
       {/* IMAGEN (Derecha en PC, alineada con el borde derecho del contenedor) */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        initial={{ opacity: 0, scale: 0.95, y: 40, filter: "blur(10px)" }}
+        animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 1.2, ease: [0.215, 0.610, 0.355, 1.000], delay: 0.2 }}
         className="w-full md:w-1/2 flex justify-center md:justify-end relative"
       >
         <motion.div
-          whileHover={{ scale: 1.03 }}
-          animate={{ y: [0, -10, 0] }}
+          whileHover={{ scale: 1.02 }}
+          animate={{ y: [0, -12, 0] }}
           transition={{
             y: { repeat: Infinity, duration: 6, ease: "easeInOut" }
           }}
           className="relative w-[280px] h-[360px] sm:w-[320px] sm:h-[420px] md:w-[380px] md:h-[480px] lg:w-[420px] lg:h-[520px]"
         >
-          <div className="absolute inset-0 bg-gradient-to-tr from-gray-200 dark:from-gray-800 to-transparent blur-3xl opacity-40 rounded-3xl transition-colors duration-300"></div>
+          {/* Resplandor trasero súper suave */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-gray-300 to-transparent dark:from-gray-700/50 dark:to-transparent blur-2xl opacity-60 rounded-[2rem] md:rounded-[2.5rem] -z-10 transition-colors duration-500"></div>
 
-          <img
-            src={miFoto}
-            alt={t('hero.imageAlt')}
-            className="relative w-full h-full object-cover rounded-3xl shadow-2xl z-10"
-          />
-
-          <div className="absolute -inset-4 md:-inset-6 border border-gray-200 dark:border-gray-700 rounded-3xl rotate-2 opacity-60 transition-colors duration-300"></div>
+          {/* Contenedor principal de la imagen */}
+          <div className="relative w-full h-full rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl dark:shadow-black/60 ring-1 ring-black/5 dark:ring-white/10 bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+            <img
+              src={miFoto}
+              alt={t('hero.imageAlt')}
+              draggable="false"
+              className="w-full h-full object-cover select-none"
+            />
+            {/* Sombra interior para dar efecto de profundidad 3D */}
+            <div className="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-[2rem] md:rounded-[2.5rem] pointer-events-none transition-colors duration-300"></div>
+          </div>
+          
         </motion.div>
       </motion.div>
       

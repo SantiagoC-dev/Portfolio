@@ -96,7 +96,7 @@ export default function AboutMePage() {
   }));
 
   return (
-    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen text-gray-900 dark:text-gray-100 pt-24 pb-16 md:pt-40 md:pb-32 overflow-hidden transition-colors duration-300">
       
       {/* ─── MODAL PREMIUM CON PORTAL ─── */}
       {typeof document !== 'undefined' && createPortal(
@@ -165,13 +165,27 @@ export default function AboutMePage() {
               {t('aboutMe.description')}
             </motion.p>
             
+            {/* ─── BOTÓN DESCARGAR CV — animación nueva, funciona igual en PC y táctil ─── */}
             <motion.a 
               variants={blurReveal} 
               href={CV} 
-              download="SantiagoCalderonCV.pdf" // ← Nombre del archivo a descargar actualizado
-              className="bg-[#111827] text-white dark:bg-white dark:text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black dark:hover:bg-gray-100 hover:scale-105 transition-all flex items-center gap-2 shadow-lg hover:shadow-xl w-max mx-auto md:mx-0"
+              download="SantiagoCalderonCV.pdf"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.94 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="bg-[#111827] text-white dark:bg-white dark:text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium hover:bg-black dark:hover:bg-gray-100 transition-colors flex items-center gap-2 shadow-lg hover:shadow-xl w-max mx-auto md:mx-0"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <motion.svg 
+                className="w-4 h-4" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+                whileHover={{ y: [0, 3, 0] }}
+                whileTap={{ y: 3 }}
+                transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </motion.svg>
               {t('aboutMe.downloadCV')}
             </motion.a>
           </div>
@@ -337,10 +351,11 @@ export default function AboutMePage() {
                             initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: animationDelay }}
                             className="absolute -left-[27px] md:-left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white border-[3px] border-gray-900 dark:border-white rounded-full z-10"
                           />
-                          <motion.div 
-                            animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-                            className="absolute -left-[27px] md:-left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white rounded-full z-0"
+                          {/* Pulso "en curso" — CSS puro (animate-ping) en vez de un loop de Framer Motion,
+                              para no competir con el hilo principal mientras el usuario hace scroll */}
+                          <span
+                            className="absolute -left-[27px] md:-left-[34px] top-1.5 w-3 h-3 bg-gray-900 dark:bg-white rounded-full z-0 animate-ping opacity-60 pointer-events-none"
+                            style={{ animationDuration: "2s" }}
                           />
                         </>
                       )}

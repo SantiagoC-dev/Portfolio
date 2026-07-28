@@ -22,7 +22,7 @@ export default function Footer() {
           
           {/* GitHub */}
           <a 
-            href="https://github.com/calderonsantiago742-cell" 
+            href="https://github.com/SantiagoC-dev" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
