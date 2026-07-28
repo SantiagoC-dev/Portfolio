@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import miFoto from '../assets/yo.png';
+import miFoto from '../assets/yo.webp';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -31,8 +31,8 @@ export default function Hero() {
   };
 
   return (
-    // Usamos max-w-6xl y px-6 para que coincida exactamente con los límites de Intereses y Mi Trayectoria
-    <section className="relative z-10 w-full max-w-6xl mx-auto pt-24 md:pt-48 pb-12 px-6 flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 min-h-[90vh] transition-colors duration-300">
+    // Se eliminó min-h-[90vh] y se cambió pb-12 a pb-24 para un espaciado inferior natural
+    <section className="relative z-10 w-full max-w-6xl mx-auto pt-24 md:pt-48 pb-20 md:pb-24 px-6 flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 transition-colors duration-300">
 
       {/* TEXTO (Izquierda en PC, respetando el límite de la app) */}
       <motion.div
