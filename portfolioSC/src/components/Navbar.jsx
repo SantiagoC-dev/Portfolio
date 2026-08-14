@@ -120,7 +120,7 @@ export default function Navbar() {
           <div className="flex items-center pl-2 md:pl-4 shrink-0">
             <Link 
               to="/" 
-              onClick={() => setIsMobileMenuOpen(false)} // ← Eliminado scrollTo(0,0)
+              onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center hover:opacity-70 transition-opacity"
             >
               <img 
@@ -168,27 +168,31 @@ export default function Navbar() {
               </motion.div>
             </button>
 
-            {/* BOTÓN HAMBURGUESA CORREGIDO */}
+            {/* BOTÓN HAMBURGUESA OPTIMIZADO */}
             <button 
               onClick={toggleMobileMenu}
-              className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all ml-1 relative"
+              className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors ml-1 relative"
               title={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
               <motion.div
                 className="w-5 h-4 flex flex-col justify-between items-center"
+                initial={false}
                 animate={isMobileMenuOpen ? "open" : "closed"}
               >
                 <motion.span 
                   variants={{ closed: { rotate: 0, y: 0 }, open: { rotate: 45, y: 7 } }}
-                  className="w-5 h-[2px] bg-current rounded-full origin-center transition-transform duration-200"
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="w-5 h-[2px] bg-current rounded-full origin-center"
                 />
                 <motion.span 
-                  variants={{ closed: { opacity: 1 }, open: { opacity: 0 } }}
-                  className="w-5 h-[2px] bg-current rounded-full transition-opacity duration-200"
+                  variants={{ closed: { opacity: 1, scale: 1 }, open: { opacity: 0, scale: 0.5 } }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="w-5 h-[2px] bg-current rounded-full"
                 />
                 <motion.span 
                   variants={{ closed: { rotate: 0, y: 0 }, open: { rotate: -45, y: -7 } }}
-                  className="w-5 h-[2px] bg-current rounded-full origin-center transition-transform duration-200"
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="w-5 h-[2px] bg-current rounded-full origin-center"
                 />
               </motion.div>
             </button>
@@ -213,7 +217,7 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     to={link.path}
-                    onClick={() => setIsMobileMenuOpen(false)} // ← Eliminado scrollTo(0,0)
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`relative w-full md:w-auto px-6 py-3 md:py-2.5 text-xs font-bold tracking-widest uppercase transition-colors rounded-full whitespace-nowrap flex items-center justify-center overflow-hidden z-10 ${
                       isActive 
                         ? 'text-white dark:text-gray-900' 

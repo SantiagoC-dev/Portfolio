@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-// ─── COMPONENTE INDIVIDUAL DE TESTIMONIO CON FÍSICA 3D ───
-const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, onCardPointerLeave }) => {
+// ─── COMPONENTE INDIVIDUAL DE TESTIMONIO ───
+const InteractiveTestimonialCard = ({ item, t }) => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
   const x = useMotionValue(0.5);
   const y = useMotionValue(0.5);
 
@@ -15,6 +17,7 @@ const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, 
   const smoothRotateY = useSpring(rotateY, springConfig);
 
   const handleMouseMove = (e) => {
+    if (e.pointerType === 'touch') return;
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left) / rect.width);
     y.set((e.clientY - rect.top) / rect.height);
@@ -25,22 +28,25 @@ const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, 
     y.set(0.5);
   };
 
+  const toggleReveal = () => {
+    setIsRevealed(!isRevealed);
+  };
+
   return (
     <motion.div 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onPointerDown={onCardPointerDown}
-      onPointerUp={onCardPointerUp}
-      onPointerLeave={onCardPointerLeave}
+      onClick={toggleReveal}
       style={{
         rotateX: smoothRotateX,
         rotateY: smoothRotateY,
         transformPerspective: 1000
       }}
-      className="w-[260px] sm:w-[300px] md:w-[400px] flex-shrink-0 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 md:p-8 bg-white dark:bg-gray-900 flex flex-col justify-between min-h-[240px] md:min-h-[280px] select-none mx-2 md:mx-3 shadow-sm hover:shadow-xl dark:hover:shadow-gray-950 transition-shadow duration-500 relative overflow-hidden group cursor-pointer"
+      // snap-center: ajusta al centro. md:w y md:min-h aumentados para PC.
+      className="w-[300px] sm:w-[350px] md:w-[450px] flex-shrink-0 snap-center snap-always border border-gray-100 dark:border-gray-800 rounded-3xl p-7 md:p-10 bg-white dark:bg-gray-900 flex flex-col justify-between min-h-[280px] md:min-h-[300px] select-none shadow-sm hover:shadow-2xl dark:hover:shadow-gray-950/40 transition-shadow duration-500 relative overflow-hidden group cursor-pointer box-border mx-2 md:mx-4"
     >
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50/50 dark:to-gray-800/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50/50 dark:to-gray-800/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
           x: useTransform(x, [0, 1], [-5, 5]),
           y: useTransform(y, [0, 1], [-5, 5]),
@@ -48,17 +54,33 @@ const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, 
       />
 
       <div className="relative z-10 flex flex-col h-full justify-between pointer-events-none">
-        <p className="text-gray-600 dark:text-gray-300 italic font-light text-sm md:text-xl leading-relaxed mb-6 md:mb-8 text-left">
+        <motion.p 
+          className="text-gray-700 dark:text-gray-300 italic font-light text-base md:text-xl leading-relaxed mb-8 md:mb-10 text-left h-full flex items-center"
+          initial={false}
+          animate={{ 
+            filter: isRevealed ? "blur(0px)" : "blur(8px)",
+            opacity: isRevealed ? 1 : 0.4
+          }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
          {item.quote}
-        </p>
+        </motion.p>
 
-        <div className="flex items-center gap-3 md:gap-4 mt-auto">
+        {!isRevealed && (
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                <span className="bg-black/70 dark:bg-white/80 backdrop-blur-sm text-white dark:text-gray-900 text-xs font-medium px-4 py-2 rounded-full shadow-lg tracking-wider uppercase">
+                    {t('lovedOnes.tapToRead')}
+                </span>
+            </div>
+        )}
+
+        <div className="flex items-center gap-4 mt-auto shrink-0">
           <motion.div 
             style={{
               x: useTransform(x, [0, 1], [-3, 3]),
               y: useTransform(y, [0, 1], [-3, 3]),
             }}
-            className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-serif text-base md:text-lg transition-colors duration-500 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:border-gray-300 dark:group-hover:border-gray-600"
+            className="w-12 h-12 md:w-14 md:h-14 flex-shrink-0 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex items-center justify-center text-gray-950 dark:text-white font-serif text-lg md:text-xl Transition-colors duration-500 group-hover:bg-gray-100 dark:group-hover:bg-gray-700"
           >
             {item.initials}
           </motion.div>
@@ -69,8 +91,8 @@ const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, 
             }}
             className="min-w-0 flex-1 text-left"
           >
-            <h4 className="text-sm font-semibold text-gray-900 dark:text-white tracking-tight truncate">{item.name}</h4>
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-light leading-snug truncate">{item.description}</p>
+            <h4 className="text-base font-semibold text-gray-950 dark:text-white tracking-tight truncate">{item.name}</h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-light leading-snug truncate">{item.description}</p>
           </motion.div>
         </div>
       </div>
@@ -80,108 +102,105 @@ const InteractiveTestimonialCard = ({ item, onCardPointerDown, onCardPointerUp, 
 
 // ─── COMPONENTE PRINCIPAL ───
 export default function LovedOnes() {
-  const [isPaused, setIsPaused] = useState(false);
-  
   const { t } = useTranslation();
   const testimonials = t('lovedOnes.testimonials', { returnObjects: true });
+  const scrollRef = useRef(null);
+  
+  // Estados para controlar la visibilidad de las sombras de scroll
+  const [showLeftShadow, setShowLeftShadow] = useState(false);
+  const [showRightShadow, setShowRightShadow] = useState(false);
 
-  // ─── PAUSA POR TIPO DE PUNTERO ───
-  // Mouse: mantener presionado pausa, soltar reanuda.
-  // Touch: cada tap alterna pausa/reanuda.
-  const handleCardPointerDown = (e) => {
-    if (e.pointerType === 'mouse') {
-      setIsPaused(true);
+  const checkScroll = () => {
+    const contenedor = scrollRef.current;
+    if (contenedor) {
+      const { scrollLeft, scrollWidth, clientWidth } = contenedor;
+      setShowLeftShadow(scrollLeft > 10);
+      // Margen de 1px para evitar problemas de redondeo
+      setShowRightShadow(scrollLeft < scrollWidth - clientWidth - 1);
     }
   };
 
-  const handleCardPointerUp = (e) => {
-    if (e.pointerType === 'mouse') {
-      setIsPaused(false);
-    } else if (e.pointerType === 'touch') {
-      setIsPaused((prev) => !prev);
+  useEffect(() => {
+    const contenedor = scrollRef.current;
+    if (contenedor) {
+      checkScroll(); // Comprobación inicial
+      contenedor.addEventListener('scroll', checkScroll);
+      window.addEventListener('resize', checkScroll); // Re-comprobar si cambia el tamaño de ventana
+      
+      return () => {
+        contenedor.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
     }
-  };
+  }, [testimonials]);
 
-  const handleCardPointerLeave = (e) => {
-    // Si sueltan el mouse fuera de la tarjeta mientras lo mantenían
-    // presionado, evita que el carrusel quede pausado sin querer.
-    if (e.pointerType === 'mouse') {
-      setIsPaused(false);
-    }
-  };
+  // Clase base para las sombras, usando pseudo-elementos o divs absolutos.
+  // Usaremos divs absolutos para mayor compatibilidad inline.
+  const shadowClass = "absolute top-0 bottom-0 w-16 z-20 pointer-events-none transition-opacity duration-300";
 
   return (
-    <section className="w-full max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-32 border-t border-gray-200 dark:border-gray-800 text-center overflow-hidden transition-colors duration-300 box-border">
+    // ✅ CORRECCIÓN 2: Espaciado al footer acortado sutilmente (pb-16 -> pb-10, md:pb-28 -> md:pb-20)
+    // También se ajusta overflow y padding dinámico para contener las sombras de las tarjetas.
+    <section className="w-full max-w-[1600px] mx-auto px-0 pt-16 pb-10 md:pt-28 md:pb-20 border-t border-gray-200 dark:border-gray-800 text-center transition-colors duration-300 box-border relative overflow-hidden">
       
-      <style>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-50%)); }
-        }
-        .animate-scroll {
-          animation: scroll 60s linear infinite;
-          width: max-content;
-        }
-      `}</style>
-
-      {/* HEADER ADAPTATIVO */}
-      <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-14 max-w-6xl mx-auto gap-4 md:gap-0 px-2">
+      {/* HEADER - Minimalista, sin la etiqueta de scroll */}
+      <div className="max-w-6xl mx-auto mb-12 md:mb-16 px-6 sm:px-8">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-2xl md:text-3xl font-serif tracking-wide text-gray-900 dark:text-white"
+          className="text-3xl md:text-4xl font-serif tracking-tight text-gray-950 dark:text-white"
         >
           {t('lovedOnes.title')}
         </motion.h2>
-
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="flex items-center gap-2 text-gray-400 select-none"
-        >
-          <span className="text-[10px] md:text-xs tracking-widest font-medium uppercase">
-            {isPaused ? t('lovedOnes.status.paused') : t('lovedOnes.status.playing')}
-          </span>
-          <div className="w-8 md:w-10 h-[2px] bg-gray-200 dark:bg-gray-800 relative overflow-hidden rounded-full">
-            <motion.div
-              animate={isPaused ? { x: "0%" } : { x: ["-100%", "100%"] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-              className={`absolute w-1/2 h-full rounded-full ${isPaused ? 'bg-gray-300 dark:bg-gray-600' : 'bg-gray-800 dark:bg-white'}`}
-            />
-          </div>
-        </motion.div>
       </div>
 
-      {/* CONTENEDOR DEL CARRUSEL INFINITO CON ENCAPSULAMIENTO ESTRICTO */}
-      <div 
-        className="w-full overflow-hidden group pb-4 md:pb-10 box-border"
-        style={{ perspective: 1200 }}
-      >
+      {/* CONTENEDOR RELATIVO PARA LAS SOMBRAS Y EL SCROLL */}
+      <div className="relative w-full">
+        
+        {/* Sombras de Scroll (Scroll Shadows) - Indicador minimalista y profesional */}
         <div 
-          className="flex animate-scroll"
-          style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
+          className={`${shadowClass} left-0 bg-gradient-to-r from-white dark:from-gray-950 to-transparent`}
+          style={{ opacity: showLeftShadow ? 1 : 0 }}
+        />
+        <div 
+          className={`${shadowClass} right-0 bg-gradient-to-l from-white dark:from-gray-950 to-transparent`}
+          style={{ opacity: showRightShadow ? 1 : 0 }}
+        />
+
+        {/* CONTENEDOR DEL SCROLL MANUAL */}
+        {/* ✅ CORRECCIÓN 1: Padding inferior aumentado (pb-8 -> pb-14) para evitar corte de sombras en hover */}
+        <div 
+          ref={scrollRef}
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth box-border scrollbar-hide active:cursor-grabbing group pt-4 pb-14"
+          style={{ 
+            perspective: 1200,
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none', // Firefox
+            msOverflowStyle: 'none',  // IE/Edge
+            // Padding dinámico: grande en móvil para peek-a-boo, centrado en PC
+            paddingLeft: 'max(1.5rem, calc((100% - 1300px) / 2))',
+            paddingRight: 'max(1.5rem, calc((100% - 1300px) / 2))',
+          }}
         >
-          {testimonials.map((item, index) => (
-            <InteractiveTestimonialCard 
-              key={`original-${item.id}-${index}`} 
-              item={item}
-              onCardPointerDown={handleCardPointerDown}
-              onCardPointerUp={handleCardPointerUp}
-              onCardPointerLeave={handleCardPointerLeave}
-            />
-          ))}
-          {testimonials.map((item, index) => (
-            <InteractiveTestimonialCard 
-              key={`copy-${item.id}-${index}`} 
-              item={item}
-              onCardPointerDown={handleCardPointerDown}
-              onCardPointerUp={handleCardPointerUp}
-              onCardPointerLeave={handleCardPointerLeave}
-            />
-          ))}
+          {/* Estilo inline para esconder scrollbar en Chrome/Safari */}
+          <style>{`
+            div::-webkit-scrollbar { display: none; }
+          `}</style>
+
+          <div className="flex justify-start md:justify-center flex-nowrap">
+            {testimonials.map((item, index) => (
+              <InteractiveTestimonialCard 
+                key={`testimonial-${item.id}-${index}`} 
+                item={item}
+                t={t}
+              />
+            ))}
+          </div>
+          
+          {/* Spacer final responsivo */}
+          <div className="w-6 md:w-0 flex-shrink-0" />
         </div>
       </div>
 

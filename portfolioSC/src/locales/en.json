@@ -27,7 +27,7 @@
     "cards": {
       "hobbies": {
         "title": "Hobbies",
-        "text": "Cycles, equilibrium, and repetition that shape the balance between my discipline, movement, and competitive focus."
+        "text": "Cycles, equilibrium, and repetition that shape my discipline, movement, and competitive focus."
       },
       "inspirations": {
         "title": "Inspirations",
@@ -44,22 +44,22 @@
     "title": "My Journey",
     "stages": [
       {
-        "year": "Jan 2022",
+        "year": "JAN 2022",
         "title": "Beginnings in Engineering",
         "description": "I started my degree in Computer Systems Engineering at Tecnológico de Chalco. However, I decided to redirect my path to focus entirely on direct software and systems development."
       },
       {
-        "year": "Nov 2023",
+        "year": "NOV 2023",
         "title": "Cross-Platform Focus",
         "description": "I began my degree in Cross-Platform Software Development in the Riviera Maya, studying under a bilingual program that broadened my technical and professional vision."
       },
       {
-        "year": "Dec 2025",
+        "year": "DEC 2025",
         "title": "University Higher Technician",
         "description": "I successfully completed my first professional stage, earning the title of University Higher Technician (TSU) in Cross-Platform Software Development."
       },
       {
-        "year": "May 2026",
+        "year": "MAY 2026",
         "title": "Digital Innovation",
         "description": "I am currently studying Information Technology and Digital Innovation Engineering at the Universidad Tecnológica de Nezahualcóyotl, consolidating my profile as an engineer."
       }
@@ -67,9 +67,11 @@
   },
   "lovedOnes": {
     "title": "What they say about me",
+    "tapToRead": "Tap to read",
     "status": {
       "paused": "PAUSED",
-      "playing": "AUTO SCROLL"
+      "playing": "AUTO SCROLL",
+      "manualScroll": "Swipe horizontally"
     },
     "testimonials": [
       {
@@ -82,7 +84,7 @@
       {
         "id": 2,
         "quote": "“A respectful, kind, and intelligent person, with clear goals and capable of achieving everything he sets his mind to due to his dedication and effort.”",
-        "name": "Joanna Alvarez",
+        "name": "Joanna Álvarez",
         "description": "Founder & Client - BonBon",
         "initials": "JA"
       },
@@ -103,7 +105,7 @@
       {
         "id": 5,
         "quote": "“He has a very clear vision of software architecture. He is the type of developer who prioritizes clean code and designs systems with scalability in mind.”",
-        "name": "Eduardo Solorzano",
+        "name": "Eduardo Solórzano",
         "description": "Senior Software Developer",
         "initials": "ES"
       },
@@ -208,7 +210,7 @@
         "subtitle": "Mobile inventory management and optimization system for the quality department.",
         "role": "Lead Software Engineer",
         "client": "Aguakan (Quality Dept)",
-        "timeline": "Sep - Dec 2025",
+        "timeline": "SEP - DEC 2025",
         "stack": "React Native, Node.js, MySQL",
         "deviceType": "mobile",
         "problemText": "Before LabStock, the control of reagents, materials, and equipment was done entirely through spreadsheets and paper records. This caused a massive loss of operational time and a concerning lack of traceability.",
@@ -235,7 +237,7 @@
         "subtitle": "Digital tourism marketplace focused on the Riviera Maya to democratize local tourism.",
         "role": "Full Stack Developer",
         "client": "Independent B2C Project",
-        "timeline": "May - Sep 2024",
+        "timeline": "MAY - SEP 2024",
         "stack": "React, Vite, Node.js, MongoDB",
         "deviceType": "desktop",
         "problemText": "Independent guides and small local businesses in the Riviera Maya face a severe lack of visibility compared to large tour operators. This monopolizes the market and hinders connections with tourists seeking authentic experiences.",

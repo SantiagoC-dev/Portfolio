@@ -15,7 +15,7 @@
     "description": "Espacio digital de desarrollo de software diseñado para exhibir mi portafolio, arquitectura técnica y entorno personal.",
     "nav": {
       "home": "Inicio",
-      "about": "Sobre Mí",
+      "about": "Sobre mí",
       "portfolio": "Portafolio",
       "inspirations": "Inspiraciones",
       "playlist": "Playlist"
@@ -27,7 +27,7 @@
     "cards": {
       "hobbies": {
         "title": "Pasatiempos",
-        "text": "Ciclos, equilibrio y repetición que dan forma al balance entre mi disciplina, movimiento y enfoque competitivo."
+        "text": "Ciclos, equilibrio y repetición que dan forma a mi disciplina, movimiento y enfoque competitivo."
       },
       "inspirations": {
         "title": "Inspiraciones",
@@ -44,32 +44,32 @@
     "title": "Mi trayectoria",
     "stages": [
       {
-        "year": "Ene 2022",
+        "year": "ENE 2022",
         "title": "Inicios en la Ingeniería",
         "description": "Comencé la carrera de Ingeniería en Sistemas Computacionales en el Tecnológico de Chalco. Sin embargo, decidí reorientar mi camino para enfocarme de lleno en el desarrollo directo de software y sistemas."
       },
       {
-        "year": "Nov 2023",
+        "year": "NOV 2023",
         "title": "Enfoque Multiplataforma",
         "description": "Inicié la carrera de Desarrollo de Software Multiplataforma en la Riviera Maya, cursando el programa bajo un sistema bilingüe que amplió mi visión técnica y profesional."
       },
       {
-        "year": "Dic 2025",
+        "year": "DIC 2025",
         "title": "Técnico Superior Universitario",
         "description": "Concluí con éxito mi primera etapa profesional, obteniendo el título como Técnico Superior Universitario (TSU) en Desarrollo de Software Multiplataforma."
       },
       {
-        "year": "May 2026",
+        "year": "MAY 2026",
         "title": "Innovación Digital",
         "description": "Actualmente curso la Ingeniería en Tecnologías de la Información e Innovación Digital en la Universidad Tecnológica de Nezahualcóyotl, consolidando mi perfil como ingeniero."
       }
     ]
   },
-  "lovedOnes": {
+"lovedOnes": {
     "title": "Lo que dicen de mí",
+    "tapToRead": "Tap para leer", 
     "status": {
-      "paused": "PAUSADO",
-      "playing": "AUTO SCROLL"
+      "manualScroll": "Desliza horizontalmente"
     },
     "testimonials": [
       {
@@ -82,7 +82,7 @@
       {
         "id": 2,
         "quote": "“Una persona respetuosa, amable e inteligente, con sus objetivos claros y capaz de lograr todo lo que se propone por su dedicación y esfuerzo en lo que hace.”",
-        "name": "Joanna Alvarez",
+        "name": "Joanna Álvarez",
         "description": "Fundadora & Cliente - BonBon",
         "initials": "JA"
       },
@@ -103,7 +103,7 @@
       {
         "id": 5,
         "quote": "“Tiene una visión muy clara de la arquitectura de software. Es el tipo de desarrollador que prioriza el código limpio y diseña sistemas pensando en la escalabilidad.”",
-        "name": "Eduardo Solorzano",
+        "name": "Eduardo Solórzano",
         "description": "Desarrollador de Software Senior",
         "initials": "ES"
       },
@@ -208,7 +208,7 @@
         "subtitle": "Sistema móvil de gestión y optimización de inventarios para el área de calidad.",
         "role": "Ingeniero de Software Principal",
         "client": "Aguakan (Área de Calidad)",
-        "timeline": "Sep - Dic 2025",
+        "timeline": "SEP - DIC 2025",
         "stack": "React Native, Node.js, MySQL",
         "deviceType": "mobile",
         "problemText": "Antes de LabStock, el control de reactivos, materiales y equipos se realizaba enteramente mediante hojas de cálculo y registros en papel. Esto ocasionaba una pérdida de tiempo operativa masiva y una preocupante falta de trazabilidad.",
@@ -235,7 +235,7 @@
         "subtitle": "Marketplace turístico digital enfocado en la Riviera Maya para democratizar el turismo local.",
         "role": "Desarrollador Full Stack",
         "client": "Proyecto Independiente B2C",
-        "timeline": "May - Sep 2024",
+        "timeline": "MAY - SEP 2024",
         "stack": "React, Vite, Node.js, MongoDB",
         "deviceType": "desktop",
         "problemText": "Los guías independientes y pequeños negocios locales de la Riviera Maya enfrentan una severa falta de visibilidad frente a los grandes operadores turísticos. Esto monopoliza el mercado y dificulta la conexión con turistas que buscan experiencias auténticas.",
@@ -291,7 +291,7 @@
       {
         "id": 5,
         "title": "Lectura",
-        "description": "La lectura es una de mis actividades favoritas, ya que me permite sumergirme en diferentes mundos y perspectivas. Disfruto tanto de lo narrativo hasta lo lirico, y siempre estoy buscando nuevos libros para explorar."
+        "description": "La lectura es una de mis actividades favoritas, ya que me permite sumergirme en diferentes mundos y perspectivas. Disfruto desde lo narrativo hasta lo lírico, y siempre estoy buscando nuevos libros para explorar."
       }
     ]
   },
@@ -307,25 +307,25 @@
     "bento": [
       {
         "id": 1,
-        "overline": "Mi Madre",
+        "overline": "Mi madre",
         "title": "Dulce Nancy",
-        "description": "La persona que más admiro. De ella aprendí que el amor se demuestra con presencia y tiene el corazón mas grande que he conocido jamás."
+        "description": "La persona que más admiro. De ella aprendí que el amor se demuestra con presencia; tiene el corazón más grande que he conocido jamás."
       },
       {
         "id": 2,
-        "overline": "Mi Pareja",
+        "overline": "Mi pareja",
         "title": "Joanna",
         "description": "Mi razón favorita para esforzarme cada día. En ella encontré apoyo, amor y complicidad incondicional."
       },
       {
         "id": 3,
-        "overline": "Mi Fe",
+        "overline": "Mi fe",
         "title": "Dios",
         "description": "El pilar central de mi vida. La fuente de mi propósito, mi paz y la gracia que guía cada uno de mis pasos."
       },
       {
         "id": 4,
-        "overline": "Mi Mascota",
+        "overline": "Mi mascota",
         "title": "Nacho",
         "description": "Me enseñó que el amor incondicional existe de verdad y no requiere palabras."
       },
@@ -345,13 +345,13 @@
         "id": 7,
         "overline": "E-sports",
         "title": "Jay Won",
-        "description": "Su enfoque, disciplina y filosofía en el juego y en la vida, me motivan a aplicar la misma dedicación en mis proyectos y metas personales."
+        "description": "Su enfoque, disciplina y filosofía en el juego y en la vida me motivan a aplicar la misma dedicación en mis proyectos y metas personales."
       }
     ],
     "memorial": {
       "overline": "En memoria",
       "name": "David Gutiérrez",
-      "quote": "A mi padre, cuya presencia y enseñanza permanecen conmigo, recordándome siempre la importancia del esfuerzo, la perseverancia y el valor de seguir adelante incluso en los momentos difíciles."
+      "quote": "A mi padre, cuya presencia y enseñanza permanecen conmigo, recordándome siempre la importancia del esfuerzo, la perseverancia y el valor de seguir adelante, incluso en los momentos difíciles."
     }
   },
   "playlist": {
