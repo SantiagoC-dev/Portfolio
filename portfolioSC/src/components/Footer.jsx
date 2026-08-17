@@ -57,6 +57,18 @@ export default function Footer() {
             </svg>
           </a>
 
+          {/* LinkedIn */}
+          <a 
+            href="https://www.linkedin.com/in/santiagocalderondev/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-gray-900 dark:hover:text-white transform hover:scale-110 transition-all duration-300"
+            aria-label="LinkedIn"
+          >
+            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.352V9h3.414v1.561h.049c.476-.9 1.637-1.852 3.37-1.852 3.602 0 4.268 2.368 4.268 5.455v6.288zM5.337 7.433c-1.144 0-2.07-.926-2.07-2.07s.926-2.07 2.07-2.07c1.144 0 2.07 .926 2.07 2.07s-.926 2.07-2.07 2.07zm1.777 13H3V9h4.114v11zM22 .001H2C .895 .001 .001 .895 .001 2v20c0 1.105 .895 1.999 1.999 1.999h20c1.105 0 1.999-.894 1.999-1.999V2c0-1.105-.894-1.999-1.999-1.999z"/>
+            </svg>
+          </a>
         </div>
 
         {/* ─── ENLACES DE NAVEGACIÓN ─── */}
@@ -71,7 +83,7 @@ export default function Footer() {
             {t('footer.nav.portfolio')}
           </Link>
           <Link to="/hobbies" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
-            {t('Hobbies')}
+            {t('footer.nav.hobbies')}
           </Link>
           <Link to="/inspirations" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
             {t('footer.nav.inspirations')}
