@@ -1,28 +1,55 @@
-import { useState, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import Hobbies from '../assets/Hobbies.svg';
-import Inspirations from '../assets/Inspirations.svg';
-import Playlist from '../assets/Playlist.svg';
 
-function CreativeCard({ card, index, variants, permissionGranted }) {
+// ─────────────────────────────────────────────────────────────────────────────
+// CARD
+// ─────────────────────────────────────────────────────────────────────────────
+
+function CreativeCard({ card, variants, permissionGranted }) {
   const navigate = useNavigate();
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // ─── FÍSICA MEJORADA: Menos rígida, más "flotante" y orgánica ───
-  const smoothX = useSpring(x, { stiffness: 200, damping: 25 });
-  const smoothY = useSpring(y, { stiffness: 200, damping: 25 });
+  // Movimiento muy sutil para conservar el efecto premium
+  const smoothX = useSpring(x, {
+    stiffness: 180,
+    damping: 28,
+    mass: 0.4,
+  });
 
-  // ─── EVENTOS DE RATÓN (PC) ───
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / (rect.width / 2));
-    y.set((e.clientY - centerY) / (rect.height / 2));
+  const smoothY = useSpring(y, {
+    stiffness: 180,
+    damping: 28,
+    mass: 0.4,
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // MOUSE
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const handleMouseMove = (event) => {
+    if (event.pointerType === 'touch') return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const normalizedX =
+      (event.clientX - (rect.left + rect.width / 2)) /
+      (rect.width / 2);
+
+    const normalizedY =
+      (event.clientY - (rect.top + rect.height / 2)) /
+      (rect.height / 2);
+
+    x.set(Math.max(-1, Math.min(1, normalizedX)));
+    y.set(Math.max(-1, Math.min(1, normalizedY)));
   };
 
   const handleMouseLeave = () => {
@@ -30,208 +57,497 @@ function CreativeCard({ card, index, variants, permissionGranted }) {
     y.set(0);
   };
 
-  // ─── EVENTOS DE GIROSCOPIO (MÓVIL) ───
+  // ─────────────────────────────────────────────────────────────────────────
+  // ORIENTACIÓN DEL DISPOSITIVO
+  // ─────────────────────────────────────────────────────────────────────────
+
   useEffect(() => {
     if (!permissionGranted) return;
 
-    const handleDeviceOrientation = (e) => {
-      // Si el dispositivo no tiene giroscopio o está bloqueado por HTTP
-      if (e.gamma === null || e.beta === null) return;
-      
-      // Aumentamos la sensibilidad cambiando el divisor de 30 a 25
-      let normalizedX = e.gamma / 25; 
-      let normalizedY = (e.beta - 40) / 25;
-      
-      normalizedX = Math.max(-1, Math.min(1, normalizedX));
-      normalizedY = Math.max(-1, Math.min(1, normalizedY));
+    const handleDeviceOrientation = (event) => {
+      if (event.gamma == null || event.beta == null) return;
+
+      const normalizedX = Math.max(
+        -1,
+        Math.min(1, event.gamma / 30)
+      );
+
+      const normalizedY = Math.max(
+        -1,
+        Math.min(1, (event.beta - 40) / 30)
+      );
 
       x.set(normalizedX);
       y.set(normalizedY);
     };
 
-    if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', handleDeviceOrientation);
-    }
+    window.addEventListener(
+      'deviceorientation',
+      handleDeviceOrientation
+    );
 
     return () => {
-      if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-        window.removeEventListener('deviceorientation', handleDeviceOrientation);
-      }
+      window.removeEventListener(
+        'deviceorientation',
+        handleDeviceOrientation
+      );
     };
   }, [permissionGranted, x, y]);
 
-  // ─── DESPLAZAMIENTO AUMENTADO: Mucho más pronunciado ───
-  const magneticX = useTransform(smoothX, [-1, 1], [-20, 20]); // Antes: 15
-  const magneticY = useTransform(smoothY, [-1, 1], [-20, 20]); // Antes: 15
-  const imageX = useTransform(smoothX, [-1, 1], [-35, 35]);    // Antes: 12 (Casi el triple)
-  const imageY = useTransform(smoothY, [-1, 1], [-35, 35]);    // Antes: 12 (Casi el triple)
+  // ─────────────────────────────────────────────────────────────────────────
+  // TRANSFORMACIONES
+  // ─────────────────────────────────────────────────────────────────────────
 
-  const isMiddle = index === 1;
+  const rotateX = useTransform(
+    smoothY,
+    [-1, 1],
+    [4, -4]
+  );
+
+  const rotateY = useTransform(
+    smoothX,
+    [-1, 1],
+    [-4, 4]
+  );
 
   return (
     <motion.div
       variants={variants}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={() => {
-        if (card.link) {
-          navigate(card.link);
-        }
-      }}
-      className={`group cursor-pointer flex flex-col h-full text-center md:text-left ${isMiddle ? 'md:translate-y-12' : ''}`}
+      style={{ perspective: 1200 }}
+      className="h-full"
     >
-      <div className="relative h-56 sm:h-64 md:h-72 mb-8 md:mb-10 flex items-center justify-center w-full">
-        <div className="absolute -bottom-4 w-3/4 h-6 bg-black/25 dark:bg-black/50 blur-xl rounded-[50%] transition-all duration-700 group-hover:w-[85%] group-hover:bg-black/15 dark:group-hover:bg-black/70" />
-        
-        <motion.img
-          src={card.image}
-          alt={card.title}
-          style={{ x: imageX, y: imageY }}
-          className="relative z-10 w-full h-full object-contain scale-[1.15] md:scale-[1.25] group-hover:scale-[1.3] drop-shadow-[0_20px_20px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)] transition-transform duration-700 ease-out"
-        />
-      </div>
+      <motion.article
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => {
+          if (card.link) {
+            navigate(card.link);
+          }
+        }}
+        style={{
+          rotateX,
+          rotateY,
+        }}
+        className="
+          group
+          relative
+          flex
+          h-full
+          min-h-[300px]
+          cursor-pointer
+          flex-col
+          overflow-hidden
+          rounded-[28px]
+          border
+          border-gray-200/80
+          bg-white
+          p-7
+          transition-all
+          duration-300
+          hover:border-gray-300
+          hover:shadow-xl
+          hover:shadow-black/5
 
-      <div className="flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 flex-1">
-        <div className="flex flex-col flex-1 w-full">
-          <h3 className="text-xl font-serif text-gray-900 dark:text-white mb-2 group-hover:text-black dark:group-hover:text-gray-300 transition-colors">
-            {card.title}
-          </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-light">
-            {card.text}
-          </p>
+          dark:border-gray-800
+          dark:bg-gray-900/80
+          dark:hover:border-gray-700
+          dark:hover:bg-gray-900
+          dark:hover:shadow-gray-900/30
+        "
+      >
+        {/* ───────────────── HEADER ───────────────── */}
+
+        <div className="flex items-start justify-between">
+
+          <span
+            className="
+              text-[10px]
+              font-medium
+              tracking-[0.18em]
+              text-gray-400
+              dark:text-gray-500
+            "
+          >
+            {String(card.id).padStart(2, '0')}
+          </span>
+
+          <span
+            className="
+              flex
+              h-9
+              w-9
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-gray-200
+              text-gray-400
+              transition-all
+              duration-300
+
+              group-hover:border-gray-900
+              group-hover:bg-gray-900
+              group-hover:text-white
+
+              dark:border-gray-700/80
+              dark:bg-transparent
+              dark:text-gray-500
+              dark:group-hover:border-gray-600
+              dark:group-hover:bg-gray-800
+              dark:group-hover:text-gray-300
+            "
+          >
+            <svg
+              className="
+                h-3.5
+                w-3.5
+                -rotate-45
+                transition-transform
+                duration-300
+                group-hover:rotate-0
+              "
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M5 12h14m-6-6l6 6-6 6"
+              />
+            </svg>
+          </span>
+
         </div>
 
-        <motion.div 
-          style={{ x: magneticX, y: magneticY }}
-          className="mx-auto md:mx-0 w-10 h-10 shrink-0 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-800 text-gray-400 dark:text-gray-300 group-hover:bg-black dark:group-hover:bg-white dark:group-hover:text-gray-900 group-hover:text-white group-hover:border-black dark:group-hover:border-white transition-all duration-300 shadow-sm group-hover:shadow-md"
-        >
-          <svg className="w-4 h-4 transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-          </svg>
-        </motion.div>
-      </div>
+        {/* ───────────────── CONTENIDO ───────────────── */}
+
+        <div className="mt-auto pt-16">
+
+          <h3
+            className="
+              max-w-[320px]
+              text-2xl
+              font-serif
+              leading-tight
+              tracking-tight
+              text-gray-950
+              transition-all
+              duration-300
+              group-hover:translate-x-1
+
+              dark:text-gray-200
+              dark:group-hover:text-white
+            "
+          >
+            {card.title}
+          </h3>
+
+          <div
+            className="
+              mt-5
+              h-px
+              w-8
+              bg-gray-300
+              transition-all
+              duration-300
+              group-hover:w-12
+              group-hover:bg-gray-900
+
+              dark:bg-gray-700
+              dark:group-hover:bg-gray-500
+            "
+          />
+
+          <p
+            className="
+              mt-5
+              max-w-[340px]
+              text-sm
+              leading-7
+              font-light
+              text-gray-500
+
+              dark:text-gray-400
+            "
+          >
+            {card.text}
+          </p>
+
+        </div>
+
+      </motion.article>
     </motion.div>
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function Interests() {
   const { t } = useTranslation();
-  
+
   const [needsPermission, setNeedsPermission] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // DETECTAR IOS
+  // ─────────────────────────────────────────────────────────────────────────
+
   useEffect(() => {
-    // Detección para dispositivos iOS (iPhone/iPad)
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (
+        navigator.platform === 'MacIntel' &&
+        navigator.maxTouchPoints > 1
+      );
 
     if (isIOS) {
       setNeedsPermission(true);
     } else {
-      // Android y PC tienen permiso libre automático (sujeto a HTTPS)
       setPermissionGranted(true);
     }
   }, []);
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // PERMISO DE ORIENTACIÓN
+  // ─────────────────────────────────────────────────────────────────────────
+
   const requestAccess = async () => {
     try {
-      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        const permission = await DeviceOrientationEvent.requestPermission();
+      if (
+        typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function'
+      ) {
+        const permission =
+          await DeviceOrientationEvent.requestPermission();
+
         if (permission === 'granted') {
           setPermissionGranted(true);
           setNeedsPermission(false);
         }
       }
     } catch (error) {
-      console.warn("Device orientation request failed:", error);
+      console.warn(
+        'Device orientation request failed:',
+        error
+      );
     }
   };
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // CARDS
+  // ─────────────────────────────────────────────────────────────────────────
 
   const cards = [
     {
       id: 1,
       title: t('interests.cards.hobbies.title'),
       text: t('interests.cards.hobbies.text'),
-      image: Hobbies,
-      link: "/hobbies"
+      link: '/hobbies',
     },
     {
       id: 2,
       title: t('interests.cards.inspirations.title'),
       text: t('interests.cards.inspirations.text'),
-      image: Inspirations,
-      link: "/inspirations"
+      link: '/inspirations',
     },
     {
       id: 3,
       title: t('interests.cards.playlist.title'),
       text: t('interests.cards.playlist.text'),
-      image: Playlist,
-      link: "/playlist"
-    }
+      link: '/playlist',
+    },
   ];
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // ANIMACIONES
+  // ─────────────────────────────────────────────────────────────────────────
+
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
+      transition: {
+        staggerChildren: 0.07,
+      },
+    },
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: [0.215, 0.610, 0.355, 1.000] }
-    }
+  const revealVariants = {
+    hidden: {
+      opacity: 0,
+      y: 14,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
   return (
-    <section id="about" className="max-w-6xl mx-auto px-6 py-20 md:py-24 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
-      
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
-          className="text-3xl font-serif tracking-wide text-gray-900 dark:text-white text-center md:text-left"
-        >
-          {t('interests.title')}
-        </motion.h2>
-
-        {/* Botón dinámico (Solo visible en iOS sin permiso) */}
-        {needsPermission && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            onClick={requestAccess}
-            className="mt-6 md:mt-0 mx-auto md:mx-0 px-4 py-2 rounded-full border border-gray-200 dark:border-gray-700 text-xs font-semibold tracking-wider text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center gap-2"
-          >
-            Activar Efectos 3D
-          </motion.button>
-        )}
-      </div>
-      
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-14 pb-12"
+    <section
+      id="interests"
+      className="
+        w-full
+        border-t
+        border-gray-200/70
+        dark:border-gray-800/70
+      "
+    >
+      <div
+        className="
+          mx-auto
+          max-w-7xl
+          px-6
+          pt-20
+          pb-16
+          md:pt-28
+          md:pb-20
+          lg:pt-32
+          lg:pb-24
+        "
       >
-        {cards.map((card, index) => (
-          <CreativeCard 
-            key={card.id} 
-            card={card} 
-            index={index} 
-            variants={cardVariants} 
-            permissionGranted={permissionGranted}
-          />
-        ))}
-      </motion.div>
-      
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.1,
+          }}
+        >
+
+          {/* ───────────────── HEADER ───────────────── */}
+
+          <motion.div
+            variants={revealVariants}
+            className="
+              mb-14
+              flex
+              flex-col
+              gap-7
+              md:mb-16
+              md:flex-row
+              md:items-end
+              md:justify-between
+            "
+          >
+
+            <div>
+
+              <div className="mb-5 flex items-center gap-3">
+
+                <span
+                  className="
+                    h-px
+                    w-8
+                    bg-gray-900
+                    dark:bg-white
+                  "
+                />
+
+                <span
+                  className="
+                    text-[10px]
+                    font-semibold
+                    uppercase
+                    tracking-[0.22em]
+                    text-gray-400
+                    dark:text-gray-500
+                  "
+                >
+                  Personal
+                </span>
+
+              </div>
+
+              <h2
+                className="
+                  max-w-2xl
+                  text-4xl
+                  font-serif
+                  leading-[1.05]
+                  tracking-tight
+                  text-gray-950
+                  sm:text-5xl
+
+                  dark:text-white
+                "
+              >
+                {t('interests.title')}
+              </h2>
+
+            </div>
+
+
+            {/* Permiso iOS */}
+
+            {needsPermission && (
+              <button
+                type="button"
+                onClick={requestAccess}
+                className="
+                  self-start
+                  rounded-full
+                  border
+                  border-gray-200
+                  px-4
+                  py-2
+                  text-[10px]
+                  font-medium
+                  uppercase
+                  tracking-[0.16em]
+                  text-gray-500
+                  transition-colors
+                  duration-300
+                  hover:border-gray-400
+                  hover:text-gray-900
+
+                  dark:border-gray-800
+                  dark:text-gray-500
+                  dark:hover:border-gray-600
+                  dark:hover:text-white
+
+                  md:self-end
+                "
+              >
+                Activar experiencia
+              </button>
+            )}
+
+          </motion.div>
+
+
+          {/* ───────────────── CARDS ───────────────── */}
+
+          <div
+            className="
+              grid
+              grid-cols-1
+              gap-5
+              md:grid-cols-3
+            "
+          >
+            {cards.map((card) => (
+              <CreativeCard
+                key={card.id}
+                card={card}
+                variants={revealVariants}
+                permissionGranted={permissionGranted}
+              />
+            ))}
+          </div>
+
+        </motion.div>
+
+      </div>
     </section>
   );
 }

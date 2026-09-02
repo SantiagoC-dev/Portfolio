@@ -72,7 +72,7 @@ const ParallaxHobby = ({ hobby, index }) => {
               alt={hobby.title} 
               loading="lazy" 
               decoding="async"
-              className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700"
+              className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-[filter] duration-700"
             />
           </motion.div>
 

@@ -139,12 +139,18 @@ export default function InspirationsPage() {
     }
   };
 
+  // ── FIX: se quitó "filter: blur()" de hidden/visible.
+  // Esto se aplicaba a las 7 tarjetas del grid a la vez (con stagger),
+  // todas animando "filter" -- propiedad no compositable -- justo en el
+  // momento más caro: la primera pintura de la página. opacity + y sí
+  // corren en el compositor y el efecto de entrada se sigue viendo bien.
+  // Si querés el blur de vuelta por estética, es "filter: blur(8px)" →
+  // "filter: blur(0px)", a costa de este repaint extra x7 al cargar.
   const itemVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
+    hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0, 
-      filter: "blur(0px)",
       transition: { duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] }
     }
   };

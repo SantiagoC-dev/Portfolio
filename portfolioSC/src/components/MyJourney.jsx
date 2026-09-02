@@ -70,7 +70,7 @@ export default function MyJourney() {
             style={{ top: MOBILE_ROW_HEIGHT / 2, height: mobileTrackLength }}
           />
 
-          {/* Riel de progreso */}
+          {/* Riel de progreso — anima scaleY (transform), ya está bien */}
           <motion.div
             className="absolute left-[7px] w-[2px] bg-gray-900 dark:bg-white origin-top"
             style={{ top: MOBILE_ROW_HEIGHT / 2, height: mobileTrackLength }}
@@ -91,7 +91,7 @@ export default function MyJourney() {
                   whileTap={{ scale: 0.97 }}
                   className="relative h-11 w-full flex items-center gap-4 text-left"
                 >
-                  {/* Punto */}
+                  {/* Punto — anima scale/opacity (transform), ya está bien */}
                   <span className="relative z-10 flex items-center justify-center w-4 h-4 shrink-0">
                     {isActive && (
                       <motion.span
@@ -176,12 +176,17 @@ export default function MyJourney() {
                 />
 
                 {isActive && (
+                  // ── FIX: antes animaba "r" (geometría SVG → fuerza reflow cada frame).
+                  // Ahora el círculo tiene radio fijo y se anima con "scale" (transform),
+                  // que corre en el compositor / GPU. transformOrigin fija el centro
+                  // exacto (cx, cy) para que escale desde el punto correcto.
                   <motion.circle
-                    cx={cx} cy={40} fill="none"
+                    cx={cx} cy={40} r={8} fill="none"
                     className="stroke-gray-900 dark:stroke-white"
                     strokeWidth={1}
-                    initial={{ r: 8, opacity: 0.8 }}
-                    animate={{ r: 24, opacity: 0 }}
+                    style={{ transformOrigin: `${cx}px 40px` }}
+                    initial={{ scale: 1, opacity: 0.8 }}
+                    animate={{ scale: 3, opacity: 0 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
                   />
                 )}
@@ -190,6 +195,7 @@ export default function MyJourney() {
                   cx={cx} cy={40} r={8} fill="none"
                   className="stroke-gray-900 dark:stroke-white"
                   strokeWidth={1.5}
+                  style={{ transformOrigin: `${cx}px 40px` }}
                   initial={false}
                   animate={{ 
                     scale: isActive ? 1 : 0, 
@@ -232,9 +238,16 @@ export default function MyJourney() {
       <AnimatePresence mode="wait">
         <motion.div
           key={activeIndex}
-          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+          // ── FIX: se quitó "filter: blur()" del initial/animate/exit.
+          // filter no corre en el compositor en la mayoría de navegadores,
+          // y esto se disparaba en CADA cambio de etapa y también al cargar
+          // la página. opacity + y sí son compositables y se ven casi igual
+          // de suave. Si preferís mantener el efecto blur por estética,
+          // volvé a agregar filter: "blur(8px)" / "blur(0px)" a costa de
+          // este costo extra en cada transición.
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5, ease: [0.215, 0.610, 0.355, 1.000] }}
           className="flex flex-col items-center"
         >
@@ -250,7 +263,8 @@ export default function MyJourney() {
             <img
               src={journeyData[activeIndex].image}
               alt={journeyData[activeIndex].title}
-              className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000 ease-out hover:scale-105"
+              decoding="async"
+              className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-[filter,transform] duration-1000 ease-out hover:scale-105"
             />
           </div>
         </motion.div>

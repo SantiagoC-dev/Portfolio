@@ -5,8 +5,9 @@ import { useEffect } from 'react';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Interests from './components/Interests';
+import Services from './components/Services'; // <-- Nuevo componente integrado
 import MyJourney from './components/MyJourney';
+import Interests from './components/Interests';
 import LovedOnes from './components/LovedOnes';
 import Footer from './components/Footer';
 import HobbiesPage from './components/HobbiesPage';
@@ -20,14 +21,15 @@ function Home() {
   return (
     <>
       <Hero />
-      <Interests />
+      <Services />      {/* <-- Servicios ocupa el lugar principal */}
       <MyJourney />
+      <Interests />     {/* <-- Intereses baja antes de los testimonios */}
       <LovedOnes />
     </>
   );
 }
 
-// ─── 1. NUEVO COMPONENTE: GESTOR DE ANIMACIONES Y RUTAS ───
+// ─── 1. COMPONENTE: GESTOR DE ANIMACIONES Y RUTAS ───
 function AnimatedRoutes() {
   const location = useLocation();
 

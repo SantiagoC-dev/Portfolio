@@ -28,6 +28,11 @@ const techData = {
     fill: "none", 
     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z"/>
   },
+  "React": { 
+    color: "#61DAFB", 
+    fill: "currentColor",
+    icon: <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" />
+  },
   "Vite": { 
     color: "#646CFF", 
     fill: "currentColor",
@@ -40,14 +45,12 @@ const techData = {
   }
 };
 
-// ─── NUEVO COMPONENTE: TARJETA INTERACTIVA DE IMAGEN ───
-// Maneja la interacción inteligentemente: Detecta PC vs Móvil para no tener choques.
+// ─── COMPONENTE: TARJETA INTERACTIVA DE IMAGEN ───
 function ProjectImageInteraction({ project, t }) {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isHoverDevice, setIsHoverDevice] = useState(false);
 
   useEffect(() => {
-    // Averiguamos una sola vez si el dispositivo usa ratón (PC) o pantalla táctil
     const checkHover = () => setIsHoverDevice(window.matchMedia('(hover: hover)').matches);
     checkHover();
   }, []);
@@ -55,25 +58,21 @@ function ProjectImageInteraction({ project, t }) {
   return (
     <div 
       className="relative overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900 aspect-[4/3] shadow-xl md:shadow-2xl transition-all duration-700 hover:shadow-black/10 cursor-pointer"
-      // En PC: Revelamos al pasar el ratón. En móvil: Ignoramos estos eventos para que no peleen con el toque.
       onMouseEnter={() => isHoverDevice && setIsRevealed(true)}
       onMouseLeave={() => isHoverDevice && setIsRevealed(false)}
-      // En móvil: Con un tap activamos/desactivamos. En PC: Se ignora (porque el ratón ya lo controla).
       onClick={() => !isHoverDevice && setIsRevealed(!isRevealed)}
       style={{ 
         WebkitTapHighlightColor: 'transparent', 
         userSelect: 'none', 
         touchAction: 'manipulation',
-        // ─── MAGIA DE HARDWARE PARA EVITAR CORTES EN CELULAR ───
         transform: 'translateZ(0)', 
-        WebkitMaskImage: '-webkit-radial-gradient(white, black)' // Detiene el desbordamiento de esquinas redondeadas en Safari/Chrome móvil
+        WebkitMaskImage: '-webkit-radial-gradient(white, black)'
       }}
     >
       <img 
         src={project.image} 
         alt={project.title} 
         draggable="false"
-        // will-change-transform fuerza a la tarjeta gráfica a dibujar la imagen permanentemente
         className={`w-full h-full object-cover transition-transform duration-1000 will-change-transform ${isRevealed ? 'scale-105 grayscale-0' : 'grayscale-[15%]'}`}
       />
       
@@ -88,7 +87,7 @@ function ProjectImageInteraction({ project, t }) {
         </div>
       </div>
 
-      {/* Mini animación para incitar el TAP (Aparece en celulares y desaparece al hacer tap) */}
+      {/* ✅ OPTIMIZACIÓN 1: Uso de animate-ping de Tailwind (CSS Puro) en lugar de loop en Framer Motion */}
       <AnimatePresence>
         {!isRevealed && !isHoverDevice && (
           <motion.div 
@@ -97,11 +96,7 @@ function ProjectImageInteraction({ project, t }) {
             exit={{ opacity: 0 }}
             className="absolute bottom-4 right-4 md:hidden flex items-center gap-2 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-full shadow-lg pointer-events-none"
           >
-            <motion.div 
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-2.5 h-2.5 bg-white rounded-full"
-            />
+            <div className="w-2 h-2 bg-white rounded-full animate-ping" />
             <span className="text-[9px] tracking-widest font-bold uppercase">Tap</span>
           </motion.div>
         )}
@@ -123,7 +118,6 @@ export default function PortfolioPage() {
     image: projectImages[project.id]
   }));
 
-  // ─── DEFINICIÓN DE VARIANTES DE ANIMACIÓN ───
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -180,32 +174,34 @@ export default function PortfolioPage() {
               variants={containerVariants}
               className={`flex flex-col gap-10 md:gap-16 lg:gap-24 ${project.align === "left" ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
             >
-              {/* Bloque de Imagen con Componente Interactivo Extraído */}
+              {/* Bloque de Imagen */}
               <motion.div variants={fadeInUp} className="w-full lg:w-1/2 relative">
                 <ProjectImageInteraction project={project} t={t} />
               </motion.div>
 
-              {/* Bloque de Texto y Detalles */}
-              <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                <motion.span variants={fadeInUp} className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-3 md:mb-4 block">
-                  {project.category}
-                </motion.span>
-                <motion.h2 variants={fadeInUp} className="text-4xl sm:text-5xl md:text-6xl font-serif text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tighter leading-tight">
-                  {project.title}
-                </motion.h2>
+              {/* ✅ OPTIMIZACIÓN 2: Bloque de Texto Agrupado. 
+                  Todo el contenido textual ahora entra como un solo bloque animado, reduciendo 5 componentes de Framer Motion por proyecto. */}
+              <motion.div variants={fadeInUp} className="w-full lg:w-1/2 flex flex-col justify-center">
                 
-                <motion.p variants={fadeInUp} className="text-gray-500 dark:text-gray-400 font-light text-base md:text-lg lg:text-xl leading-relaxed mb-8 md:mb-10">
+                <span className="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase mb-3 md:mb-4 block">
+                  {project.category}
+                </span>
+                
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tighter leading-tight">
+                  {project.title}
+                </h2>
+                
+                <p className="text-gray-500 dark:text-gray-400 font-light text-base md:text-lg lg:text-xl leading-relaxed mb-8 md:mb-10">
                   {project.description}
-                </motion.p>
+                </p>
 
                 {/* Tech Stack */}
-                <motion.div variants={fadeInUp} className="flex flex-wrap gap-2 md:gap-3 mb-10 md:mb-14">
+                <div className="flex flex-wrap gap-2 md:gap-3 mb-10 md:mb-14">
                   {project.techStack.map(tech => (
-                    <motion.span 
+                    // ✅ OPTIMIZACIÓN 3: Uso de hover de Tailwind en lugar de whileHover de Framer Motion
+                    <span 
                       key={tech} 
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      className="px-3 md:px-4 py-1.5 md:py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-[10px] md:text-[11px] font-medium text-gray-700 dark:text-gray-300 tracking-wide flex items-center gap-1.5 md:gap-2 shadow-sm hover:shadow-md cursor-default"
+                      className="px-3 md:px-4 py-1.5 md:py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-[10px] md:text-[11px] font-medium text-gray-700 dark:text-gray-300 tracking-wide flex items-center gap-1.5 md:gap-2 shadow-sm cursor-default transform transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
                     >
                       {techData[tech] && (
                         <svg 
@@ -218,15 +214,14 @@ export default function PortfolioPage() {
                         </svg>
                       )}
                       {tech}
-                    </motion.span>
+                    </span>
                   ))}
-                </motion.div>
+                </div>
 
                 {/* Botón Explorar */}
-                <motion.div variants={fadeInUp}>
+                <div>
                   <Link 
                     to={`/case-study/${project.id}`}
-                    // Este clic navega normalmente. App.jsx se encarga del scroll fluido.
                     className="group relative inline-flex items-center gap-3 md:gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-gray-900 dark:text-white"
                   >
                     <span className="relative z-10 transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-400">
@@ -240,9 +235,9 @@ export default function PortfolioPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
                   </Link>
-                </motion.div>
+                </div>
 
-              </div>
+              </motion.div>
             </motion.section>
           ))}
         </div>

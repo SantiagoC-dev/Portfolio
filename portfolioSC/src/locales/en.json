@@ -5,10 +5,37 @@
     "portfolio": "Portfolio"
   },
   "hero": {
+    "badge": "Available for projects",
     "title": "Hi, I'm Santiago.",
     "description": "I believe the best software is the one that feels like an intuitive solution. Explore my work, get to know my process, and discover what inspires me to build.",
     "button": "View portfolio",
     "imageAlt": "Photo of Santiago Calderón"
+  },
+"services": {
+    "subtitle": "Services",
+    "titleLine1": "Digital solutions",
+    "titleLine2": "with a forward-thinking vision.",
+    "description": "I develop digital solutions combining programming, architecture, system design, and technological innovation to create solid, scalable products ready to evolve.",
+    "cta": "Do you have a project in mind or are you looking for a profile for your team?",
+    "button": "Let's talk about your project",
+    "items": [
+      {
+        "title": "Cross-Platform Development",
+        "description": "Building modern web and mobile applications. I transform technical complexity into smooth, optimized, and user-centered digital experiences."
+      },
+      {
+        "title": "Software Architecture",
+        "description": "My main focus. I design robust technological foundations, structured databases, and scalable backend systems, all under clean and maintainable design patterns."
+      },
+      {
+        "title": "Freelance End-to-End Development",
+        "description": "Comprehensive solutions for businesses and startups. I cover the entire lifecycle: from requirements gathering and documentation to final deployment."
+      },
+      {
+        "title": "UI/UX Design",
+        "description": "Creating aesthetic and intuitive interfaces. I prioritize design that is not only visually appealing but naturally guides and solves user needs."
+      }
+    ]
   },
   "footer": {
     "title": "Let's connect.",

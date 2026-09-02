@@ -20,7 +20,7 @@ export default function Navbar() {
     }
     return false;
   });
-  
+
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const { scrollY } = useScroll();
@@ -28,6 +28,22 @@ export default function Navbar() {
 
   // ─── ESTADO PARA EL MENÚ MÓVIL ───
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // ─── ESTADO REACTIVO PARA SABER SI ESTAMOS EN DESKTOP ───
+  // (reemplaza los usos directos de window.innerWidth, que no son reactivos
+  // y pueden romper en SSR)
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const currentLang = i18n?.language || 'es';
 
@@ -65,15 +81,15 @@ export default function Navbar() {
     const previous = scrollY.getPrevious();
     if (!isMobileMenuOpen) {
       if (latest > previous && latest > 100) {
-        if (!hidden) setHidden(true); 
+        if (!hidden) setHidden(true);
       } else {
-        if (hidden) setHidden(false); 
+        if (hidden) setHidden(false);
       }
     }
   });
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
-  
+
   const toggleLanguage = () => {
     const newLang = currentLang === 'es' ? 'en' : 'es';
     i18n.changeLanguage(newLang);
@@ -87,16 +103,22 @@ export default function Navbar() {
     { name: t('navbar.portfolio'), path: '/portfolio' }
   ];
 
+  // ─── VARIANTES OPTIMIZADAS (opacity + scale/y en vez de height) ───
+  // Animar "height: auto" fuerza reflow en cada frame (carísimo en móvil,
+  // más con backdrop-blur activo). opacity/scale/y corren en el compositor
+  // (GPU) y se sienten instantáneos.
   const mobileMenuVariants = {
-    hidden: { 
-      opacity: 0, 
-      height: 0, 
-      transition: { duration: 0.2, ease: "easeOut" }
+    hidden: {
+      opacity: 0,
+      scale: 0.96,
+      y: -8,
+      transition: { duration: 0.15, ease: "easeOut" }
     },
-    visible: { 
-      opacity: 1, 
-      height: "auto", 
-      transition: { duration: 0.3, ease: "easeOut" }
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { duration: 0.18, ease: "easeOut" }
     }
   };
 
@@ -115,17 +137,17 @@ export default function Navbar() {
 
         {/* ─── FILA SUPERIOR (Móvil y PC) ─── */}
         <div className="flex items-center justify-between w-full md:col-start-1 md:justify-start">
-          
+
           {/* LOGO */}
           <div className="flex items-center pl-2 md:pl-4 shrink-0">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center hover:opacity-70 transition-opacity"
             >
-              <img 
-                src={isDarkMode ? LogoB : LogoN} 
-                alt="Mi Logo" 
+              <img
+                src={isDarkMode ? LogoB : LogoN}
+                alt="Mi Logo"
                 className="h-8 md:h-11 w-auto object-contain scale-125 md:scale-150 transform origin-left translate-y-[2px]"
               />
             </Link>
@@ -134,7 +156,7 @@ export default function Navbar() {
           {/* BOTONES MÓVILES EXTRAS */}
           <div className="flex items-center gap-1 pr-1 md:hidden">
             {/* Idioma */}
-            <button 
+            <button
               onClick={toggleLanguage}
               className="w-8 h-8 flex items-center justify-center rounded-full text-[10px] font-bold text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all overflow-hidden"
             >
@@ -147,11 +169,11 @@ export default function Navbar() {
                 {currentLang.toUpperCase()}
               </motion.span>
             </button>
-            
+
             <div className="w-px h-3 bg-gray-200 dark:bg-gray-700"></div>
 
             {/* Tema */}
-            <button 
+            <button
               onClick={toggleTheme}
               className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all"
             >
@@ -169,7 +191,7 @@ export default function Navbar() {
             </button>
 
             {/* BOTÓN HAMBURGUESA OPTIMIZADO */}
-            <button 
+            <button
               onClick={toggleMobileMenu}
               className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors ml-1 relative"
               title={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -179,17 +201,17 @@ export default function Navbar() {
                 initial={false}
                 animate={isMobileMenuOpen ? "open" : "closed"}
               >
-                <motion.span 
+                <motion.span
                   variants={{ closed: { rotate: 0, y: 0 }, open: { rotate: 45, y: 7 } }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="w-5 h-[2px] bg-current rounded-full origin-center"
                 />
-                <motion.span 
+                <motion.span
                   variants={{ closed: { opacity: 1, scale: 1 }, open: { opacity: 0, scale: 0.5 } }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="w-5 h-[2px] bg-current rounded-full"
                 />
-                <motion.span 
+                <motion.span
                   variants={{ closed: { rotate: 0, y: 0 }, open: { rotate: -45, y: -7 } }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="w-5 h-[2px] bg-current rounded-full origin-center"
@@ -201,26 +223,26 @@ export default function Navbar() {
 
         {/* ─── MENÚ DESPLEGABLE MÓVIL ─── */}
         <AnimatePresence>
-          {(isMobileMenuOpen || window.innerWidth >= 768) && (
-            <motion.div 
-              className={`md:static md:col-start-2 w-full md:w-auto flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 mx-auto pt-4 md:pt-0 overflow-hidden ${window.innerWidth < 768 ? 'absolute top-full left-0 right-0 bg-white dark:bg-gray-900 rounded-[2rem] shadow-2xl border border-gray-100 dark:border-gray-800 p-6 z-[60]' : ''}`}
+          {(isMobileMenuOpen || isDesktop) && (
+            <motion.div
+              className={`md:static md:col-start-2 w-full md:w-auto flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 mx-auto pt-4 md:pt-0 overflow-hidden ${!isDesktop ? 'absolute top-full left-0 right-0 bg-white dark:bg-gray-900 rounded-[2rem] shadow-2xl border border-gray-100 dark:border-gray-800 p-6 z-[60]' : ''}`}
               initial="hidden"
               animate="visible"
               exit="hidden"
               variants={mobileMenuVariants}
-              style={window.innerWidth >= 768 ? { height: 'auto', opacity: 1, position: 'static' } : {}}
+              style={isDesktop ? { opacity: 1, scale: 1, y: 0, position: 'static' } : { transformOrigin: 'top' }}
             >
               {links.map((link) => {
                 const isActive = location.pathname === link.path;
-                
+
                 return (
                   <Link
                     key={link.name}
                     to={link.path}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`relative w-full md:w-auto px-6 py-3 md:py-2.5 text-xs font-bold tracking-widest uppercase transition-colors rounded-full whitespace-nowrap flex items-center justify-center overflow-hidden z-10 ${
-                      isActive 
-                        ? 'text-white dark:text-gray-900' 
+                      isActive
+                        ? 'text-white dark:text-gray-900'
                         : 'text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 md:hover:bg-transparent md:dark:hover:bg-transparent'
                     }`}
                   >
@@ -231,7 +253,7 @@ export default function Navbar() {
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
-                    <motion.span 
+                    <motion.span
                       key={currentLang}
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -249,7 +271,7 @@ export default function Navbar() {
 
         {/* ─── BOTONES PC EXTRAS ─── */}
         <div className="hidden md:flex flex items-center justify-end gap-1 md:gap-2 pr-1 md:pr-2 md:col-start-3 md:justify-end">
-          <button 
+          <button
             onClick={toggleLanguage}
             className="w-10 h-10 flex items-center justify-center rounded-full text-xs font-bold text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 overflow-hidden"
           >
@@ -262,10 +284,10 @@ export default function Navbar() {
               {currentLang.toUpperCase()}
             </motion.span>
           </button>
-          
+
           <div className="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
 
-          <button 
+          <button
             onClick={toggleTheme}
             className="w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300"
           >

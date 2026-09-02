@@ -5,10 +5,37 @@
     "portfolio": "Portafolio"
   },
   "hero": {
+    "badge": "Disponible para proyectos",
     "title": "Hola, soy Santiago.",
     "description": "Creo que el mejor software es aquel que se siente como una solución intuitiva. Explora mi trabajo, conoce mi proceso y descubre lo que me inspira a construir.",
     "button": "Ver portafolio",
     "imageAlt": "Foto de Santiago Calderón"
+  },
+"services": {
+    "subtitle": "Servicios",
+    "titleLine1": "Soluciones digitales",
+    "titleLine2": "con visión de futuro.",
+    "description": "Desarrollo soluciones digitales combinando programación, arquitectura, diseño de sistemas e innovación tecnológica para crear productos sólidos, escalables y preparados para evolucionar.",
+    "cta": "¿Tienes un proyecto en mente o buscas un perfil para tu equipo?",
+    "button": "Hablemos de tu proyecto",
+    "items": [
+      {
+        "title": "Desarrollo Multiplataforma",
+        "description": "Construcción de aplicaciones web y móviles modernas. Transformo la complejidad técnica en experiencias digitales fluidas, optimizadas y centradas en el usuario."
+      },
+      {
+        "title": "Arquitectura de Software",
+        "description": "Mi mayor enfoque. Diseño bases tecnológicas robustas, bases de datos estructuradas y sistemas backend escalables. Todo bajo patrones de diseño limpios y mantenibles."
+      },
+      {
+        "title": "Desarrollo Freelance (End-to-End)",
+        "description": "Soluciones integrales para negocios y startups. Abarco todo el ciclo de vida: desde el levantamiento de requerimientos y documentación hasta el despliegue y puesta en marcha."
+      },
+      {
+        "title": "Diseño UI/UX",
+        "description": "Creación de interfaces estéticas e intuitivas. Priorizo que el diseño no solo sea atractivo visualmente, sino que guíe y resuelva las necesidades del usuario de forma natural."
+      }
+    ]
   },
   "footer": {
     "title": "Conectemos.",
