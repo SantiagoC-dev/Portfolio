@@ -1,20 +1,18 @@
-import { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /* -------------------------------------------------------------------------- */
 /* CARD                                                                       */
 /* -------------------------------------------------------------------------- */
 
-function CreativeCard({ card, variants, sensorX, sensorY, sensorActive }) {
+function CreativeCard({ card, variants }) {
   const navigate = useNavigate();
 
-  // Mouse
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Suavizado
+  // Suavizado fluido para el efecto 3D en escritorio
   const smoothMouseX = useSpring(mouseX, {
     stiffness: 140,
     damping: 22,
@@ -27,50 +25,25 @@ function CreativeCard({ card, variants, sensorX, sensorY, sensorActive }) {
     mass: 0.5,
   });
 
-  const smoothSensorX = useSpring(sensorX, {
-    stiffness: 100,
-    damping: 20,
-    mass: 0.5,
-  });
-
-  const smoothSensorY = useSpring(sensorY, {
-    stiffness: 100,
-    damping: 20,
-    mass: 0.5,
-  });
-
-  /*
-   * En móvil usamos el sensor.
-   * En escritorio usamos el mouse.
-   */
-  const activeX = sensorActive ? smoothSensorX : smoothMouseX;
-  const activeY = sensorActive ? smoothSensorY : smoothMouseY;
-
-  const rotateX = useTransform(activeY, [-1, 1], [7, -7]);
-  const rotateY = useTransform(activeX, [-1, 1], [-7, 7]);
+  const rotateX = useTransform(smoothMouseY, [-1, 1], [7, -7]);
+  const rotateY = useTransform(smoothMouseX, [-1, 1], [-7, 7]);
 
   /* ---------------------------------------------------------------------- */
-  /* MOUSE                                                                   */
+  /* MOUSE INTERACTION                                                      */
   /* ---------------------------------------------------------------------- */
 
   const handleMouseMove = (event) => {
-    if (sensorActive || event.pointerType === "touch") return;
+    if (event.pointerType === 'touch') return;
 
     const rect = event.currentTarget.getBoundingClientRect();
-
-    const normalizedX =
-      (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-
-    const normalizedY =
-      (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+    const normalizedX = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    const normalizedY = (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
 
     mouseX.set(Math.max(-1, Math.min(1, normalizedX)));
     mouseY.set(Math.max(-1, Math.min(1, normalizedY)));
   };
 
   const handleMouseLeave = () => {
-    if (sensorActive) return;
-
     mouseX.set(0);
     mouseY.set(0);
   };
@@ -92,7 +65,7 @@ function CreativeCard({ card, variants, sensorX, sensorY, sensorActive }) {
         style={{
           rotateX,
           rotateY,
-          transformStyle: "preserve-3d",
+          transformStyle: 'preserve-3d',
         }}
         className="
           group
@@ -139,7 +112,7 @@ function CreativeCard({ card, variants, sensorX, sensorY, sensorActive }) {
         {/* Header */}
         <div className="flex items-start justify-between">
           <span className="text-[10px] font-medium tracking-[0.18em] text-gray-400 dark:text-gray-500">
-            {String(card.id).padStart(2, "0")}
+            {String(card.id).padStart(2, '0')}
           </span>
 
           <span
@@ -248,217 +221,32 @@ function CreativeCard({ card, variants, sensorX, sensorY, sensorActive }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* COMPONENTE PRINCIPAL                                                      */
+/* COMPONENTE PRINCIPAL                                                       */
 /* -------------------------------------------------------------------------- */
 
 export default function Interests() {
   const { t } = useTranslation();
 
-  const [needsPermission, setNeedsPermission] = useState(false);
-  const [permissionGranted, setPermissionGranted] = useState(false);
-  const [sensorActive, setSensorActive] = useState(false);
-
-  /*
-   * Valores compartidos por las tres tarjetas.
-   *
-   * Esto es mucho mejor que crear un listener por tarjeta.
-   */
-  const sensorX = useMotionValue(0);
-  const sensorY = useMotionValue(0);
-
-  const sensorDetected = useRef(false);
-
-  /* ---------------------------------------------------------------------- */
-  /* DETECTAR IOS                                                            */
-  /* ---------------------------------------------------------------------- */
-
-  useEffect(() => {
-    const isIOS =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-    const supportsOrientation =
-      typeof window !== "undefined" && "DeviceOrientationEvent" in window;
-
-    if (!supportsOrientation) {
-      console.info("DeviceOrientation no está disponible.");
-      return;
-    }
-
-    /*
-     * iOS necesita permiso explícito.
-     */
-    if (
-      isIOS &&
-      typeof DeviceOrientationEvent.requestPermission === "function"
-    ) {
-      setNeedsPermission(true);
-      return;
-    }
-
-    /*
-     * Android normalmente no necesita requestPermission().
-     * Sin embargo, todavía esperamos a recibir un evento real.
-     */
-    setPermissionGranted(true);
-  }, []);
-
-  /* ---------------------------------------------------------------------- */
-  /* SENSOR                                                                  */
-  /* ---------------------------------------------------------------------- */
-
-  useEffect(() => {
-    if (!permissionGranted) return;
-
-    if (typeof window === "undefined") return;
-
-    const handleDeviceOrientation = (event) => {
-      if (event.beta == null || event.gamma == null) {
-        return;
-      }
-
-      /*
-       * El hecho de que lleguemos aquí significa que
-       * el navegador realmente está entregando datos.
-       */
-      if (!sensorDetected.current) {
-        sensorDetected.current = true;
-        setSensorActive(true);
-
-        console.info("✓ DeviceOrientation activo");
-      }
-
-      /*
-       * gamma:
-       * inclinación izquierda / derecha
-       *
-       * beta:
-       * inclinación adelante / atrás
-       */
-
-      let gamma = event.gamma;
-      let beta = event.beta;
-
-      /*
-       * Detectamos orientación de pantalla.
-       */
-      const orientation = window.screen?.orientation?.angle ?? 0;
-
-      /*
-       * Ajustes para diferentes orientaciones.
-       */
-      if (orientation === 90) {
-        const temp = gamma;
-        gamma = -beta;
-        beta = temp;
-      } else if (orientation === -90 || orientation === 270) {
-        const temp = gamma;
-        gamma = beta;
-        beta = -temp;
-      }
-
-      /*
-       * Normalización.
-       *
-       * Usamos un rango más pequeño para que el movimiento
-       * sea visible sin que la tarjeta se vuelva exagerada.
-       */
-      const normalizedX = Math.max(-1, Math.min(1, gamma / 25));
-
-      const normalizedY = Math.max(-1, Math.min(1, (beta - 45) / 25));
-
-      sensorX.set(normalizedX);
-      sensorY.set(normalizedY);
-    };
-
-    /*
-     * IMPORTANTE:
-     * capture = false
-     */
-    window.addEventListener(
-      "deviceorientation",
-      handleDeviceOrientation,
-      false,
-    );
-
-    return () => {
-      window.removeEventListener(
-        "deviceorientation",
-        handleDeviceOrientation,
-        false,
-      );
-    };
-  }, [permissionGranted, sensorX, sensorY]);
-
-  /* ---------------------------------------------------------------------- */
-  /* PEDIR PERMISO                                                           */
-  /* ---------------------------------------------------------------------- */
-
-  const requestAccess = async () => {
-    try {
-      if (typeof DeviceOrientationEvent === "undefined") {
-        console.warn("DeviceOrientationEvent no está disponible.");
-        return;
-      }
-
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        /*
-         * MUY IMPORTANTE:
-         * esto ocurre directamente dentro del click.
-         */
-        const permission = await DeviceOrientationEvent.requestPermission();
-
-        console.log("Permiso DeviceOrientation:", permission);
-
-        if (permission === "granted") {
-          setPermissionGranted(true);
-          setNeedsPermission(false);
-        } else {
-          console.warn("Permiso de orientación rechazado.");
-          setNeedsPermission(false);
-        }
-      } else {
-        /*
-         * Android / otros navegadores.
-         */
-        setPermissionGranted(true);
-        setNeedsPermission(false);
-      }
-    } catch (error) {
-      console.error("Error solicitando DeviceOrientation:", error);
-
-      setNeedsPermission(false);
-    }
-  };
-
-  /* ---------------------------------------------------------------------- */
-  /* CARDS                                                                   */
-  /* ---------------------------------------------------------------------- */
-
   const cards = [
     {
       id: 1,
-      title: t("interests.cards.hobbies.title"),
-      text: t("interests.cards.hobbies.text"),
-      link: "/hobbies",
+      title: t('interests.cards.hobbies.title'),
+      text: t('interests.cards.hobbies.text'),
+      link: '/hobbies',
     },
     {
       id: 2,
-      title: t("interests.cards.inspirations.title"),
-      text: t("interests.cards.inspirations.text"),
-      link: "/inspirations",
+      title: t('interests.cards.inspirations.title'),
+      text: t('interests.cards.inspirations.text'),
+      link: '/inspirations',
     },
     {
       id: 3,
-      title: t("interests.cards.playlist.title"),
-      text: t("interests.cards.playlist.text"),
-      link: "/playlist",
+      title: t('interests.cards.playlist.title'),
+      text: t('interests.cards.playlist.text'),
+      link: '/playlist',
     },
   ];
-
-  /* ---------------------------------------------------------------------- */
-  /* ANIMACIONES                                                             */
-  /* ---------------------------------------------------------------------- */
 
   const containerVariants = {
     hidden: {},
@@ -483,10 +271,6 @@ export default function Interests() {
       },
     },
   };
-
-  /* ---------------------------------------------------------------------- */
-  /* RENDER                                                                  */
-  /* ---------------------------------------------------------------------- */
 
   return (
     <section
@@ -570,43 +354,9 @@ export default function Interests() {
                   dark:text-white
                 "
               >
-                {t("interests.title")}
+                {t('interests.title')}
               </h2>
             </div>
-
-            {/* iOS permission */}
-            {needsPermission && (
-              <button
-                type="button"
-                onClick={requestAccess}
-                className="
-                  self-start
-                  rounded-full
-                  border
-                  border-gray-200
-                  px-4
-                  py-2
-                  text-[10px]
-                  font-medium
-                  uppercase
-                  tracking-[0.16em]
-                  text-gray-500
-                  transition-colors
-                  duration-300
-                  hover:border-gray-400
-                  hover:text-gray-900
-
-                  dark:border-gray-800
-                  dark:text-gray-500
-                  dark:hover:border-gray-600
-                  dark:hover:text-white
-
-                  md:self-end
-                "
-              >
-                {t("interests.activateExperience")}
-              </button>
-            )}
           </motion.div>
 
           {/* Cards */}
@@ -616,9 +366,6 @@ export default function Interests() {
                 key={card.id}
                 card={card}
                 variants={revealVariants}
-                sensorX={sensorX}
-                sensorY={sensorY}
-                sensorActive={sensorActive}
               />
             ))}
           </div>
