@@ -50,7 +50,7 @@ function CreativeCard({ card, variants, permissionGranted }) {
   // GIROSCOPIO RELATIVO (MÓVILES)
   // ─────────────────────────────────────────────────────────────────────────
 
-  useEffect(() => {
+useEffect(() => {
     if (!permissionGranted) return;
 
     const handleDeviceOrientation = (event) => {
@@ -58,23 +58,9 @@ function CreativeCard({ card, variants, permissionGranted }) {
       
       isGyroActive.current = true;
 
-      // 1. Calibramos el "centro" la primera vez que recibimos datos
-      if (initialBeta.current === null) {
-        initialBeta.current = event.beta;
-        initialGamma.current = event.gamma;
-      }
-
-      // 2. Calculamos la diferencia desde la postura inicial
-      let diffGamma = event.gamma - initialGamma.current;
-      let diffBeta = event.beta - initialBeta.current;
-
-      // Evitamos saltos bruscos si el usuario gira el teléfono demasiado
-      if (diffGamma > 180) diffGamma -= 360;
-      if (diffGamma < -180) diffGamma += 360;
-
-      // 3. Normalizamos (35 grados de inclinación física equivalen al máximo efecto 3D)
-      const normalizedX = Math.max(-1, Math.min(1, diffGamma / 35));
-      const normalizedY = Math.max(-1, Math.min(1, diffBeta / 35));
+      // Valores directos y fluidos sin reiniciar el listener
+      const normalizedX = Math.max(-1, Math.min(1, event.gamma / 45));
+      const normalizedY = Math.max(-1, Math.min(1, (event.beta - 40) / 45));
 
       x.set(normalizedX);
       y.set(normalizedY);
@@ -85,7 +71,7 @@ function CreativeCard({ card, variants, permissionGranted }) {
     return () => {
       window.removeEventListener('deviceorientation', handleDeviceOrientation);
     };
-  }, [permissionGranted, x, y]);
+  }, [permissionGranted]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // TRANSFORMACIONES
