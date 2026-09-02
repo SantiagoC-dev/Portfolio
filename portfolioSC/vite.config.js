@@ -4,29 +4,29 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Apunta a navegadores modernos que manejan mejor JavaScript actual
     target: 'esnext',
-    
     rollupOptions: {
       output: {
-        // Fragmentación manual del código (Code Splitting)
-        manualChunks: {
-          // 1. Núcleo de React: Se descarga una vez y se cachea fuertemente
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          
-          // 2. Animaciones: Framer Motion es pesado, lo aislamos para no bloquear el hilo principal
-          'vendor-motion': ['framer-motion'],
-          
-          // 3. Traducciones: Librerías de idioma
-          'vendor-i18n': ['i18next', 'react-i18next']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // 1. Núcleo de React
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'vendor-react';
+            }
+            // 2. Animaciones (Framer Motion)
+            if (id.includes('framer-motion')) {
+              return 'vendor-motion';
+            }
+            // 3. Traducciones
+            if (id.includes('i18next') || id.includes('react-i18next')) {
+              return 'vendor-i18n';
+            }
+            // Agrupa cualquier otra dependencia en un paquete genérico
+            return 'vendor-core';
+          }
         }
       }
     },
-    // Límite de advertencia de tamaño de bloque aumentado para no generar alertas innecesarias
     chunkSizeWarningLimit: 800,
-  },
-  esbuild: {
-    // Limpia el código final eliminando logs y debuggers automáticamente
-    drop: ['console', 'debugger'],
   }
 });
