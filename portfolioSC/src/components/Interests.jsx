@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CARD CON SENSOR 3D INTELIGENTE
+// CARD CON SENSOR 3D INTELIGENTE Y AUTOCALIBRADO
 // ─────────────────────────────────────────────────────────────────────────────
 
 function CreativeCard({ card, variants, permissionGranted }) {
@@ -18,8 +18,9 @@ function CreativeCard({ card, variants, permissionGranted }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Bandera para saber si el giroscopio realmente está enviando datos
   const isGyroActive = useRef(false);
+  const initialBeta = useRef(null);
+  const initialGamma = useRef(null);
 
   // Animación más fluida para manejar los cientos de datos por segundo del sensor
   const smoothX = useSpring(x, { stiffness: 120, damping: 20, mass: 0.5 });
@@ -30,9 +31,7 @@ function CreativeCard({ card, variants, permissionGranted }) {
   // ─────────────────────────────────────────────────────────────────────────
 
   const handleMouseMove = (event) => {
-    // Si el giroscopio está activo o es una pantalla táctil, ignoramos el ratón
     if (isGyroActive.current || event.pointerType === 'touch') return;
-
     const rect = event.currentTarget.getBoundingClientRect();
     const normalizedX = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
     const normalizedY = (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
@@ -42,15 +41,13 @@ function CreativeCard({ card, variants, permissionGranted }) {
   };
 
   const handleMouseLeave = () => {
-    // Evita que tocar la pantalla (scroll) reinicie la inclinación del teléfono
     if (isGyroActive.current) return;
-    
     x.set(0);
     y.set(0);
   };
 
   // ─────────────────────────────────────────────────────────────────────────
-  // GIROSCOPIO (MÓVILES)
+  // GIROSCOPIO RELATIVO (MÓVILES)
   // ─────────────────────────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -59,14 +56,25 @@ function CreativeCard({ card, variants, permissionGranted }) {
     const handleDeviceOrientation = (event) => {
       if (event.gamma == null || event.beta == null) return;
       
-      // Confirmamos que el sensor sirve y bloqueamos los eventos del ratón
       isGyroActive.current = true;
 
-      // Gamma: inclinación izquierda/derecha (-40 a 40 grados)
-      const normalizedX = Math.max(-1, Math.min(1, event.gamma / 40));
-      
-      // Beta: inclinación adelante/atrás (Asumimos que lo sostienes a 45 grados de inclinación)
-      const normalizedY = Math.max(-1, Math.min(1, (event.beta - 45) / 40));
+      // 1. Calibramos el "centro" la primera vez que recibimos datos
+      if (initialBeta.current === null) {
+        initialBeta.current = event.beta;
+        initialGamma.current = event.gamma;
+      }
+
+      // 2. Calculamos la diferencia desde la postura inicial
+      let diffGamma = event.gamma - initialGamma.current;
+      let diffBeta = event.beta - initialBeta.current;
+
+      // Evitamos saltos bruscos si el usuario gira el teléfono demasiado
+      if (diffGamma > 180) diffGamma -= 360;
+      if (diffGamma < -180) diffGamma += 360;
+
+      // 3. Normalizamos (35 grados de inclinación física equivalen al máximo efecto 3D)
+      const normalizedX = Math.max(-1, Math.min(1, diffGamma / 35));
+      const normalizedY = Math.max(-1, Math.min(1, diffBeta / 35));
 
       x.set(normalizedX);
       y.set(normalizedY);
@@ -80,11 +88,12 @@ function CreativeCard({ card, variants, permissionGranted }) {
   }, [permissionGranted, x, y]);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // TRANSFORMACIONES (AUMENTADAS A 10 GRADOS PARA QUE SE NOTE)
+  // TRANSFORMACIONES
   // ─────────────────────────────────────────────────────────────────────────
-
-  const rotateX = useTransform(smoothY, [-1, 1], [10, -10]);
-  const rotateY = useTransform(smoothX, [-1, 1], [-10, 10]);
+  
+  // Ángulos amplios (12 grados) para que el efecto sea muy visible en el móvil
+  const rotateX = useTransform(smoothY, [-1, 1], [12, -12]);
+  const rotateY = useTransform(smoothX, [-1, 1], [-12, 12]);
 
   return (
     <motion.div
@@ -98,10 +107,7 @@ function CreativeCard({ card, variants, permissionGranted }) {
         onClick={() => {
           if (card.link) navigate(card.link);
         }}
-        style={{
-          rotateX,
-          rotateY,
-        }}
+        style={{ rotateX, rotateY }}
         className="
           group
           relative
@@ -129,7 +135,6 @@ function CreativeCard({ card, variants, permissionGranted }) {
           dark:hover:shadow-gray-900/30
         "
       >
-        {/* ───────────────── HEADER DE LA TARJETA ───────────────── */}
         <div className="flex items-start justify-between">
           <span className="text-[10px] font-medium tracking-[0.18em] text-gray-400 dark:text-gray-500">
             {String(card.id).padStart(2, '0')}
@@ -142,7 +147,6 @@ function CreativeCard({ card, variants, permissionGranted }) {
           </span>
         </div>
 
-        {/* ───────────────── CONTENIDO DE LA TARJETA ───────────────── */}
         <div className="mt-auto pt-16">
           <h3 className="max-w-[320px] text-2xl font-serif leading-tight tracking-tight text-gray-950 transition-all duration-300 group-hover:translate-x-1 dark:text-gray-200 dark:group-hover:text-white">
             {card.title}
@@ -170,7 +174,6 @@ export default function Interests() {
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
-    // Detectamos si es un dispositivo Apple (Safari/Edge en iOS)
     const isIOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -178,7 +181,6 @@ export default function Interests() {
     if (isIOS) {
       setNeedsPermission(true);
     } else {
-      // Si es Android o PC, el permiso ya está "concedido" por defecto
       setPermissionGranted(true);
     }
   }, []);
@@ -190,12 +192,13 @@ export default function Interests() {
         typeof DeviceOrientationEvent.requestPermission === 'function'
       ) {
         const permission = await DeviceOrientationEvent.requestPermission();
-
+        
+        // El navegador verifica el permiso almacenado.
         if (permission === 'granted') {
           setPermissionGranted(true);
           setNeedsPermission(false);
         } else {
-          alert(t('interests.gyroscopeDenied', 'Efecto 3D desactivado. Puedes navegar normalmente.'));
+          alert("El efecto 3D está desactivado en tus ajustes de navegador. Puedes seguir navegando con normalidad.");
           setNeedsPermission(false);
         }
       } else {
