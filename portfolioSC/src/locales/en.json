@@ -52,6 +52,7 @@
   },
   "interests": {
     "title": "More than just code, my passions and inspirations.",
+    "activateExperience": "Activate experience",
     "cards": {
       "hobbies": {
         "title": "Hobbies",

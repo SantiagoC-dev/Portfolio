@@ -315,27 +315,34 @@ export default function Interests() {
   // PERMISO DE ORIENTACIÓN
   // ─────────────────────────────────────────────────────────────────────────
 
-  const requestAccess = async () => {
-    try {
-      if (
-        typeof DeviceOrientationEvent !== 'undefined' &&
-        typeof DeviceOrientationEvent.requestPermission === 'function'
-      ) {
-        const permission =
-          await DeviceOrientationEvent.requestPermission();
+    const requestAccess = async () => {
+        try {
+          // 1. Verificamos si el dispositivo requiere pedir permiso explícito (iOS 13+)
+          if (
+            typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function'
+          ) {
+            const permission = await DeviceOrientationEvent.requestPermission();
 
-        if (permission === 'granted') {
-          setPermissionGranted(true);
+            if (permission === 'granted') {
+              setPermissionGranted(true);
+              setNeedsPermission(false);
+            } else {
+              // Feedback visual si el usuario o el sistema deniegan el acceso
+              alert("El efecto 3D requiere acceso al giroscopio. Puedes activarlo recargando la página.");
+            }
+          } else {
+            // 2. FALLBACK: Si estamos en un simulador de PC o un dispositivo que no lo requiere,
+            // simplemente activamos la experiencia y quitamos el botón para no trabar la UI.
+            setPermissionGranted(true);
+            setNeedsPermission(false);
+          }
+        } catch (error) {
+          console.warn('Device orientation request failed:', error);
+          // Si falla (ej. por no usar HTTPS), ocultamos el botón para limpiar la pantalla
           setNeedsPermission(false);
         }
-      }
-    } catch (error) {
-      console.warn(
-        'Device orientation request failed:',
-        error
-      );
-    }
-  };
+      };
 
   // ─────────────────────────────────────────────────────────────────────────
   // CARDS
@@ -518,7 +525,7 @@ export default function Interests() {
                   md:self-end
                 "
               >
-                Activar experiencia
+                {t('interests.activateExperience')}
               </button>
             )}
 
