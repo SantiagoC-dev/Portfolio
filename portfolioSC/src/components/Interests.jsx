@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   motion,
   useMotionValue,
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CARD
+// CARD CON SENSOR 3D INTELIGENTE
 // ─────────────────────────────────────────────────────────────────────────────
 
 function CreativeCard({ card, variants, permissionGranted }) {
@@ -18,47 +18,39 @@ function CreativeCard({ card, variants, permissionGranted }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Movimiento muy sutil para conservar el efecto premium
-  const smoothX = useSpring(x, {
-    stiffness: 180,
-    damping: 28,
-    mass: 0.4,
-  });
+  // Bandera para saber si el giroscopio realmente está enviando datos
+  const isGyroActive = useRef(false);
 
-  const smoothY = useSpring(y, {
-    stiffness: 180,
-    damping: 28,
-    mass: 0.4,
-  });
+  // Animación más fluida para manejar los cientos de datos por segundo del sensor
+  const smoothX = useSpring(x, { stiffness: 120, damping: 20, mass: 0.5 });
+  const smoothY = useSpring(y, { stiffness: 120, damping: 20, mass: 0.5 });
 
   // ─────────────────────────────────────────────────────────────────────────
-  // MOUSE
+  // MOUSE (SOLO PC)
   // ─────────────────────────────────────────────────────────────────────────
 
   const handleMouseMove = (event) => {
-    if (event.pointerType === 'touch') return;
+    // Si el giroscopio está activo o es una pantalla táctil, ignoramos el ratón
+    if (isGyroActive.current || event.pointerType === 'touch') return;
 
     const rect = event.currentTarget.getBoundingClientRect();
-
-    const normalizedX =
-      (event.clientX - (rect.left + rect.width / 2)) /
-      (rect.width / 2);
-
-    const normalizedY =
-      (event.clientY - (rect.top + rect.height / 2)) /
-      (rect.height / 2);
+    const normalizedX = (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    const normalizedY = (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
 
     x.set(Math.max(-1, Math.min(1, normalizedX)));
     y.set(Math.max(-1, Math.min(1, normalizedY)));
   };
 
   const handleMouseLeave = () => {
+    // Evita que tocar la pantalla (scroll) reinicie la inclinación del teléfono
+    if (isGyroActive.current) return;
+    
     x.set(0);
     y.set(0);
   };
 
   // ─────────────────────────────────────────────────────────────────────────
-  // ORIENTACIÓN DEL DISPOSITIVO
+  // GIROSCOPIO (MÓVILES)
   // ─────────────────────────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -66,49 +58,33 @@ function CreativeCard({ card, variants, permissionGranted }) {
 
     const handleDeviceOrientation = (event) => {
       if (event.gamma == null || event.beta == null) return;
+      
+      // Confirmamos que el sensor sirve y bloqueamos los eventos del ratón
+      isGyroActive.current = true;
 
-      const normalizedX = Math.max(
-        -1,
-        Math.min(1, event.gamma / 30)
-      );
-
-      const normalizedY = Math.max(
-        -1,
-        Math.min(1, (event.beta - 40) / 30)
-      );
+      // Gamma: inclinación izquierda/derecha (-40 a 40 grados)
+      const normalizedX = Math.max(-1, Math.min(1, event.gamma / 40));
+      
+      // Beta: inclinación adelante/atrás (Asumimos que lo sostienes a 45 grados de inclinación)
+      const normalizedY = Math.max(-1, Math.min(1, (event.beta - 45) / 40));
 
       x.set(normalizedX);
       y.set(normalizedY);
     };
 
-    window.addEventListener(
-      'deviceorientation',
-      handleDeviceOrientation
-    );
-
+    window.addEventListener('deviceorientation', handleDeviceOrientation);
+    
     return () => {
-      window.removeEventListener(
-        'deviceorientation',
-        handleDeviceOrientation
-      );
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
     };
   }, [permissionGranted, x, y]);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // TRANSFORMACIONES
+  // TRANSFORMACIONES (AUMENTADAS A 10 GRADOS PARA QUE SE NOTE)
   // ─────────────────────────────────────────────────────────────────────────
 
-  const rotateX = useTransform(
-    smoothY,
-    [-1, 1],
-    [4, -4]
-  );
-
-  const rotateY = useTransform(
-    smoothX,
-    [-1, 1],
-    [-4, 4]
-  );
+  const rotateX = useTransform(smoothY, [-1, 1], [10, -10]);
+  const rotateY = useTransform(smoothX, [-1, 1], [-10, 10]);
 
   return (
     <motion.div
@@ -120,9 +96,7 @@ function CreativeCard({ card, variants, permissionGranted }) {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onClick={() => {
-          if (card.link) {
-            navigate(card.link);
-          }
+          if (card.link) navigate(card.link);
         }}
         style={{
           rotateX,
@@ -155,135 +129,38 @@ function CreativeCard({ card, variants, permissionGranted }) {
           dark:hover:shadow-gray-900/30
         "
       >
-        {/* ───────────────── HEADER ───────────────── */}
-
+        {/* ───────────────── HEADER DE LA TARJETA ───────────────── */}
         <div className="flex items-start justify-between">
-
-          <span
-            className="
-              text-[10px]
-              font-medium
-              tracking-[0.18em]
-              text-gray-400
-              dark:text-gray-500
-            "
-          >
+          <span className="text-[10px] font-medium tracking-[0.18em] text-gray-400 dark:text-gray-500">
             {String(card.id).padStart(2, '0')}
           </span>
 
-          <span
-            className="
-              flex
-              h-9
-              w-9
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-gray-200
-              text-gray-400
-              transition-all
-              duration-300
-
-              group-hover:border-gray-900
-              group-hover:bg-gray-900
-              group-hover:text-white
-
-              dark:border-gray-700/80
-              dark:bg-transparent
-              dark:text-gray-500
-              dark:group-hover:border-gray-600
-              dark:group-hover:bg-gray-800
-              dark:group-hover:text-gray-300
-            "
-          >
-            <svg
-              className="
-                h-3.5
-                w-3.5
-                -rotate-45
-                transition-transform
-                duration-300
-                group-hover:rotate-0
-              "
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M5 12h14m-6-6l6 6-6 6"
-              />
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-400 transition-all duration-300 group-hover:border-gray-900 group-hover:bg-gray-900 group-hover:text-white dark:border-gray-700/80 dark:bg-transparent dark:text-gray-500 dark:group-hover:border-gray-600 dark:group-hover:bg-gray-800 dark:group-hover:text-gray-300">
+            <svg className="h-3.5 w-3.5 -rotate-45 transition-transform duration-300 group-hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 12h14m-6-6l6 6-6 6" />
             </svg>
           </span>
-
         </div>
 
-        {/* ───────────────── CONTENIDO ───────────────── */}
-
+        {/* ───────────────── CONTENIDO DE LA TARJETA ───────────────── */}
         <div className="mt-auto pt-16">
-
-          <h3
-            className="
-              max-w-[320px]
-              text-2xl
-              font-serif
-              leading-tight
-              tracking-tight
-              text-gray-950
-              transition-all
-              duration-300
-              group-hover:translate-x-1
-
-              dark:text-gray-200
-              dark:group-hover:text-white
-            "
-          >
+          <h3 className="max-w-[320px] text-2xl font-serif leading-tight tracking-tight text-gray-950 transition-all duration-300 group-hover:translate-x-1 dark:text-gray-200 dark:group-hover:text-white">
             {card.title}
           </h3>
 
-          <div
-            className="
-              mt-5
-              h-px
-              w-8
-              bg-gray-300
-              transition-all
-              duration-300
-              group-hover:w-12
-              group-hover:bg-gray-900
+          <div className="mt-5 h-px w-8 bg-gray-300 transition-all duration-300 group-hover:w-12 group-hover:bg-gray-900 dark:bg-gray-700 dark:group-hover:bg-gray-500" />
 
-              dark:bg-gray-700
-              dark:group-hover:bg-gray-500
-            "
-          />
-
-          <p
-            className="
-              mt-5
-              max-w-[340px]
-              text-sm
-              leading-7
-              font-light
-              text-gray-500
-
-              dark:text-gray-400
-            "
-          >
+          <p className="mt-5 max-w-[340px] text-sm leading-7 font-light text-gray-500 dark:text-gray-400">
             {card.text}
           </p>
-
         </div>
-
       </motion.article>
     </motion.div>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SECTION
+// COMPONENTE PRINCIPAL
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Interests() {
@@ -292,61 +169,44 @@ export default function Interests() {
   const [needsPermission, setNeedsPermission] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // DETECTAR IOS
-  // ─────────────────────────────────────────────────────────────────────────
-
   useEffect(() => {
+    // Detectamos si es un dispositivo Apple (Safari/Edge en iOS)
     const isIOS =
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (
-        navigator.platform === 'MacIntel' &&
-        navigator.maxTouchPoints > 1
-      );
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
     if (isIOS) {
       setNeedsPermission(true);
     } else {
+      // Si es Android o PC, el permiso ya está "concedido" por defecto
       setPermissionGranted(true);
     }
   }, []);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // PERMISO DE ORIENTACIÓN
-  // ─────────────────────────────────────────────────────────────────────────
+  const requestAccess = async () => {
+    try {
+      if (
+        typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function'
+      ) {
+        const permission = await DeviceOrientationEvent.requestPermission();
 
-    const requestAccess = async () => {
-        try {
-          // 1. Verificamos si el dispositivo requiere pedir permiso explícito (iOS 13+)
-          if (
-            typeof DeviceOrientationEvent !== 'undefined' &&
-            typeof DeviceOrientationEvent.requestPermission === 'function'
-          ) {
-            const permission = await DeviceOrientationEvent.requestPermission();
-
-            if (permission === 'granted') {
-              setPermissionGranted(true);
-              setNeedsPermission(false);
-            } else {
-              // Feedback visual si el usuario o el sistema deniegan el acceso
-              alert("El efecto 3D requiere acceso al giroscopio. Puedes activarlo recargando la página.");
-            }
-          } else {
-            // 2. FALLBACK: Si estamos en un simulador de PC o un dispositivo que no lo requiere,
-            // simplemente activamos la experiencia y quitamos el botón para no trabar la UI.
-            setPermissionGranted(true);
-            setNeedsPermission(false);
-          }
-        } catch (error) {
-          console.warn('Device orientation request failed:', error);
-          // Si falla (ej. por no usar HTTPS), ocultamos el botón para limpiar la pantalla
+        if (permission === 'granted') {
+          setPermissionGranted(true);
+          setNeedsPermission(false);
+        } else {
+          alert(t('interests.gyroscopeDenied', 'Efecto 3D desactivado. Puedes navegar normalmente.'));
           setNeedsPermission(false);
         }
-      };
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // CARDS
-  // ─────────────────────────────────────────────────────────────────────────
+      } else {
+        setPermissionGranted(true);
+        setNeedsPermission(false);
+      }
+    } catch (error) {
+      console.warn('El dispositivo no soporta orientación:', error);
+      setNeedsPermission(false);
+    }
+  };
 
   const cards = [
     {
@@ -369,179 +229,51 @@ export default function Interests() {
     },
   ];
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // ANIMACIONES
-  // ─────────────────────────────────────────────────────────────────────────
-
   const containerVariants = {
     hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.07,
-      },
-    },
+    visible: { transition: { staggerChildren: 0.07 } },
   };
 
   const revealVariants = {
-    hidden: {
-      opacity: 0,
-      y: 14,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.45,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
+    hidden: { opacity: 0, y: 14 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
   };
 
   return (
-    <section
-      id="interests"
-      className="
-        w-full
-        border-t
-        border-gray-200/70
-        dark:border-gray-800/70
-      "
-    >
-      <div
-        className="
-          mx-auto
-          max-w-7xl
-          px-6
-          pt-20
-          pb-16
-          md:pt-28
-          md:pb-20
-          lg:pt-32
-          lg:pb-24
-        "
-      >
-
+    <section id="interests" className="w-full border-t border-gray-200/70 dark:border-gray-800/70">
+      <div className="mx-auto max-w-7xl px-6 pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-32 lg:pb-24">
+        
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{
-            once: true,
-            amount: 0.1,
-          }}
+          viewport={{ once: true, amount: 0.1 }}
         >
-
-          {/* ───────────────── HEADER ───────────────── */}
-
-          <motion.div
-            variants={revealVariants}
-            className="
-              mb-14
-              flex
-              flex-col
-              gap-7
-              md:mb-16
-              md:flex-row
-              md:items-end
-              md:justify-between
-            "
-          >
-
+          <motion.div variants={revealVariants} className="mb-14 flex flex-col gap-7 md:mb-16 md:flex-row md:items-end md:justify-between">
             <div>
-
               <div className="mb-5 flex items-center gap-3">
-
-                <span
-                  className="
-                    h-px
-                    w-8
-                    bg-gray-900
-                    dark:bg-white
-                  "
-                />
-
-                <span
-                  className="
-                    text-[10px]
-                    font-semibold
-                    uppercase
-                    tracking-[0.22em]
-                    text-gray-400
-                    dark:text-gray-500
-                  "
-                >
+                <span className="h-px w-8 bg-gray-900 dark:bg-white" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-400 dark:text-gray-500">
                   Personal
                 </span>
-
               </div>
-
-              <h2
-                className="
-                  max-w-2xl
-                  text-4xl
-                  font-serif
-                  leading-[1.05]
-                  tracking-tight
-                  text-gray-950
-                  sm:text-5xl
-
-                  dark:text-white
-                "
-              >
+              <h2 className="max-w-2xl text-4xl font-serif leading-[1.05] tracking-tight text-gray-950 sm:text-5xl dark:text-white">
                 {t('interests.title')}
               </h2>
-
             </div>
-
-
-            {/* Permiso iOS */}
 
             {needsPermission && (
               <button
                 type="button"
                 onClick={requestAccess}
-                className="
-                  self-start
-                  rounded-full
-                  border
-                  border-gray-200
-                  px-4
-                  py-2
-                  text-[10px]
-                  font-medium
-                  uppercase
-                  tracking-[0.16em]
-                  text-gray-500
-                  transition-colors
-                  duration-300
-                  hover:border-gray-400
-                  hover:text-gray-900
-
-                  dark:border-gray-800
-                  dark:text-gray-500
-                  dark:hover:border-gray-600
-                  dark:hover:text-white
-
-                  md:self-end
-                "
+                className="self-start rounded-full border border-gray-200 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-gray-500 transition-colors duration-300 hover:border-gray-400 hover:text-gray-900 dark:border-gray-800 dark:text-gray-500 dark:hover:border-gray-600 dark:hover:text-white md:self-end"
               >
                 {t('interests.activateExperience')}
               </button>
             )}
-
           </motion.div>
 
-
-          {/* ───────────────── CARDS ───────────────── */}
-
-          <div
-            className="
-              grid
-              grid-cols-1
-              gap-5
-              md:grid-cols-3
-            "
-          >
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {cards.map((card) => (
               <CreativeCard
                 key={card.id}
@@ -553,7 +285,6 @@ export default function Interests() {
           </div>
 
         </motion.div>
-
       </div>
     </section>
   );
