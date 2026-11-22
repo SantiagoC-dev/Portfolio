@@ -1,43 +1,71 @@
 /* Design tokens, mobile-first layout and accessible motion. No remote fonts. */
+/* Silver & Midnight — palette and motion variant, preserving the published layout. */
 :root {
   font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  color:#222622;
-  background:#f7f5ef;
+  color:#111827;
+  background:#f7f8fa;
   font-synthesis:none;
-  --bg:#f7f5ef;
-  --ink:#222622;
-  --muted:#626860;
-  --accent:#365747;
+  color-scheme:light;
+  --bg:#f7f8fa;
+  --ink:#111827;
+  --muted:#526073;
+  --accent:#344d70;
   --accent-ink:#fff;
-  --soft:#e2e9df;
-  --line:#dddcd3;
-  --card:#fbfaf6;
-  --contact:#273c31;
-  --contact-text:#f7f5ef;
-  --contact-muted:#d2dfd3;
+  --primary:#111827;
+  --primary-ink:#fff;
+  --soft:#e9edf3;
+  --line:#dce1e8;
+  --card:#ffffff;
+  --contact:#111a2a;
+  --contact-text:#f8fafc;
+  --contact-muted:#c6d0de;
+  --nav-surface:#ffffff;
+  --logo-bg:#edf0f5;
+  --hero-glow:rgba(123,145,174,.24);
+  --hero-glow-alt:rgba(154,169,192,.19);
+  --visual-mobile:#e3e9f1;
+  --visual-desktop:#e8ecf2;
+  --visual-ink:#344763;
+  --visual-number:rgba(52,71,99,.19);
+  --visual-frame:#c4cfde;
+  --shadow:0 16px 45px rgba(23,39,65,.075);
+  --image-shadow:0 12px 30px rgba(27,40,64,.16);
   --serif:Georgia,'Times New Roman',serif;
   --shell:1184px;
   --gutter:clamp(20px,5vw,64px);
   --nav-height:68px;
-  --radius:10px;
-  color-scheme:light;
+  --radius:16px;
+  --ease-out:cubic-bezier(.22,1,.36,1);
 }
 
 :root[data-theme=dark] {
-  --bg:#1e2521;
-  --ink:#f0f0e9;
-  --muted:#bac5ba;
-  --accent:#b5d0b8;
-  --accent-ink:#202c24;
-  --soft:#2d3c32;
-  --line:#445349;
-  --card:#253029;
-  --contact:#18261e;
-  --contact-text:#f6f5ec;
-  --contact-muted:#c7d5c9;
   color-scheme:dark;
   color:var(--ink);
   background:var(--bg);
+  --bg:#090e19;
+  --ink:#f4f6fa;
+  --muted:#aab6c8;
+  --accent:#b4c9ea;
+  --accent-ink:#111827;
+  --primary:#f4f6fa;
+  --primary-ink:#101827;
+  --soft:#141e2f;
+  --line:#2c394e;
+  --card:#111a2a;
+  --contact:#0d1524;
+  --contact-text:#f4f6fa;
+  --contact-muted:#b9c7d9;
+  --nav-surface:#121b2b;
+  --logo-bg:#e9edf3;
+  --hero-glow:rgba(86,112,151,.29);
+  --hero-glow-alt:rgba(77,88,151,.22);
+  --visual-mobile:#202c40;
+  --visual-desktop:#1c273a;
+  --visual-ink:#c6d4e9;
+  --visual-number:rgba(191,209,237,.19);
+  --visual-frame:#43526b;
+  --shadow:0 16px 45px rgba(0,0,0,.18);
+  --image-shadow:0 12px 30px rgba(0,0,0,.32);
 }
 
 *,*::before,*::after {
@@ -257,7 +285,7 @@ main:focus {
   width:36px;
   height:36px;
   border-radius:50%;
-  background:#e2e9df;
+  background:var(--logo-bg);
   overflow:hidden;
 }
 
@@ -403,9 +431,9 @@ main:focus {
 }
 
 .primary {
-  background:var(--accent);
-  color:var(--accent-ink);
-  border-color:var(--accent);
+  background:var(--primary);
+  color:var(--primary-ink);
+  border-color:var(--primary);
 }
 
 .secondary {
@@ -505,17 +533,17 @@ main:focus {
   position:relative;
   isolation:isolate;
   overflow:hidden;
-  background:#e2e9e0;
+  background:var(--visual-mobile);
   min-height:240px;
   aspect-ratio:1.23;
   display:grid;
   place-items:center;
   padding:40px 20px 30px;
-  color:#273c31;
+  color:var(--visual-ink);
 }
 
 .project-visual.desktop {
-  background:#e5e3d8;
+  background:var(--visual-desktop);
 }
 
 .visual-label {
@@ -533,10 +561,10 @@ main:focus {
 .visual-number {
   position:absolute;
   right:10px;
-  bottom:10px;
+  bottom:14px;
   font-family:var(--serif);
   font-size:clamp(4.75rem,17vw,7rem);
-  color:#3657471a;
+  color:var(--visual-number);
   line-height:.88;
   z-index:0;
   pointer-events:none;
@@ -562,7 +590,7 @@ main:focus {
   object-fit:contain;
   border:4px solid #272b2b;
   border-radius:13px;
-  box-shadow:0 8px 18px #20372d26;
+  box-shadow:var(--image-shadow);
 }
 
 .project-visual.mobile .preview-images img:nth-child(2) {
@@ -573,9 +601,9 @@ main:focus {
   width:100%;
   max-height:100%;
   object-fit:contain;
-  border:1px solid #bec5bc;
+  border:1px solid var(--visual-frame);
   border-radius:5px;
-  box-shadow:0 9px 24px #29382b24;
+  box-shadow:var(--image-shadow);
 }
 
 .project-copy {
@@ -1149,33 +1177,40 @@ main:focus {
   align-items:center;
 }
 
-/* Progressive reveal only, no continuous animation or layout-changing transitions. */
+/* Motion is finite, non-blocking and uses transform/opacity. */
 @media(prefers-reduced-motion:no-preference) {
   .will-reveal {
     opacity:0;
-    transform:translateY(16px);
-    transition:opacity .42s ease,transform .42s ease;
+    transform:translateY(14px);
+    transition:opacity .52s var(--ease-out),transform .62s var(--ease-out);
     transition-delay:var(--delay,0ms);
   }
   .will-reveal.is-visible,.will-reveal:focus-within {
     opacity:1;
-    transform:translateY(0);
+    transform:none;
   }
-  .hero-copy,.portrait {
-    animation:hero-enter .55s both ease-out;
+  .hero-copy > *, .portrait, .case-header > *, .case-cover {
+    animation:editorial-enter .62s var(--ease-out) both;
   }
-  .portrait {
-    animation-delay:.10s;
+  .hero-copy > :nth-child(2), .case-header > :nth-child(2) {animation-delay:60ms;}
+  .hero-copy > :nth-child(3), .case-header > :nth-child(3) {animation-delay:120ms;}
+  .hero-copy > :nth-child(4), .case-header > :nth-child(4) {animation-delay:180ms;}
+  .hero-copy > :nth-child(5) {animation-delay:240ms;}
+  .portrait,.case-cover {animation-delay:120ms;}
+  .hero-copy > :focus-within {animation:none;}
+  .hero::before {animation:ambient-settle 4.5s var(--ease-out) both;}
+  .availability > span::after {animation:status-ring 1.35s ease-out 2;}
+  @keyframes editorial-enter {
+    from {opacity:0;transform:translateY(15px);}
+    to {opacity:1;transform:none;}
   }
-  @keyframes hero-enter {
-    from {
-      opacity:0;
-      transform:translateY(9px);
-    }
-    to {
-      opacity:1;
-      transform:translateY(0);
-    }
+  @keyframes ambient-settle {
+    from {opacity:.45;}
+    to {opacity:1;}
+  }
+  @keyframes status-ring {
+    0% {opacity:.7;transform:scale(1);}
+    100% {opacity:0;transform:scale(2.5);}
   }
 }
 
@@ -1193,9 +1228,9 @@ main:focus {
 
 @media(hover:hover) {
   .button.primary:hover {
-    background:var(--ink);
-    border-color:var(--ink);
-    color:var(--bg);
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--accent-ink);
   }
   .button.secondary:hover,.icon-btn:hover {
     background:var(--soft);
@@ -1503,3 +1538,104 @@ main:focus {
   }
 }
 
+
+/* Silver & Midnight polish — responsive, no new dependencies. */
+.site-header,.mobile-nav {background:var(--nav-surface);}
+.site-header {box-shadow:0 5px 20px rgba(18,31,50,.035);}
+.brand-mark {border:1px solid var(--line);}
+.icon-btn,.mobile-nav a {border-radius:12px;}
+.hero {position:relative;isolation:isolate;}
+.hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 78% 42%,var(--hero-glow),transparent 56%),
+             radial-gradient(ellipse at 14% 63%,var(--hero-glow-alt),transparent 52%);
+  /* Fade the ambient light to zero at every edge, rather than clipping it
+     abruptly at the shell boundary. Keep the effect inside the layout. */
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 20%,#000 80%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0%,#000 16%,#000 84%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0%,#000 20%,#000 80%,transparent 100%),
+             linear-gradient(to bottom,transparent 0%,#000 16%,#000 84%,transparent 100%);
+  mask-composite:intersect;
+}
+/* Portrait stays transparent, without a frame or decorative curve. */
+.portrait-image,.portrait-image::before {background:transparent;border:0;}
+.portrait-image::before {content:none;}
+.hero h1 em {color:var(--accent);}
+.hero-intro {max-width:51ch;}
+.button {border-radius:100px;min-height:52px;}
+.hero-actions .primary {box-shadow:0 7px 20px rgba(18,31,50,.12);}
+.availability {padding:6px 12px;border:1px solid var(--line);border-radius:100px;background:var(--card);}
+.availability > span {position:relative;background:#20856d;box-shadow:none;}
+.availability > span::after {content:'';position:absolute;inset:0;border:1px solid #20856d;border-radius:50%;opacity:0;pointer-events:none;}
+:root[data-theme=dark] .availability > span {background:#62c7a8;}
+:root[data-theme=dark] .availability > span::after {border-color:#62c7a8;}
+.project-card,.contact-form {box-shadow:var(--shadow);}
+.project-visual {background:radial-gradient(ellipse at 35% 35%,var(--card),transparent 83%),var(--visual-mobile);}
+.project-visual.desktop {background:radial-gradient(ellipse at 35% 35%,var(--card),transparent 83%),var(--visual-desktop);}
+.preview-images {z-index:1;}
+.visual-label {z-index:2;}
+.visual-number {font-size:clamp(4.2rem,15vw,6.5rem);right:14px;bottom:14px;line-height:1;}
+.service-card,.case-gallery figure a {box-shadow:0 5px 18px rgba(17,29,49,.035);}
+.services-section {background:var(--soft);}
+.tags li {border-radius:100px;background:var(--bg);}
+.contact-section {border-top:1px solid var(--line);}
+.contact-form input:not(.hp-field),.contact-form select,.contact-form textarea {border-radius:9px;}
+/* Explicitly retain the hidden anti-spam field even under generic input styles. */
+.contact-form .hp-field {width:1px;height:1px;min-height:0;padding:0;border:0;}
+
+@media(min-width:900px) {
+  .hero {min-height:calc(100svh - 100px);}
+  .hero::before {background:radial-gradient(ellipse at 77% 43%,var(--hero-glow),transparent 49%),radial-gradient(ellipse at 13% 52%,var(--hero-glow-alt),transparent 55%);}
+}
+@media(min-width:1080px) {
+  :root {--nav-height:84px;}
+  .site-header {top:12px;background:transparent;border:0;box-shadow:none;padding-inline:24px;}
+  .nav-inner {width:min(100%,1184px);height:68px;margin-inline:auto;margin-top:12px;padding-inline:20px;border:1px solid var(--line);border-radius:100px;background:var(--nav-surface);box-shadow:var(--shadow);gap:18px;}
+  .desktop-nav {gap:4px;}
+  .desktop-nav a {border-radius:100px;padding:10px 15px;}
+  .desktop-nav a[aria-current] {background:var(--primary);color:var(--primary-ink);}
+  .desktop-nav a[aria-current]::after {content:none;}
+  .nav-actions {gap:4px;}
+  .hero {min-height:max(660px,calc(100svh - 100px));}
+}
+@media(prefers-reduced-motion:no-preference) {
+  body,.site-header,.nav-inner,.mobile-nav,.project-card,.service-card,.contact-form,.services-section,.contact-section,.tags li,.availability {transition:background-color .24s ease,color .24s ease,border-color .24s ease;}
+  /* Keep reveal transitions intact when an element also has theme transitions. */
+  .will-reveal {transition:opacity .52s var(--ease-out),transform .62s var(--ease-out),background-color .24s ease,color .24s ease,border-color .24s ease;transition-delay:var(--delay,0ms);}
+  .button svg,.text-link svg,.direct-links svg,.mobile-nav svg,.icon-btn svg {transition:transform .22s var(--ease-out);}
+  .button:active svg,.text-link:active svg,.direct-links a:active svg {transform:translate(2px,-2px);}
+  .mobile-nav a:active svg,.icon-btn:active svg {transform:scale(.88);}
+  .project-art-link:active .preview-images {transform:scale(.985);}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .button:hover svg,.text-link:hover svg,.direct-links a:hover svg {transform:translate(3px,-2px);}
+  .desktop-nav a:not([aria-current]):hover {background:var(--soft);}
+  .project-art-link .preview-images {transition:transform .45s var(--ease-out);}
+  .project-art-link:hover .preview-images {transform:scale(1.035);}
+  .service-card:hover {border-color:var(--accent);}
+  .case-gallery figure a {transition:transform .25s var(--ease-out),border-color .25s ease;}
+  .case-gallery figure a:hover {transform:translateY(-3px);border-color:var(--accent);}
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero::before,.availability > span::after {animation:none!important;}
+  .button:active,.project-art-link:hover .preview-images,.project-art-link:active .preview-images {transform:none;}
+}
+
+/* Stagger the actual preview devices when a project enters the viewport. */
+@media(prefers-reduced-motion:no-preference) {
+  .project-card.is-visible .preview-images img {
+    animation:preview-enter .65s var(--ease-out) both;
+  }
+  .project-card.is-visible .preview-images img:nth-child(2) {animation-delay:100ms;}
+  @keyframes preview-enter {
+    from {opacity:.45;translate:0 12px;}
+    to {opacity:1;translate:0 0;}
+  }
+  .desktop-nav a,.mobile-nav a,.icon-btn {transition:background-color .2s ease,color .2s ease;}
+  .project-art-link .preview-images {transition:transform .32s var(--ease-out);}
+}
