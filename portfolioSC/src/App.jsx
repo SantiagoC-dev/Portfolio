@@ -1,113 +1,67 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
-
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Services from './components/Services'; // <-- Nuevo componente integrado
-import MyJourney from './components/MyJourney';
-import Interests from './components/Interests';
-import LovedOnes from './components/LovedOnes';
+import Projects from './components/Projects';
+import Services from './components/Services';
+import Profile from './components/Profile';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
-import HobbiesPage from './components/HobbiesPage';
-import PlaylistPage from './components/PlaylistPage';
-import InspirationsPage from './components/InspirationsPage';
-import PortfolioPage from './components/PortfolioPage';
-import AboutMePage from './components/AboutMePage';
 import CaseStudyPage from './components/CaseStudyPage';
-
+import { useReveal } from './hooks/useReveal';
 function Home() {
-  return (
-    <>
-      <Hero />
-      <Services />      {/* <-- Servicios ocupa el lugar principal */}
-      <MyJourney />
-      <Interests />     {/* <-- Intereses baja antes de los testimonios */}
-      <LovedOnes />
-    </>
-  );
+  return <><Hero /><Projects /><Services /><Profile /><Contact /></>;
 }
-
-// ─── 1. COMPONENTE: GESTOR DE ANIMACIONES Y RUTAS ───
-function AnimatedRoutes() {
-  const location = useLocation();
-
-  return (
-    // mode="wait" previene que dos páginas pesadas existan al mismo tiempo
-    // onExitComplete centraliza el scroll hacia arriba sin laggear el teléfono
-    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0 })}>
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route path="/hobbies" element={<HobbiesPage />} />
-        <Route path="/playlist" element={<PlaylistPage />} />
-        <Route path="/inspirations" element={<InspirationsPage />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-        <Route path="/about" element={<AboutMePage />} />
-        <Route path="/case-study/:id" element={<CaseStudyPage />} />
-      </Routes>
-    </AnimatePresence>
-  );
-}
-
-// ─── 2. COMPONENTE INTERNO DE LA APLICACIÓN ───
-function MainApp() {
-  const { i18n } = useTranslation();
-  const currentLang = i18n?.language || 'es';
-  const controls = useAnimation();
-
+function Shell() {
+  const {
+    pathname,
+    hash,
+    key
+  } = useLocation();
+  const {
+    i18n
+  } = useTranslation();
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('sc-theme') === 'dark' ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
   useEffect(() => {
-    controls.start({
-      opacity: [0.4, 1],
-      filter: ["blur(3px)", "blur(0px)"],
-      transition: { duration: 0.35, ease: "easeOut" }
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem('sc-theme', theme);
+    } catch {/* storage unavailable */}
+  }, [theme]);
+  useEffect(() => {
+    document.documentElement.lang = i18n.resolvedLanguage || 'es';
+  }, [i18n.resolvedLanguage]);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      if (hash) {
+        const target = document.getElementById(hash.slice(1));
+        if (target) {
+          target.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+          });
+          return;
+        }
+      }
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant'
+      });
     });
-  }, [currentLang, controls]);
-
-  return (
-    <div className="relative min-h-screen font-sans transition-colors duration-300 bg-[#fafafa] text-gray-900 dark:bg-gray-950 dark:text-gray-100 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
-      
-      {/* ─── FONDO ANIMADO TIPO AURORA GLOBAL ─── */}
-      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
-        <motion.div
-          animate={{ x: [0, 80, 0], y: [0, 40, 0], scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-          className="absolute top-[10%] left-[-5%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-gray-300/80 dark:bg-gray-600/30 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-screen"
-        />
-        <motion.div
-          animate={{ x: [0, -100, 0], y: [0, -60, 0], scale: [1, 1.2, 1] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-          className="absolute top-[30%] right-[-5%] w-[250px] md:w-[450px] h-[250px] md:h-[450px] bg-gray-400/60 dark:bg-gray-800/80 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-screen"
-        />
-        <motion.div
-          animate={{ x: [0, 50, 0], y: [0, -80, 0], scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] left-[20%] w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-gray-300/70 dark:bg-gray-700/40 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-screen"
-        />
-      </div>
-
-      <main className="relative z-10 flex flex-col min-h-screen">
-        <Navbar />
-
-        <motion.div 
-          animate={controls}
-          className="flex-grow flex flex-col"
-        >
-          {/* Renderizamos nuestras rutas animadas aquí */}
-          <AnimatedRoutes />
-        </motion.div>
-        
-        <Footer />
-      </main>
-    </div>
-  );
+    return () => cancelAnimationFrame(frame);
+  }, [pathname, hash, key]);
+  useEffect(() => {
+    document.title = pathname.includes('case-study') ? `${/labstock|\/1$/.test(pathname) ? 'LabStock' : /tourcraft|\/2$/.test(pathname) ? 'TourCraft' : 'Case study'} · Santiago Calderón` : 'Santiago Calderón · Software Developer';
+  }, [pathname]);
+  useReveal(pathname);
+  return <><Navbar theme={theme} toggleTheme={() => setTheme(v => v === 'light' ? 'dark' : 'light')} /><main id="main" tabIndex={-1}><Routes><Route path="/" element={<Home />} /><Route path="/case-study/:id" element={<CaseStudyPage />} /><Route path="/portfolio" element={<Navigate to="/#work" replace />} /><Route path="/about" element={<Navigate to="/#about" replace />} />{['hobbies', 'playlist', 'inspirations'].map(p => <Route key={p} path={`/${p}`} element={<Navigate to="/#about" replace />} />)}<Route path="*" element={<Navigate to="/" replace />} /></Routes></main><Footer /></>;
 }
-
-// ─── 3. EXPORTACIÓN PRINCIPAL (Router envolviendo todo) ───
 export default function App() {
-  return (
-    <Router>
-      <MainApp />
-    </Router>
-  );
+  return <BrowserRouter><Shell /></BrowserRouter>;
 }
